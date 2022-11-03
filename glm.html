@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Unidad 4 Modelos lineales generalizados | Una primera aproximación a la Estadística Bayesiana</title>
+<meta name="description" content="Los modelos lineales generalizados (Generalized Linear Models or GLM), son una clase de modelos introducidos por Nelder y Wedderburn (1972) y McCullagh y Nelder (1989), con el objetivo de extender...">
+<meta name="generator" content="bookdown 0.28 with bs4_book()">
+<meta property="og:title" content="Unidad 4 Modelos lineales generalizados | Una primera aproximación a la Estadística Bayesiana">
+<meta property="og:type" content="book">
+<meta property="og:description" content="Los modelos lineales generalizados (Generalized Linear Models or GLM), son una clase de modelos introducidos por Nelder y Wedderburn (1972) y McCullagh y Nelder (1989), con el objetivo de extender...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unidad 4 Modelos lineales generalizados | Una primera aproximación a la Estadística Bayesiana">
+<meta name="twitter:description" content="Los modelos lineales generalizados (Generalized Linear Models or GLM), son una clase de modelos introducidos por Nelder y Wedderburn (1972) y McCullagh y Nelder (1989), con el objetivo de extender...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.0/transition.js"></script><script src="libs/bs3compat-0.4.0/tabs.js"></script><script src="libs/bs3compat-0.4.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="bs4_style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Una primera aproximación a la Estadística Bayesiana</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Contexto</a></li>
+<li><a class="" href="inlabasics.html"><span class="header-section-number">2</span> Regresión lineal</a></li>
+<li><a class="" href="anova.html"><span class="header-section-number">3</span> Modelo de ANOVA</a></li>
+<li><a class="active" href="glm.html"><span class="header-section-number">4</span> Modelos lineales generalizados</a></li>
+<li><a class="" href="referencias.html">Referencias</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="glm" class="section level1" number="4">
+<h1>
+<span class="header-section-number">Unidad 4</span> Modelos lineales generalizados<a class="anchor" aria-label="anchor" href="#glm"><i class="fas fa-link"></i></a>
+</h1>
+<p>Los modelos lineales generalizados (Generalized Linear Models or GLM), son una clase de modelos introducidos por Nelder y Wedderburn (1972) y McCullagh y Nelder (1989), con el objetivo de extender la regresión lineal al caso en el que la variable dependiente no se distribuye necesariamente según una normal, pero su distribución todavía pertenece a la familia exponencial. Trabajamos a continuación con dos de los GLM más comunes en epidemiología y ciencias sociales: la regresión logística y la de Poisson, mostrando cómo usar R-INLA.</p>
+<p>Un modelo lineal general (MLG) está basado en asumir una relación lineal entre cierta transformación del valor esperado de la respuesta <span class="math inline">\(E(y_i)\)</span> y los predictores disponibles, sean covariables, efectos fijos, efectos aleatorios, o incluso alguna función de estos.</p>
+<p>Si <span class="math inline">\(y\)</span> representa una respuesta observada, <span class="math inline">\(x_1,x_2,..\)</span> una serie de covariables o efectos fijos, y <span class="math inline">\(z_1,z_2,...\)</span> efectos aleatorios, el modelo lineal general asume cierto modelo probabilístico para <span class="math inline">\(y\)</span> dentro de la familia Gausiana, dependiente de los predictores y ciertos parámetros desconocidos <span class="math inline">\(\theta\)</span>, que se especifica en un primer nivel de la modelización.</p>
+<p><span class="math display">\[E(y_i|x,z,\theta)=\gamma_i=g(\eta_i)\]</span></p>
+<p><span class="math inline">\(\theta\)</span> engloba todos los parámetros de la distribución de los datos, esto es, los involucrados en el predictor lineal, pero también otros como por ejemplo la varianza <span class="math inline">\(\sigma^2\)</span> del modelo normal.</p>
+<p>El predictor lineal <span class="math inline">\(\eta\)</span> está relacionado linealmente con los predictores según:
+<span class="math display">\[\eta_i=\mu + \beta_1 x_{1i} +   \beta_2 x_{2i} +...+ z_{1i} + z_{2i}+...\]</span>
+relación que se suele representar en forma matricial como
+<span class="math display">\[\eta=X\beta + Z u\]</span>
+Los modelos lineales que conocemos (regresión, anova, ancova, glm,modelos mixtos, aditivos,…) se engloban dentro del modelo lineal general.</p>
+<p>Para obtener la distribución marginal de los valores ajustados y predichos necesitamos incorporar a la función <code>inla</code> el argumento <code>control.compute=list(return.marginals.predictor=TRUE)</code>
+El argumento <code>control.predictor=list(compute=TRUE)</code> en la función <code>inla</code> permite obtener las distribuciones predictivas para el predictor lineal, que en estos casos es distinto a los valores ajustados, <code>fit$summary.fitted</code>. Además:</p>
+<ul>
+<li>
+<code>fit$summary.linear.predictor</code> resume la inferencia posterior sobre los
+predictores lineales (distintos a los fitted cuando hay una función <em>link</em>)</li>
+<li>
+<code>fit$marginals.linear.predictor</code> da las distribuciones posteriores marginales para los predictores lineales</li>
+</ul>
+<div id="modelos-jerárquicos-bayesianos" class="section level3" number="4.0.1">
+<h3>
+<span class="header-section-number">4.0.1</span> Modelos jerárquicos bayesianos<a class="anchor" aria-label="anchor" href="#modelos-jer%C3%A1rquicos-bayesianos"><i class="fas fa-link"></i></a>
+</h3>
+<p>Un modelo bayesiano se modeliza a través de un modelo jerárquico en el que en el nivel 1 se define la distribución asumida sobre la variable respuesta y que determina la verosimilitud. Esta variable depende de unos parámetros que definen los efectos fijos y aleatorios, y para los que hay que proporcionar la información previa disponible a través de una distribución a priori en el segundo nivel del modelo jerárquico. La distribución a priori para los efectos fijos generalmente será común a todos ellos, mientras que la distribución a priori para los efectos aleatorios estará vinculada a otros hiperparámetros para los que también será preciso especificar una distribución a priori en un tercer nivel de la modelización.</p>
+<p>El argumento <code>control.predictor=list(compute=TRUE)</code> en la función <code>inla</code> permite obtener las distribuciones predictivas para el predictor lineal. Así para el modelo anterior tendremos</p>
+<p><span class="math display">\[\begin{eqnarray*}
+(I)&amp; y | X, Z, \theta &amp;\sim f(y|x,z,\theta) \\
+&amp;&amp; E(y_i|x,z,\theta)=\gamma_i=g(\eta_i) \\
+&amp;&amp; \eta=X\beta + Z u \\
+(II)&amp;  \beta &amp;\sim N(0,\sigma_{\beta}), \text{ con un valor dado  para } \sigma_{\beta} \\
+&amp;&amp; u_i|\mu,\sigma \sim_{iid}  N(\mu,{\sigma}) \\
+(III)&amp; \mu  &amp;\sim N(0,\sigma_{\mu}), \text{ con un valor dado  para } \sigma_{\mu} \\
+&amp;&amp; \sigma \sim  GaI(\alpha_{\sigma},\beta_{\sigma}), \text{ con un valor dado  para }\alpha_{\sigma} y \beta_{\sigma}.
+\end{eqnarray*}\]</span></p>
+</div>
+<div id="regresión-logística" class="section level2" number="4.1">
+<h2>
+<span class="header-section-number">4.1</span> Regresión logística<a class="anchor" aria-label="anchor" href="#regresi%C3%B3n-log%C3%ADstica"><i class="fas fa-link"></i></a>
+</h2>
+<p>La regresión logística es el modelo estándar para respuestas binarias (éxitos/fracasos). Tiene dos variaciones, en función de si la respuesta representa observaciones individuales (0/1) o conteos (de éxitos) en grupos de sujetos.
+Si las observaciones son individualizadas, entonces
+<span class="math display">\[y_1,...,y_n \sim Ber(\pi_i), \ i=1,...,n\]</span>
+En el caso de que sean conteos en grupos,
+<span class="math display">\[y_1,...,y_n \sim Bin(n_i,\pi_i), \ i=1,...,n\]</span>
+siendo <span class="math inline">\(n_i\)</span> el tamaño de cada uno de los <span class="math inline">\(n\)</span> grupos disponibles, y <span class="math inline">\(\pi_i\)</span> la probabilidad de éxito (output de interés).</p>
+<p>La relación entre el predictor lineal <span class="math inline">\(\eta_i\)</span> construido con los predictores disponibles <span class="math inline">\(x_i=(x_{i1},...x_{iM})\)</span> y la probabilidad <span class="math inline">\(\pi_i\)</span> se especifica a través de la función <em>logit</em>:
+<span class="math display">\[\eta_i=logit(\pi_i)=log\left(\frac{\pi_i}{1-\pi_i}\right)=x_i\beta=\beta_0+\sum_{m=1}^M \beta_mx_{im}\]</span>
+de forma que
+<span class="math display">\[\pi_i=logit^{-1}(x_i\beta)=\frac{exp(x_i\beta)}{1-exp(x_i\beta)}\]</span>
+Una vez especificado el modelo, si no hay información previa disponible sobre los efectos (fijos) <span class="math inline">\({\beta_o,\beta_1,...\beta_M}\)</span>, se asumen distribuciones a priori independientes y normales con media cero y varianza muy grande.</p>
+<div id="interpretación-de-los-coeficientes-en-la-regresión-logit" class="section level3" number="4.1.1">
+<h3>
+<span class="header-section-number">4.1.1</span> Interpretación de los coeficientes en la regresión logit<a class="anchor" aria-label="anchor" href="#interpretaci%C3%B3n-de-los-coeficientes-en-la-regresi%C3%B3n-logit"><i class="fas fa-link"></i></a>
+</h3>
+<p>Puesto que <span class="math inline">\(x_i\beta=\beta_0+\sum_{m=1}^M \beta_mx_{im}\)</span>,
+- cuando todas las <span class="math inline">\(x\)</span> son categóricas y su valor coincide con el nivel de referencias
+- o cuando las <span class="math inline">\(x\)</span> son continuas y su valor es cero,
+el valor del predictor lineal <span class="math inline">\(\eta_i=\beta_0=logit(\pi_i)\)</span>. En consecuencia, el logit inverso de <span class="math inline">\(\beta_0\)</span> se interpreta como la probabilidad de éxito <span class="math inline">\(\pi_i\)</span> cuando los predictores están en su nivel de referencia o son cero.
+<span class="math display">\[logit^{-1}(\beta_0)=Pr(y=1|x=0).\]</span></p>
+<p>En cuanto a la interpretación de cualquier coeficiente de regresión, como <span class="math inline">\(\beta_1\)</span>, echamos mano del concepto de odds y odds ratio. Los odds ratio, OR, representan el cociente de las posibilidades a favor de un evento <span class="math inline">\(E\)</span> bajo condiciones A y de las posibilidades del mismo evento bajo condiciones B. Nos sirve para evaluar cuánto afecta a dicho evento el hecho de variar las condiciones de B a A.
+<span class="math display">\[OR(A,B)=\frac{Pr(E|A)/(1-Pr(E|A))}{Pr(E|B)/(1-Pr(E|B))}.\]</span></p>
+<p>En el modelo logístico, nos interesa saber el efecto que tiene sobre la respuesta (sobre las probabilidad de éxito en este caso) el incremento de una unidad en la variable <span class="math inline">\(x\)</span>, y para ello consideramos los odds bajo <span class="math inline">\(x\)</span> y los odds bajo <span class="math inline">\(x+1\)</span>, y en particular el logaritmo de los odds, log-odds:
+<span class="math display">\[log.odds(x+1)=\frac{P(y=1|x+1)}{P(y=0|x+1)}=\beta_0+\beta_1 (x+1)\]</span>
+<span class="math display">\[log.odds(x)=\frac{P(y=1|x)}{P(y=0|x)}=\beta_0+\beta_1 x\]</span>
+de modo que
+<span class="math display">\[log.ods (x+1)/x = \beta_1 \rightarrow exp(\beta_1)=\frac{odds(x+1)}{odds(x)}=OR(x+1,x).\]</span>
+Así <span class="math inline">\(\beta_1\)</span> representa el cambio en los odds a favor de un éxito cuando se incrementa en una unidad el predictor <span class="math inline">\(x\)</span> al que acompaña en el predictor lineal. Esta interpretación es muy común en Epidemiología.</p>
+</div>
+</div>
+<div id="ejemplo-modelo-logit.-mortalidad-por-infarto-en-sheffield." class="section level2" number="4.2">
+<h2>
+<span class="header-section-number">4.2</span> Ejemplo modelo logit. Mortalidad por infarto en Sheffield.<a class="anchor" aria-label="anchor" href="#ejemplo-modelo-logit.-mortalidad-por-infarto-en-sheffield."><i class="fas fa-link"></i></a>
+</h2>
+<p>Utilizamos los datos <em>stroke</em>, disponibles en <a href="https://sites.google.com/a/r-inla.org/stbook/datasets">datasets in SSTM-RINLA</a>. Queremos evaluar la presencia de cierta asociación entre los niveles de NOx y el infarto en Sheffield, UK. Se dispone de la concentración anual de NOx medida en <span class="math inline">\(\mu g/m^3\)</span> y categorizada en quintiles, promediada durante el periodo 1994-1999, en la variable <em>NOx.class</em> y su análoga <span class="math inline">\(NOx\)</span>, y el número de muertes por infarto <span class="math inline">\(y\)</span> en cada distrito identificado por el índice de desventajas y privación <em>Townsend</em> (categorizado en quintiles). Se dispone igualmente del tamaño de la población para cada registro, en la variable <span class="math inline">\(pop\)</span>. La respuesta <span class="math inline">\(y\)</span> se puede considerar entonces como conteos (de muertes) sobre la población de cada distrito,
+<span class="math display">\[y_i|\pi_i \sim Bin(n_i, \pi_i)\]</span>
+y el predictor lineal es función del nivel de NOx y del distrito:
+<span class="math display">\[\eta_i=logit(\pi_i)=\beta_0 + \sum_{k=2}^5 \beta_{1k} I(NOx_i=k)+ \sum_{h=2}^5 \beta_{2h} I(Townsend_i=h)+logit(\tilde{p_i})\]</span>
+siendo <span class="math inline">\(n_i\)</span> la población (número total de habitantes) del distrito en el que se ubica el registro <span class="math inline">\(i\)</span> (disponible en la variable <span class="math inline">\(pop\)</span>). El término <span class="math inline">\(\tilde{p_i}\)</span> representa el resgo ajustado por sexo y edad de la mortalidad por infarto, calculada utilizando estandarización indirecta con ratios de referencia internos basados en 18 estratos (9 para edad y 2 para género), y que se usa como un riesgo base en el modelo (Maheswaran et al.2006). En el ejemplo se calcula como el ratio de la mortalidad dividido por la población de cada registro.</p>
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my.dir</span><span class="op">=</span><span class="st">"~/Dropbox/ESTADISTICA/BAYESIAN/VARIOS/"</span></span>
+<span><span class="va">Stroke</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">my.dir</span>,<span class="st">"Stroke.csv"</span><span class="op">)</span>,sep<span class="op">=</span><span class="st">","</span>,dec<span class="op">=</span><span class="st">"."</span>,header<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#riesgo base: ajuste por tamaño de la población</span></span>
+<span><span class="va">Stroke</span><span class="op">$</span><span class="va">Adjusted.prob</span> <span class="op">&lt;-</span> <span class="va">Stroke</span><span class="op">$</span><span class="va">stroke_exp</span><span class="op">/</span><span class="va">Stroke</span><span class="op">$</span><span class="va">pop</span></span>
+<span><span class="co"># logit del riesgo base</span></span>
+<span><span class="va">Stroke</span><span class="op">$</span><span class="va">logit.adjusted.prob</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">Stroke</span><span class="op">$</span><span class="va">Adjusted.prob</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">Stroke</span><span class="op">$</span><span class="va">Adjusted.prob</span><span class="op">)</span><span class="op">)</span>                          </span></code></pre></div>
+<p>Ajustamos ya el modelo, en el que las variables NOx y Townsend actúan como factores (efectos fijos) y el riesgo base se introduce como offset, para estandarizar los riesgos en función del tamaño de la población y poder equiparar así todos los distritos:</p>
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">formula.inla</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">NOx</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">Townsend</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/offset.html">offset</a></span><span class="op">(</span><span class="va">logit.adjusted.prob</span><span class="op">)</span></span>
+<span><span class="va">model.logistic</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula.inla</span>, family<span class="op">=</span><span class="st">"binomial"</span>, Ntrials<span class="op">=</span><span class="va">pop</span>, data<span class="op">=</span><span class="va">Stroke</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">model.logistic</span><span class="op">$</span><span class="va">summary.fixed</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                     mean    sd 0.025quant 0.5quant</span></span>
+<span><span class="co">#&gt; (Intercept)       -0.181 0.057     -0.293   -0.180</span></span>
+<span><span class="co">#&gt; factor(NOx)2       0.132 0.059      0.016    0.132</span></span>
+<span><span class="co">#&gt; factor(NOx)3       0.105 0.061     -0.014    0.105</span></span>
+<span><span class="co">#&gt; factor(NOx)4       0.261 0.059      0.144    0.260</span></span>
+<span><span class="co">#&gt; factor(NOx)5       0.425 0.062      0.302    0.425</span></span>
+<span><span class="co">#&gt; factor(Townsend)2  0.077 0.061     -0.043    0.077</span></span>
+<span><span class="co">#&gt; factor(Townsend)3  0.137 0.060      0.020    0.137</span></span>
+<span><span class="co">#&gt; factor(Townsend)4 -0.132 0.063     -0.255   -0.132</span></span>
+<span><span class="co">#&gt; factor(Townsend)5 -0.118 0.067     -0.250   -0.118</span></span>
+<span><span class="co">#&gt;                   0.975quant</span></span>
+<span><span class="co">#&gt; (Intercept)           -0.071</span></span>
+<span><span class="co">#&gt; factor(NOx)2           0.248</span></span>
+<span><span class="co">#&gt; factor(NOx)3           0.225</span></span>
+<span><span class="co">#&gt; factor(NOx)4           0.377</span></span>
+<span><span class="co">#&gt; factor(NOx)5           0.547</span></span>
+<span><span class="co">#&gt; factor(Townsend)2      0.198</span></span>
+<span><span class="co">#&gt; factor(Townsend)3      0.255</span></span>
+<span><span class="co">#&gt; factor(Townsend)4     -0.009</span></span>
+<span><span class="co">#&gt; factor(Townsend)5      0.014</span></span></code></pre></div>
+<p>Para obtener la probabilidad promedio de muerte por infarto en el distrito Townsend=1 y para el nivel NOx=1, que son los niveles base, nos apoyamos en la interceptación <span class="math inline">\(\beta_0\)</span>. Sobre sus simulaciones será preciso deshacer el logit (con la función logit-inversa):</p>
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">prob.stroke</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>, <span class="va">model.logistic</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.zmarginal</a></span><span class="op">(</span><span class="va">prob.stroke</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Mean            0.455034 </span></span>
+<span><span class="co">#&gt; Stdev           0.0139168 </span></span>
+<span><span class="co">#&gt; Quantile  0.025 0.427486 </span></span>
+<span><span class="co">#&gt; Quantile  0.25  0.445615 </span></span>
+<span><span class="co">#&gt; Quantile  0.5   0.455082 </span></span>
+<span><span class="co">#&gt; Quantile  0.75  0.464485 </span></span>
+<span><span class="co">#&gt; Quantile  0.975 0.482137</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">prob.stroke</span><span class="op">)</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>         <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">pi</span><span class="op">)</span>,y<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu">tilde</span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">pi</span>,<span class="st">"|"</span>,<span class="va">y</span>,<span class="st">","</span>,<span class="va">NOx</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,<span class="st">","</span>,<span class="va">TS</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="03-glm_files/figure-html/unnamed-chunk-4-1.png" width="672"></div>
+<p>El efecto <span class="math inline">\(\beta_{12}\)</span> representa el efecto en los log.odds de la mortalidad por infarto de estar en el nivel <span class="math inline">\(NOx=2\)</span> frente al de estar en el nivel <span class="math inline">\(NOx=1\)</span>. Si queremos evaluar el odds-ratio, simplemente calculamos la distribución posterior de <span class="math inline">\(exp(\beta_{12})\)</span> con <code>inla.tmarginal</code>. Si sólo estamos interesados en su media, bastaría utilizar `inla.emarginal’:</p>
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">odds.nox21</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="va">model.logistic</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">$</span><span class="st">"factor(NOx)2"</span><span class="op">)</span></span>
+<span><span class="va">e</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.emarginal</a></span><span class="op">(</span><span class="va">exp</span>, <span class="va">model.logistic</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">$</span><span class="st">"factor(NOx)2"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">odds.nox21</span><span class="op">)</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu">OR</span><span class="op">(</span><span class="va">NOx</span><span class="op">[</span><span class="fl">21</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,y<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu">tilde</span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu">OR</span><span class="op">(</span><span class="va">NOx</span><span class="op">[</span><span class="fl">21</span><span class="op">]</span><span class="op">)</span>,<span class="st">"|"</span>,<span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept<span class="op">=</span><span class="va">e</span>,color<span class="op">=</span><span class="st">"pink"</span><span class="op">)</span><span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">e</span>,y<span class="op">=</span><span class="fl">1</span>,label<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"mean="</span>,<span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">e</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span>,color<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure">
+<img src="03-glm_files/figure-html/unnamed-chunk-5-1.png" width="672">
+La probabilidad de muerte por infarto se incrementa en un 14.3% cuando la exposición de NOx cambia del primer al segundo nivel. Los odds-ratio para el resto de los niveles resultan realmente significativos: 11,3% el odds-ratio NOx3/NOx1, 30% NOx4/NOx1 y 53.2% NOx5/NOx1.</div>
+<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.emarginal</a></span><span class="op">(</span><span class="va">exp</span>, <span class="va">model.logistic</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">$</span><span class="st">"factor(NOx)3"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1.113128</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.emarginal</a></span><span class="op">(</span><span class="va">exp</span>, <span class="va">model.logistic</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">$</span><span class="st">"factor(NOx)4"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1.299909</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.emarginal</a></span><span class="op">(</span><span class="va">exp</span>, <span class="va">model.logistic</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">$</span><span class="st">"factor(NOx)5"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1.532265</span></span></code></pre></div>
+</div>
+<div id="regresión-de-poisson" class="section level2" number="4.3">
+<h2>
+<span class="header-section-number">4.3</span> Regresión de Poisson<a class="anchor" aria-label="anchor" href="#regresi%C3%B3n-de-poisson"><i class="fas fa-link"></i></a>
+</h2>
+<p>La regresión de Poisson es útil cuando la variable respuesta representa conteos y estos toman valores discretos entre 0 y <span class="math inline">\(+\infty\)</span>, sin una cota superior de referencia. El parámetro de interés es el número promedio de eventos <span class="math inline">\(\lambda_i=E(y_i)\)</span> y el link natural es el logaritmo, de modo que el predictor lineal está ligado con las covariables y factores según:
+<span class="math display">\[\eta_i=log(\lambda_i)=x_i \beta, \ \ \mbox{ y } \ \ \lambda_i=exp(x_i \beta)\]</span></p>
+<p>Un modelo de Poisson puede especificarse según
+<span class="math display">\[y_i \sim Po(\lambda_i), i=1,...,n\]</span>
+<span class="math display">\[\eta_i=log(\lambda_i)=\beta_0+\sum_{m=1}^M \beta_mx_{im}.\]</span></p>
+<p>Para completar el modelo se especifican distribuciones a priori para <span class="math inline">\(\beta\)</span>, típicamente como normales con media cero y una varianza grande cuando no hay información disponible de estudios previos u opinión de expertos.</p>
+<p>Los coeficientes se interpretan a través de la función exponencial:</p>
+<ul>
+<li>
+<span class="math inline">\(exp(\beta_0)=\lambda_i\)</span> cuando todas las <span class="math inline">\(x=0\)</span> si son continuas, o para el primer nivel de las categorías posibles si son categóricas.</li>
+<li>
+<span class="math inline">\(exp(\beta_m)\)</span> es el cambio que se produce en la respuesta promedio <span class="math inline">\(y\)</span> cuando <span class="math inline">\(x_m\)</span> se incrementa en una unidad.</li>
+</ul>
+<p>La mayoría de las veces que se utiliza la regresión de Poisson, el interés recáe en las ratios o riesgos relativos, más que en el número promedio de casos <span class="math inline">\(\lambda_i\)</span>. Para cambiar la escala en términos de riesgo, ha de utilizarse un offset como factor de corrección en la especificación del modelo. Este offset representa el denominador del riesgo y entra en la regresión en una escala logarítmica, asumiendo que tiene un coeficiente de regresión fijado a 1:
+<span class="math display">\[\eta_i=log(\lambda_i)=\beta_0+\sum_{m=1}^M \beta_mx_{im}+log(Offset_i)\]</span>
+donde el riesgo relativo de que se produzca un evento se obtiene según
+<span class="math display">\[log\left(\frac{\lambda_i}{Offset_i}\right)=\beta_0+\sum_{m=1}^M \beta_mx_{im}\]</span>
+y los coeficientes entonces se interpretan en una escala de riesgo. En este caso al exponenciar la interceptación obtenemos el riesgo base, mientras que <span class="math inline">\(exp(\beta_m)\)</span> representa el cambio en el riesgo relativo debido a un cambio de unidad en el predictor correspondiente.</p>
+<div id="ejemplo-modelo-poisson-incidentes-en-barcos" class="section level3" number="4.3.1">
+<h3>
+<span class="header-section-number">4.3.1</span> Ejemplo modelo Poisson: incidentes en barcos<a class="anchor" aria-label="anchor" href="#ejemplo-modelo-poisson-incidentes-en-barcos"><i class="fas fa-link"></i></a>
+</h3>
+<p>Utilizamos los datos <em>ships.csv</em> en <a href="https://sites.google.com/a/r-inla.org/stbook/datasets">datasets for SSTM-RINLA</a> para estimar el riesgo mensual de incidentes en barcos. Los factores potenciales del riesgo son el periodo de construcción (<em>built</em>), el periodo de operación (<em>oper</em>) y el tipo de barco (<em>type</em>).
+El modelo se escribe en INLA a continuación, utilizando como offset el <em>log(months)</em>, que son los meses que ha navegado y ponderan en consecuencia el riesgo de incidentes. El modelo con el offset será entonces
+<span class="math display">\[y_i \sim Poisson (E_i \rho_i),\]</span>
+donde <span class="math inline">\(\eta_i=log(\rho_i)\)</span> es el predictor lineal y el promedio del número de incidentes <span class="math inline">\(\lambda_i=E_i \rho_i\)</span>. El offset no se incluye en esta formulación en el predictor lineal.</p>
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my.dir</span><span class="op">=</span><span class="st">"~/Dropbox/ESTADISTICA/BAYESIAN/VARIOS/"</span></span>
+<span><span class="va">ShipsIncidents</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span>file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">my.dir</span>,<span class="st">"Ships.csv"</span><span class="op">)</span>,sep<span class="op">=</span><span class="st">","</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">formula.inla</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="va">built</span> <span class="op">+</span> <span class="va">oper</span> <span class="op">+</span> <span class="va">type</span></span>
+<span><span class="va">model.poisson</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula.inla</span>,family<span class="op">=</span><span class="st">"poisson"</span>, data<span class="op">=</span><span class="va">ShipsIncidents</span>, offset<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">months</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">model.poisson</span><span class="op">$</span><span class="va">summary.fixed</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt;               mean    sd 0.025quant 0.5quant 0.975quant</span></span>
+<span><span class="co">#&gt; (Intercept) -6.416 0.217     -6.852   -6.413     -5.998</span></span>
+<span><span class="co">#&gt; built65-69   0.696 0.150      0.406    0.695      0.994</span></span>
+<span><span class="co">#&gt; built70-74   0.819 0.170      0.487    0.818      1.153</span></span>
+<span><span class="co">#&gt; built75-79   0.453 0.233     -0.012    0.455      0.903</span></span>
+<span><span class="co">#&gt; oper75-79    0.384 0.118      0.153    0.384      0.617</span></span>
+<span><span class="co">#&gt; typeB       -0.543 0.178     -0.882   -0.546     -0.185</span></span>
+<span><span class="co">#&gt; typeC       -0.688 0.329     -1.366   -0.678     -0.075</span></span>
+<span><span class="co">#&gt; typeD       -0.075 0.291     -0.664   -0.069      0.476</span></span>
+<span><span class="co">#&gt; typeE        0.326 0.236     -0.141    0.327      0.785</span></span></code></pre></div>
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">model.poisson</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "(Intercept)" "built65-69"  "built70-74"  "built75-79" </span></span>
+<span><span class="co">#&gt; [5] "oper75-79"   "typeB"       "typeC"       "typeD"      </span></span>
+<span><span class="co">#&gt; [9] "typeE"</span></span>
+<span><span class="co"># ratio medio de incidentes por mes en las categorías base</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.emarginal</a></span><span class="op">(</span><span class="va">exp</span>,<span class="va">model.poisson</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.001674164</span></span>
+<span><span class="co"># riesgo relativo de barcos tipo E</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.emarginal</a></span><span class="op">(</span><span class="va">exp</span>,<span class="va">model.poisson</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">$</span><span class="va">typeE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1.424414</span></span></code></pre></div>
+<p>Así, la media de <span class="math inline">\(exp(\beta_0)\)</span>, 0.0018, representa el ratio medio de incidentes por mes entre los barcos que fueron construidos entre el 60 y el 64, han operado entre el 60 y el 74 y son de tipo A (las categorías de referencia). El ratio en 1000 meses sería del 1.8.Para los barcos de tipo E el incremento en el ratio mensual de incidentes, comparado con los de tipo A es del 42,4%.</p>
+<p>Otros datos modelizables con una regresión de Poisson son los que provienen del libro de Andrews and Herzberg y están descritos en (<a href="http://www.randomservices.org/random/data/HorseKicks.html">randomservices.org/random</a>) consistentes en el número de soldados muertos por coces de caballo en diversos cuerpos de caballería del ejército prusiano, entre 1875 y 1894.</p>
+<p>Este modelo se implementa en INLA, a partir de datos simulados, con el siguiente código</p>
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my.dir</span><span class="op">=</span><span class="st">"~/Dropbox/ESTADISTICA/BAYESIAN/VARIOS/"</span></span>
+<span><span class="va">horse</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">my.dir</span>,<span class="st">"HorseKicks.txt"</span><span class="op">)</span>,sep<span class="op">=</span><span class="st">""</span>, dec<span class="op">=</span><span class="st">"."</span>,header<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">horse</span><span class="op">$</span><span class="va">sum</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">horse</span><span class="op">[</span>,<span class="fl">2</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">horse</span><span class="op">)</span><span class="op">]</span>,<span class="fl">1</span>,<span class="va">sum</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">fit</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">sum</span><span class="op">~</span><span class="fl">1</span>,data<span class="op">=</span><span class="va">horse</span>,family<span class="op">=</span><span class="st">"poisson"</span>,control.predictor<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>compute<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt;    c("inla.core(formula = formula, family = family, </span></span>
+<span><span class="co">#&gt;    contrasts = contrasts, ", " data = data, quantiles = </span></span>
+<span><span class="co">#&gt;    quantiles, E = E, offset = offset, ", " scale = </span></span>
+<span><span class="co">#&gt;    scale, weights = weights, Ntrials = Ntrials, strata = </span></span>
+<span><span class="co">#&gt;    strata, ", " lp.scale = lp.scale, link.covariates = </span></span>
+<span><span class="co">#&gt;    link.covariates, verbose = verbose, ", " lincomb = </span></span>
+<span><span class="co">#&gt;    lincomb, selection = selection, control.compute = </span></span>
+<span><span class="co">#&gt;    control.compute, ", " control.predictor = </span></span>
+<span><span class="co">#&gt;    control.predictor, control.family = control.family, </span></span>
+<span><span class="co">#&gt;    ", " control.inla = control.inla, control.fixed = </span></span>
+<span><span class="co">#&gt;    control.fixed, ", " control.mode = control.mode, </span></span>
+<span><span class="co">#&gt;    control.expert = control.expert, ", " control.hazard </span></span>
+<span><span class="co">#&gt;    = control.hazard, control.lincomb = control.lincomb, </span></span>
+<span><span class="co">#&gt;    ", " control.update = control.update, </span></span>
+<span><span class="co">#&gt;    control.lp.scale = control.lp.scale, ", " </span></span>
+<span><span class="co">#&gt;    control.pardiso = control.pardiso, only.hyperparam = </span></span>
+<span><span class="co">#&gt;    only.hyperparam, ", " inla.call = inla.call, inla.arg </span></span>
+<span><span class="co">#&gt;    = inla.arg, num.threads = num.threads, ", " </span></span>
+<span><span class="co">#&gt;    blas.num.threads = blas.num.threads, keep = keep, </span></span>
+<span><span class="co">#&gt;    working.directory = working.directory, ", " silent = </span></span>
+<span><span class="co">#&gt;    silent, inla.mode = inla.mode, safe = FALSE, debug = </span></span>
+<span><span class="co">#&gt;    debug, ", " .parent.frame = .parent.frame)") </span></span>
+<span><span class="co">#&gt; Time used:</span></span>
+<span><span class="co">#&gt;     Pre = 2.04, Running = 0.133, Post = 0.00733, Total = 2.18 </span></span>
+<span><span class="co">#&gt; Fixed effects:</span></span>
+<span><span class="co">#&gt;              mean    sd 0.025quant 0.5quant 0.975quant mode</span></span>
+<span><span class="co">#&gt; (Intercept) 2.282 0.071      2.139    2.283       2.42   NA</span></span>
+<span><span class="co">#&gt;             kld</span></span>
+<span><span class="co">#&gt; (Intercept)   0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Marginal log-Likelihood:  -61.30 </span></span>
+<span><span class="co">#&gt;  is computed </span></span>
+<span><span class="co">#&gt; Posterior summaries for the linear predictor and the fitted values are computed</span></span>
+<span><span class="co">#&gt; (Posterior marginals needs also 'control.compute=list(return.marginals.predictor=TRUE)')</span></span></code></pre></div>
+
+</div>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="anova.html"><span class="header-section-number">3</span> Modelo de ANOVA</a></div>
+<div class="next"><a href="referencias.html">Referencias</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li>
+<a class="nav-link" href="#glm"><span class="header-section-number">4</span> Modelos lineales generalizados</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#modelos-jer%C3%A1rquicos-bayesianos"><span class="header-section-number">4.0.1</span> Modelos jerárquicos bayesianos</a></li></ul>
+</li>
+<li>
+<a class="nav-link" href="#regresi%C3%B3n-log%C3%ADstica"><span class="header-section-number">4.1</span> Regresión logística</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#interpretaci%C3%B3n-de-los-coeficientes-en-la-regresi%C3%B3n-logit"><span class="header-section-number">4.1.1</span> Interpretación de los coeficientes en la regresión logit</a></li></ul>
+</li>
+<li><a class="nav-link" href="#ejemplo-modelo-logit.-mortalidad-por-infarto-en-sheffield."><span class="header-section-number">4.2</span> Ejemplo modelo logit. Mortalidad por infarto en Sheffield.</a></li>
+<li>
+<a class="nav-link" href="#regresi%C3%B3n-de-poisson"><span class="header-section-number">4.3</span> Regresión de Poisson</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#ejemplo-modelo-poisson-incidentes-en-barcos"><span class="header-section-number">4.3.1</span> Ejemplo modelo Poisson: incidentes en barcos</a></li></ul>
+</li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Una primera aproximación a la Estadística Bayesiana</strong>" was written by true, true. It was last built on 2022-11-03.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

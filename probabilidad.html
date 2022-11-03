@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Unidad 2 Probabilidad | Una primera aproximación a la Estadística Bayesiana</title>
+<meta name="author" content="Javier Morales y Asunción Mtnez. Mayoral. IUI CIO-Universidad Miguel Hernández de Elche">
+<meta name="description" content="La estadística Bayesiana nace de Thomas Bayes (1702-1761), clérigo y científico-matemático vocacional dedicado a la probabilidad inversa en seguros. Hasta el siglo XX y especialmente con el...">
+<meta name="generator" content="bookdown 0.28 with bs4_book()">
+<meta property="og:title" content="Unidad 2 Probabilidad | Una primera aproximación a la Estadística Bayesiana">
+<meta property="og:type" content="book">
+<meta property="og:description" content="La estadística Bayesiana nace de Thomas Bayes (1702-1761), clérigo y científico-matemático vocacional dedicado a la probabilidad inversa en seguros. Hasta el siglo XX y especialmente con el...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unidad 2 Probabilidad | Una primera aproximación a la Estadística Bayesiana">
+<meta name="twitter:description" content="La estadística Bayesiana nace de Thomas Bayes (1702-1761), clérigo y científico-matemático vocacional dedicado a la probabilidad inversa en seguros. Hasta el siglo XX y especialmente con el...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.0/transition.js"></script><script src="libs/bs3compat-0.4.0/tabs.js"></script><script src="libs/bs3compat-0.4.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Una primera aproximación a la Estadística Bayesiana</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Contexto</a></li>
+<li><a class="active" href="probabilidad.html"><span class="header-section-number">2</span> Probabilidad</a></li>
+<li><a class="" href="cross.html"><span class="header-section-number">3</span> Cross-references</a></li>
+<li><a class="" href="inferencia1.html"><span class="header-section-number">4</span> Inferencia 1</a></li>
+<li><a class="" href="inferencia2.html"><span class="header-section-number">5</span> Inferencia 2</a></li>
+<li><a class="" href="inferencia3.html"><span class="header-section-number">6</span> Inferencia 3</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/rstudio/bookdown-demo">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="probabilidad" class="section level1" number="2">
+<h1>
+<span class="header-section-number">Unidad 2</span> Probabilidad<a class="anchor" aria-label="anchor" href="#probabilidad"><i class="fas fa-link"></i></a>
+</h1>
+<p>La estadística Bayesiana nace de Thomas Bayes (1702-1761), clérigo y científico-matemático vocacional dedicado a la probabilidad inversa en seguros.</p>
+<p>Hasta el siglo XX y especialmente con el desarrollo computacional de la era moderna, no se pudo desarrollar por los problemas técnicos que implica su implementación (involucra integraciones irresolubles de forma manual), por lo que se impuso la versión frecuentista basada en el muestreo repetido. Ya en los últimos 20-30 años podríamos decir que despegó incorporándose en múltiples ámbitos de conocimiento y especialmente en los últimos 10 por los avances en hardware y sobre todo software, dados los requisitos de computación intensiva y simulación.</p>
+<p>Realmente, el modo de razonar “en bayesiano” se corresponde con el modo que usamos habitualmente para razonar, con lo que podríamos decir que a priori todos somos bayesianos. Nuestras percepciones las solemos formular en términos de probabilidades e incertidumbres; así hablamos de fenómenos extraordinarios (con poca probabilidad), o de reacciones de sentido común (acontecen con alta probabilidad… en un entorno sensato), y actualizamos nuestras percepciones con la información que recibimos u observamos.</p>
+<div id="ex01a" class="exm">
+<p>Por ejemplo, el pronóstico de lluvias se da con la “probabilidad de lluvia”, y la incertidumbre te la intentan transmitir con los habituales avisos amarillos, naranjas… Cuando tú te asomas por la ventana, actualizas la información recibida según tus percepciones de las nubes, viento, temperatura… y tu experiencia (generalmente los trabajadores del campo suelen tener mucha más puntería para afinar la predicción).</p>
+</div>
+<div id="ex01b" class="exm">
+<p>Cuando vas por la calle, sueles reconocer a los turistas extranjeros por su aspecto, especialmente los que vienen de países del norte de Europa, por supuesto los asiáticos,… Si te enseñan una foto de una persona, y te piden adivinar su procedencia, tu predicción la darás en términos de probabilidades: probabilidad de que sea inglesa, alemana, rusa, ….</p>
+</div>
+<div id="ex01c" class="exm">
+<p>Cuando prueban un nuevo fármaco para una afección sueles estar interesado en la probabilidad de que nos cure. Ante una enfermedad complicada solemos interesarnos por el tiempo de supervivencia o la probabilidad de superarla bajo nuestras circunstancias, y no tanto en valores genéricos basados en todos los enfermos que la han sufrido.</p>
+</div>
+<div id="fundamentos" class="section level2" number="2.1">
+<h2>
+<span class="header-section-number">2.1</span> Fundamentos<a class="anchor" aria-label="anchor" href="#fundamentos"><i class="fas fa-link"></i></a>
+</h2>
+<ol style="list-style-type: decimal">
+<li><p>Está construida sobre la base de que la información y la incertidumbre que tenemos sobre todo lo que conocemos y desconocemos es expresable en términos de probabilidad.</p></li>
+<li><p>No se acude a la idea del muestreo repetido para interpretar las propiedades de los estimadores y en consecuencia las estimaciones obtenidas.</p></li>
+<li><p>La información observada actualiza el conocimiento sobre lo desconocido.</p></li>
+<li><p>Desaparecen los estimadores y se infiere en términos de distribuciones de probabilidad sobre los parámetros de interés.</p></li>
+</ol>
+</div>
+<div id="conceptos" class="section level2" number="2.2">
+<h2>
+<span class="header-section-number">2.2</span> Conceptos<a class="anchor" aria-label="anchor" href="#conceptos"><i class="fas fa-link"></i></a>
+</h2>
+<p>Es importante concretar los conceptos básicos sobre los que trabajemos, para asegurarnos de que todos entendemos lo mismo.</p>
+<p>Un <strong>parámetro</strong> es una característica poblacional de interés, desconocida, sobre la que pretendemos inferir a partir de datos observados.</p>
+<p><strong>Ejemplo</strong></p>
+<ol style="list-style-type: decimal">
+<li>La probabilidad de que una planta se infecte por un hongo.</li>
+<li>El valor medio/máximo de cierto índice de contaminación medioambiental en una ubicación.</li>
+</ol>
+<p>Las <strong>variables</strong> identifican las características que hemos de observar en la población de interés para obtener información sobre el parámetro de interés.</p>
+<p><strong>Ejemplo</strong></p>
+<ol style="list-style-type: decimal">
+<li>En cada planta hay que observar si tiene/no tiene el hongo; se trata de una variable dicotómica.</li>
+<li>En la ubicación dada hay que registrar el índice de interés, o las características con las que se calcula; se trata de una variable numérica (continua).</li>
+</ol>
+<p>Los <strong>datos</strong> disponibles provienen de observaciones de la característica de interés sobre un sector/muestra de la población de interés.</p>
+<p><strong>Ejemplo</strong></p>
+<ol style="list-style-type: decimal">
+<li>En una finca revisamos al azar un conjunto de plantas y registramos si tiene o no el hongo. Obtendremos un conjunto de valores 0/1.</li>
+<li>En la ubicación dada elegiremos un periodo de cadencia para ir registrando el índice de interés a lo largo del tiempo.</li>
+</ol>
+<p>La <strong>verosimilitud</strong> da información sobre qué valores del parámetro son más/menos verosímiles a la vista de los datos. Es la información “probabilística” que proporciona sobre el parámetro de interés la distribución asumida para modelizar la variable que observamos, utilizando los datos observados.</p>
+<p>En Bayesiano jugaremos siempre en términos de probabilidad. Solemos tener cierto conocimiento a priori sobre los parámetros que nos interesan, que expresaremos en términos de probabilidad. Modelizaremos con probabilidad los datos que vayamos a observar. Combinaremos la probabilidad previa con la información que dan los datos y actualizaremos la probabilidad posterior sobre el parámetro de interés. Con dicha probabilidad posterior extraeremos conclusiones y hablaremos de cuántas garantías les otorgamos.</p>
+</div>
+<div id="probabilidad-1" class="section level2" number="2.3">
+<h2>
+<span class="header-section-number">2.3</span> Probabilidad<a class="anchor" aria-label="anchor" href="#probabilidad-1"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>¿Qué entiendes por probabilidad?</li>
+</ul>
+<p><span class="math display">\[\text{Probabilidad(A)}=\frac{\text{Casos favorables aconteciendo A}}{\text{Casos posibles/totales}}\]</span></p>
+<ul>
+<li>¿Qué entiendes por probabilidad condicionada?</li>
+</ul>
+<p><span class="math display">\[\text{Probabilidad (A|B)}=\frac{\text{Casos favorables aconteciendo A y B}}{\text{Casos posibles/totales aconteciendo B}}\]</span></p>
+<p>El teorema de Bayes se formula a partir de la probabilidad condicional. Dados dos eventos, A y B,
+<span class="math display">\[Pr(A|B)=\frac{Pr(A,B)}{Pr(B)}=\frac{Pr(B|A)\cdot Pr(A)}{Pr(B)}\]</span></p>
+<p>que nos permite igualmente calcular las probabilidades conjuntas:
+<span class="math display">\[Pr(A,B)=Pr(A|B)\cdot Pr(B)=Pr(B|A)\cdot Pr(A).\]</span></p>
+<div id="buques" class="exm">
+<p><strong>Ejemplo</strong>
+Tenemos una tabla con el número de buques pesqueros que pescaron frente a las costas de Nueva Zelanda (básicamente pesqueros de arrastre de calamar), y de los que accidentalmente pescaron leones marinos (LM), protegidos y en peligro de extinción, durante las temporadas de pesca de 1987/88 a 1995/96 (@ref{link2010}). Los buques están clasificados según su bandera.</p>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th></th>
+<th>Japón</th>
+<th>NZ</th>
+<th>Rusia</th>
+<th>Total</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Pesca accidental LM</td>
+<td>1</td>
+<td>6</td>
+<td>23</td>
+<td>30</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td>19</td>
+<td>96</td>
+<td>123</td>
+<td>238</td>
+</tr>
+<tr class="odd">
+<td>Pr(país)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>“Pr(PA</td>
+<td>país)”</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>“Pr(país</td>
+<td>PA)”</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Odds ratio</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">total</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">19</span>,<span class="fl">96</span>,<span class="fl">123</span><span class="op">)</span></span>
+<span><span class="va">paises</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Japón"</span>, <span class="st">"NZ"</span>, <span class="st">"Rusia"</span><span class="op">)</span></span>
+<span><span class="va">nacc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">6</span>,<span class="fl">23</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">datos</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">paises</span>, <span class="va">nacc</span>, <span class="va">total</span><span class="op">)</span></span>
+<span><span class="va">datos</span></span>
+<span><span class="co">#&gt;   paises nacc total</span></span>
+<span><span class="co">#&gt; 1  Japón    1    19</span></span>
+<span><span class="co">#&gt; 2     NZ    6    96</span></span>
+<span><span class="co">#&gt; 3  Rusia   23   123</span></span></code></pre></div>
+<ol style="list-style-type: decimal">
+<li>¿Qué porcentaje de barcos pescan con cada una de las tres banderas? Si salimos un día cualquiera a navegar, ¿con qué probabilidad nos encontraremos un buque pesquero ruso? ¿Y neocelandés? ¿Y japonés?</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># probabilidades marginales país</span></span>
+<span><span class="va">datos</span><span class="op">$</span><span class="va">pais</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">total</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">total</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span></span>
+<span><span class="va">datos</span></span>
+<span><span class="co">#&gt;   paises nacc total   pais</span></span>
+<span><span class="co">#&gt; 1  Japón    1    19 0.0798</span></span>
+<span><span class="co">#&gt; 2     NZ    6    96 0.4034</span></span>
+<span><span class="co">#&gt; 3  Rusia   23   123 0.5168</span></span></code></pre></div>
+<ol style="list-style-type: decimal">
+<li>¿Qué proporción de los barcos con bandera japonesa han realizado alguna captura accidental de leones marinos? ¿Y para el resto de banderas?</li>
+</ol>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># probabilidades condicionadas por país</span></span>
+<span><span class="va">datos</span><span class="op">$</span><span class="va">acc_pais</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">nacc</span><span class="op">/</span><span class="va">datos</span><span class="op">$</span><span class="va">total</span>,<span class="fl">4</span><span class="op">)</span></span>
+<span><span class="va">datos</span></span>
+<span><span class="co">#&gt;   paises nacc total   pais acc_pais</span></span>
+<span><span class="co">#&gt; 1  Japón    1    19 0.0798   0.0526</span></span>
+<span><span class="co">#&gt; 2     NZ    6    96 0.4034   0.0625</span></span>
+<span><span class="co">#&gt; 3  Rusia   23   123 0.5168   0.1870</span></span></code></pre></div>
+<ol style="list-style-type: decimal">
+<li>¿Con qué probabilidad podríamos decir que se da una captura accidental de león marino en la costa neocelandesa?</li>
+</ol>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># probabilidades marginales pesca accidental</span></span>
+<span><span class="va">datos</span><span class="op">$</span><span class="va">acc</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">nacc</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">total</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="va">datos</span></span>
+<span><span class="co">#&gt;   paises nacc total   pais acc_pais    acc</span></span>
+<span><span class="co">#&gt; 1  Japón    1    19 0.0798   0.0526 0.1261</span></span>
+<span><span class="co">#&gt; 2     NZ    6    96 0.4034   0.0625 0.1261</span></span>
+<span><span class="co">#&gt; 3  Rusia   23   123 0.5168   0.1870 0.1261</span></span></code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Si nos reportan una captura accidental de león marino, ¿con qué probabilidad te atreverías a vaticinar que el pesquero era ruso? ¿Y japonés? ¿Y neocelandés?</li>
+</ol>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># probabilidades condicionadas de pesca accidental por país</span></span>
+<span><span class="va">datos</span><span class="op">$</span><span class="va">pais_acc</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">nacc</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">nacc</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span></span>
+<span><span class="va">datos</span></span>
+<span><span class="co">#&gt;   paises nacc total   pais acc_pais    acc pais_acc</span></span>
+<span><span class="co">#&gt; 1  Japón    1    19 0.0798   0.0526 0.1261   0.0333</span></span>
+<span><span class="co">#&gt; 2     NZ    6    96 0.4034   0.0625 0.1261   0.2000</span></span>
+<span><span class="co">#&gt; 3  Rusia   23   123 0.5168   0.1870 0.1261   0.7667</span></span></code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Si nos reportan una captura accidental de león marino, ¿qué ventaja tendremos si apostamos a que fue ruso?</li>
+</ol>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># odds de pesca accidental por país</span></span>
+<span><span class="va">datos</span><span class="op">$</span><span class="va">odds.acc</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">pais_acc</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">datos</span><span class="op">$</span><span class="va">pais_acc</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span></span>
+<span><span class="va">datos</span></span>
+<span><span class="co">#&gt;   paises nacc total   pais acc_pais    acc pais_acc</span></span>
+<span><span class="co">#&gt; 1  Japón    1    19 0.0798   0.0526 0.1261   0.0333</span></span>
+<span><span class="co">#&gt; 2     NZ    6    96 0.4034   0.0625 0.1261   0.2000</span></span>
+<span><span class="co">#&gt; 3  Rusia   23   123 0.5168   0.1870 0.1261   0.7667</span></span>
+<span><span class="co">#&gt;   odds.acc</span></span>
+<span><span class="co">#&gt; 1   0.0344</span></span>
+<span><span class="co">#&gt; 2   0.2500</span></span>
+<span><span class="co">#&gt; 3   3.2863</span></span></code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Si salimos un día cualquiera a navegar, ¿con qué probabilidad nos encontraremos un buque pesquero ruso que ha realizado alguna captura accidental de león marino? ¿Y neocelandés? ¿Y japonés?</li>
+</ol>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># probabilidades conjuntas</span></span>
+<span><span class="va">datos</span><span class="op">$</span><span class="va">acc.pais</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">nacc</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">total</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span></span>
+<span><span class="va">datos</span></span>
+<span><span class="co">#&gt;   paises nacc total   pais acc_pais    acc pais_acc</span></span>
+<span><span class="co">#&gt; 1  Japón    1    19 0.0798   0.0526 0.1261   0.0333</span></span>
+<span><span class="co">#&gt; 2     NZ    6    96 0.4034   0.0625 0.1261   0.2000</span></span>
+<span><span class="co">#&gt; 3  Rusia   23   123 0.5168   0.1870 0.1261   0.7667</span></span>
+<span><span class="co">#&gt;   odds.acc acc.pais</span></span>
+<span><span class="co">#&gt; 1   0.0344   0.0042</span></span>
+<span><span class="co">#&gt; 2   0.2500   0.0252</span></span>
+<span><span class="co">#&gt; 3   3.2863   0.0966</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Toda la sintaxis reunida</span></span>
+<span><span class="va">total</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">19</span>,<span class="fl">96</span>,<span class="fl">123</span><span class="op">)</span></span>
+<span><span class="va">paises</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Japón"</span>, <span class="st">"NZ"</span>, <span class="st">"Rusia"</span><span class="op">)</span></span>
+<span><span class="va">nacc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">6</span>,<span class="fl">23</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">datos</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">paises</span>, <span class="va">nacc</span>, <span class="va">total</span><span class="op">)</span></span>
+<span><span class="co"># probabilidades marginales país</span></span>
+<span><span class="va">datos</span><span class="op">$</span><span class="va">pais</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">total</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">total</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span></span>
+<span><span class="co"># probabilidades condicionadas por país</span></span>
+<span><span class="va">datos</span><span class="op">$</span><span class="va">acc_pais</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">nacc</span><span class="op">/</span><span class="va">datos</span><span class="op">$</span><span class="va">total</span>,<span class="fl">4</span><span class="op">)</span></span>
+<span><span class="co"># probabilidades marginales pesca accidental</span></span>
+<span><span class="va">datos</span><span class="op">$</span><span class="va">acc</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">nacc</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">total</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co"># probabilidades condicionadas de pesca accidental por país</span></span>
+<span><span class="va">datos</span><span class="op">$</span><span class="va">pais_acc</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">nacc</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">nacc</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span></span>
+<span><span class="co"># odds de pesca accidental por país</span></span>
+<span><span class="va">datos</span><span class="op">$</span><span class="va">odds.acc</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">pais_acc</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">datos</span><span class="op">$</span><span class="va">pais_acc</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span></span>
+<span><span class="co"># probabilidades conjuntas</span></span>
+<span><span class="va">datos</span><span class="op">$</span><span class="va">acc.pais</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">nacc</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">datos</span><span class="op">$</span><span class="va">total</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html">kbl</a></span><span class="op">(</span><span class="va">datos</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html">kable_styling</a></span><span class="op">(</span>bootstrap_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"striped"</span>, <span class="st">"hover"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-table"><table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:left;">
+paises
+</th>
+<th style="text-align:right;">
+nacc
+</th>
+<th style="text-align:right;">
+total
+</th>
+<th style="text-align:right;">
+pais
+</th>
+<th style="text-align:right;">
+acc_pais
+</th>
+<th style="text-align:right;">
+acc
+</th>
+<th style="text-align:right;">
+pais_acc
+</th>
+<th style="text-align:right;">
+odds.acc
+</th>
+<th style="text-align:right;">
+acc.pais
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Japón
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+0.0798
+</td>
+<td style="text-align:right;">
+0.0526
+</td>
+<td style="text-align:right;">
+0.1261
+</td>
+<td style="text-align:right;">
+0.0333
+</td>
+<td style="text-align:right;">
+0.0344
+</td>
+<td style="text-align:right;">
+0.0042
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NZ
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+96
+</td>
+<td style="text-align:right;">
+0.4034
+</td>
+<td style="text-align:right;">
+0.0625
+</td>
+<td style="text-align:right;">
+0.1261
+</td>
+<td style="text-align:right;">
+0.2000
+</td>
+<td style="text-align:right;">
+0.2500
+</td>
+<td style="text-align:right;">
+0.0252
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rusia
+</td>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:right;">
+123
+</td>
+<td style="text-align:right;">
+0.5168
+</td>
+<td style="text-align:right;">
+0.1870
+</td>
+<td style="text-align:right;">
+0.1261
+</td>
+<td style="text-align:right;">
+0.7667
+</td>
+<td style="text-align:right;">
+3.2863
+</td>
+<td style="text-align:right;">
+0.0966
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Repetimos los cálculos con el teorema de Bayes.</p>
+<p>Probabilidad condicionada:
+<span class="math display">\[Pr(pais|acc)=\frac{Pr(pais,acc)}{Pr(acc)}=\frac{Pr(acc|pais) \cdot Pr(pais)}{Pr(acc)}\]</span>
+Probabilidad conjunta:
+<span class="math display">\[Pr(pais,acc)=Pr(acc|pais) \cdot Pr(pais)\]</span></p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pais_acc</span><span class="op">=</span><span class="va">datos</span><span class="op">$</span><span class="va">acc_pais</span><span class="op">*</span><span class="va">datos</span><span class="op">$</span><span class="va">pais</span><span class="op">/</span><span class="va">datos</span><span class="op">$</span><span class="va">acc</span>; <span class="va">pais_acc</span></span>
+<span><span class="co">#&gt; [1] 0.03328692 0.19994052 0.76638858</span></span>
+<span><span class="va">acc.pais</span><span class="op">=</span><span class="va">datos</span><span class="op">$</span><span class="va">acc_pais</span><span class="op">*</span><span class="va">datos</span><span class="op">$</span><span class="va">pais</span>; <span class="va">acc.pais</span></span>
+<span><span class="co">#&gt; [1] 0.00419748 0.02521250 0.09664160</span></span></code></pre></div>
+<div id="probabilidad-y-variables-aleatorias" class="section level3" number="2.3.1">
+<h3>
+<span class="header-section-number">2.3.1</span> Probabilidad y Variables aleatorias<a class="anchor" aria-label="anchor" href="#probabilidad-y-variables-aleatorias"><i class="fas fa-link"></i></a>
+</h3>
+<p>Toda la información e incertidumbre que tenemos sobre una característica observable la podemos formular en términos de una distribución de probabilidad. Cuando hablamos de variables aleatorias, hablamos de características observables cuyas observaciones varían (son distintas) en la población en que se observan, y el modo en que varían o se distribuyen, se puede aproximar o describir matemáticamente con una distribución de probabilidad.</p>
+<p>Una distribución de probabilidad viene descrita por una función matemática que permite calcular las probabilidades asociadas a la variable estadística que representa.</p>
+<p>Básicamente podemos diferenciar entre variables discretas (categóricas, cualitativas) y continuas (numéricas, cuantitativas). Las primeras se identifican porque solo pueden tomar ciertos valores y las segundas pueden tomar cualquier valor entre dos valores cualesquiera.</p>
+<p><strong>Ejemplo</strong></p>
+<p>Discreta dicotómica. Se registra si un ave capturada está anillada.
+Discreta entera. Se contabilizan el número de nidos en cada una de las parcelaciones de un terreno.
+Continua.</p>
+</div>
+<div id="la-aproximación-frecuentista" class="section level3" number="2.3.2">
+<h3>
+<span class="header-section-number">2.3.2</span> La aproximación frecuentista<a class="anchor" aria-label="anchor" href="#la-aproximaci%C3%B3n-frecuentista"><i class="fas fa-link"></i></a>
+</h3>
+
+</div>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="index.html"><span class="header-section-number">1</span> Contexto</a></div>
+<div class="next"><a href="cross.html"><span class="header-section-number">3</span> Cross-references</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#probabilidad"><span class="header-section-number">2</span> Probabilidad</a></li>
+<li><a class="nav-link" href="#fundamentos"><span class="header-section-number">2.1</span> Fundamentos</a></li>
+<li><a class="nav-link" href="#conceptos"><span class="header-section-number">2.2</span> Conceptos</a></li>
+<li>
+<a class="nav-link" href="#probabilidad-1"><span class="header-section-number">2.3</span> Probabilidad</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#probabilidad-y-variables-aleatorias"><span class="header-section-number">2.3.1</span> Probabilidad y Variables aleatorias</a></li>
+<li><a class="nav-link" href="#la-aproximaci%C3%B3n-frecuentista"><span class="header-section-number">2.3.2</span> La aproximación frecuentista</a></li>
+</ul>
+</li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/rstudio/bookdown-demo/blob/master/01-prob.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/rstudio/bookdown-demo/edit/master/01-prob.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Una primera aproximación a la Estadística Bayesiana</strong>" was written by Javier Morales y Asunción Mtnez. Mayoral. IUI CIO-Universidad Miguel Hernández de Elche. It was last built on 2022-10-13.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>
