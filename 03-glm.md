@@ -99,21 +99,22 @@ Queremos predecir la probabilidad de votar al partido que gobierna mayoritariame
 
 
 ```r
-library(readxl)
-barometro_feb22 <- read_excel("~/Desktop/barometro/03_Datos_barómetro_febrero.xlsx")
+url="https://raw.githubusercontent.com/BayesModel/data/main/barometro_feb22.csv"
+barometro_feb22=read.csv(url)
 names(barometro_feb22)
-#>  [1] "id"                  "sexo"               
-#>  [3] "edad"                "edad_r"             
-#>  [5] "hab"                 "prov"               
-#>  [7] "ccaa"                "edu"                
-#>  [9] "cs"                  "p1"                 
-#> [11] "p2"                  "p3"                 
-#> [13] "p4_1"                "p4_2"               
-#> [15] "p4_3"                "p4_4"               
-#> [17] "p5"                  "p6"                 
-#> [19] "p7"                  "hab_r"              
-#> [21] "clase_social_r"      "situacion_laboral_r"
-#> [23] "educacion_r"         "ponde"
+#>  [1] "X"                   "id"                 
+#>  [3] "sexo"                "edad"               
+#>  [5] "edad_r"              "hab"                
+#>  [7] "prov"                "ccaa"               
+#>  [9] "edu"                 "cs"                 
+#> [11] "p1"                  "p2"                 
+#> [13] "p3"                  "p4_1"               
+#> [15] "p4_2"                "p4_3"               
+#> [17] "p4_4"                "p5"                 
+#> [19] "p6"                  "p7"                 
+#> [21] "hab_r"               "clase_social_r"     
+#> [23] "situacion_laboral_r" "educacion_r"        
+#> [25] "ponde"
 datos=barometro_feb22 %>%
   select(id,p2,p3,p5,ccaa) %>%
   mutate(psoe=1*(p2=="PSOE (Partido Socialista Obrero Español)"),
@@ -132,18 +133,18 @@ formula = psoe ~ psoe_simp + psoe_past+ f(ccaa,model="iid",hyper=prec.prior)
 fit=inla(formula,family="binomial",data=datos,control.predictor = list(link = 1))
 fit$summary.fixed
 #>                  mean        sd 0.025quant  0.5quant
-#> (Intercept) -3.590576 0.1897251  -3.998945 -3.578281
-#> psoe_simp    3.085802 0.1865732   2.723932  3.084366
-#> psoe_past    2.352353 0.1856829   1.989732  2.351807
+#> (Intercept) -3.590577 0.1897270  -3.998950 -3.578284
+#> psoe_simp    3.085803 0.1865732   2.723933  3.084367
+#> psoe_past    2.352354 0.1856828   1.989732  2.351807
 #>             0.975quant mode          kld
-#> (Intercept)  -3.251389   NA 5.812191e-07
-#> psoe_simp     3.455821   NA 3.434611e-07
-#> psoe_past     2.718074   NA 9.426592e-07
+#> (Intercept)  -3.251384   NA 5.810899e-07
+#> psoe_simp     3.455821   NA 3.434835e-07
+#> psoe_past     2.718074   NA 9.426843e-07
 fit$summary.hyperpar
 #>                        mean       sd 0.025quant 0.5quant
-#> Precision for ccaa 70.76511 250.8882    1.97876 10.70226
+#> Precision for ccaa 70.80297 251.2134   1.978424 10.70075
 #>                    0.975quant mode
-#> Precision for ccaa   588.4032   NA
+#> Precision for ccaa   588.0064   NA
 ```
 
 Las distribuciones posteriores de los exponenciales de los efectos aleatorios se muestran en la Figura \@ref(fig:eleccion2), identificadas en verde las de efectos positivos en la media posterior del predictor lineal (log-odds $>1$), y en rojo las de efectos negativos, e interpretables como más y menos favorables a votar por el PSOE.
@@ -196,8 +197,8 @@ $$\eta_i=logit(\pi_i)=\beta_0 + \sum_{k=2}^5 \beta_{1k} I(NOx_i=k)+ \sum_{h=2}^5
 siendo $n_i$ la población (número total de habitantes) del distrito en el que se ubica el registro $i$ (disponible en la variable $pop$). El término $\tilde{p_i}$ representa el resgo ajustado por sexo y edad de la mortalidad por infarto, calculada utilizando estandarización indirecta con ratios de referencia internos basados en 18 estratos (9 para edad y 2 para género), y que se usa como un riesgo base en el modelo (Maheswaran et al.2006). En el ejemplo se calcula como el ratio de la mortalidad dividido por la población de cada registro.
 
 ```r
-my.dir="~/Dropbox/ESTADISTICA/BAYESIAN/VARIOS/"
-Stroke <- read.csv(paste0(my.dir,"Stroke.csv"),sep=",",dec=".",header=TRUE)
+url="https://raw.githubusercontent.com/BayesModel/data/main/Stroke.csv"
+Stroke <- read.csv(url,sep=",",dec=".",header=TRUE)
 #riesgo base: ajuste por tamaño de la población
 Stroke$Adjusted.prob <- Stroke$stroke_exp/Stroke$pop
 # logit del riesgo base
@@ -308,8 +309,8 @@ $$y_i \sim Poisson (E_i \rho_i),$$
 donde $\eta_i=log(\rho_i)$ es el predictor lineal y el promedio del número de incidentes $\lambda_i=E_i \rho_i$. El offset no se incluye en esta formulación en el predictor lineal.
 
 ```r
-my.dir="~/Dropbox/ESTADISTICA/BAYESIAN/VARIOS/"
-ShipsIncidents <- read.csv(file=paste0(my.dir,"Ships.csv"),sep=",") 
+url="https://raw.githubusercontent.com/BayesModel/data/main/Ships.csv"
+ShipsIncidents <- read.csv(url,sep=",") 
 
 formula.inla <- y ~ 1 + built + oper + type
 model.poisson <- inla(formula.inla,family="poisson", data=ShipsIncidents, offset=log(months))
@@ -349,8 +350,8 @@ Otros datos modelizables con una regresión de Poisson son los que provienen del
 Este modelo se implementa en INLA, a partir de datos simulados, con el siguiente código
 
 ```r
-my.dir="~/Dropbox/ESTADISTICA/BAYESIAN/VARIOS/"
-horse<-read.csv(paste0(my.dir,"HorseKicks.txt"),sep="", dec=".",header=TRUE)
+url="https://raw.githubusercontent.com/BayesModel/data/main/HorseKicks.txt"
+horse<-read.csv(url,sep="", dec=".",header=TRUE)
 horse$sum<-apply(horse[,2:ncol(horse)],1,sum)
 
 fit=inla(sum~1,data=horse,family="poisson",control.predictor=list(compute=TRUE))
@@ -380,7 +381,7 @@ summary(fit)
 #>    silent, inla.mode = inla.mode, safe = FALSE, debug = 
 #>    debug, ", " .parent.frame = .parent.frame)") 
 #> Time used:
-#>     Pre = 2.13, Running = 0.129, Post = 0.00655, Total = 2.26 
+#>     Pre = 2.02, Running = 0.129, Post = 0.0065, Total = 2.15 
 #> Fixed effects:
 #>              mean    sd 0.025quant 0.5quant 0.975quant mode
 #> (Intercept) 2.282 0.071      2.139    2.283       2.42   NA
