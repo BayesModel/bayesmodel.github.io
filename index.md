@@ -1,11 +1,7 @@
 --- 
 title: "Una primera aproximación a la Estadística Bayesiana"
-author: 
-  - name: "Asunción M. Mayoral (asun.mayoral@umh.es). [Web personal](https://asunmayoral.umh.es)"
-    affiliation: "[Instituto Universitario de Investigación CIO-UMH](https://cio.umh.es)"
-  - name: "Javier Morales (j.morales@umh.es). [Web personal](https://sites.google.com/goumh.umh.es/javier-morales)"
-    affiliation: "[Instituto Universitario de Investigación CIO-UMH](https://cio.umh.es)"
-date: "2022-11-03"
+author: "Asunción M. Mayoral y Javier Morales. IUI CIO-UMH"
+date: "`Noviembre 2022`"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib, packages.bib]
