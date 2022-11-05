@@ -125,12 +125,13 @@
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
   pdftitle={Una primera aproximación a la Estadística Bayesiana},
+  pdfauthor={Asunción M. Mayoral y Javier Morales. IUI CIO-UMH},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
 \title{Una primera aproximación a la Estadística Bayesiana}
-\author{true \and true}
-\date{2022-11-03}
+\author{Asunción M. Mayoral y Javier Morales. IUI CIO-UMH}
+\date{\texttt{Noviembre\ 2022}}
 
 \begin{document}
 \maketitle
@@ -572,10 +573,10 @@ Veamos los resultados para nuestro problema de regresión.
 \CommentTok{\#\textgreater{}    silent, inla.mode = inla.mode, safe = FALSE, debug = }
 \CommentTok{\#\textgreater{}    debug, ", " .parent.frame = .parent.frame)") }
 \CommentTok{\#\textgreater{} Time used:}
-\CommentTok{\#\textgreater{}     Pre = 2.35, Running = 0.512, Post = 0.018, Total = 2.88 }
+\CommentTok{\#\textgreater{}     Pre = 2.24, Running = 0.447, Post = 0.0181, Total = 2.7 }
 \CommentTok{\#\textgreater{} Fixed effects:}
 \CommentTok{\#\textgreater{}              mean    sd 0.025quant 0.5quant 0.975quant mode}
-\CommentTok{\#\textgreater{} (Intercept) 2.734 0.814      1.135    2.734      4.333   NA}
+\CommentTok{\#\textgreater{} (Intercept) 2.734 0.815      1.134    2.734      4.333   NA}
 \CommentTok{\#\textgreater{} repwt       0.958 0.012      0.935    0.958      0.982   NA}
 \CommentTok{\#\textgreater{}             kld}
 \CommentTok{\#\textgreater{} (Intercept)   0}
@@ -589,14 +590,14 @@ Veamos los resultados para nuestro problema de regresión.
 \CommentTok{\#\textgreater{}                                         0.975quant mode}
 \CommentTok{\#\textgreater{} Precision for the Gaussian observations      0.242   NA}
 \CommentTok{\#\textgreater{} }
-\CommentTok{\#\textgreater{} Marginal log{-}Likelihood:  {-}426.73 }
+\CommentTok{\#\textgreater{} Marginal log{-}Likelihood:  {-}426.74 }
 \CommentTok{\#\textgreater{}  is computed }
 \CommentTok{\#\textgreater{} Posterior summaries for the linear predictor and the fitted values are computed}
 \CommentTok{\#\textgreater{} (Posterior marginals needs also \textquotesingle{}control.compute=list(return.marginals.predictor=TRUE)\textquotesingle{})}
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{mlik}
 \CommentTok{\#\textgreater{}                                            [,1]}
-\CommentTok{\#\textgreater{} log marginal{-}likelihood (integration) {-}426.7325}
-\CommentTok{\#\textgreater{} log marginal{-}likelihood (Gaussian)    {-}426.7339}
+\CommentTok{\#\textgreater{} log marginal{-}likelihood (integration) {-}426.7369}
+\CommentTok{\#\textgreater{} log marginal{-}likelihood (Gaussian)    {-}426.7403}
 \end{Highlighting}
 \end{Shaded}
 
@@ -621,19 +622,19 @@ Y para describir la marginal posterior sobre cada uno de los datos ajustados:
 \begin{Highlighting}[]
 \FunctionTok{head}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{summary.fitted.values)}
 \CommentTok{\#\textgreater{}                          mean        sd 0.025quant 0.5quant}
-\CommentTok{\#\textgreater{} fitted.Predictor.001 76.52862 0.2162777   76.10404 76.52862}
-\CommentTok{\#\textgreater{} fitted.Predictor.002 51.61089 0.2441583   51.13157 51.61089}
-\CommentTok{\#\textgreater{} fitted.Predictor.003 54.48601 0.2190148   54.05606 54.48601}
-\CommentTok{\#\textgreater{} fitted.Predictor.004 69.82000 0.1750418   69.47637 69.82000}
-\CommentTok{\#\textgreater{} fitted.Predictor.005 59.27789 0.1856080   58.91351 59.27789}
-\CommentTok{\#\textgreater{} fitted.Predictor.006 75.57025 0.2087749   75.16039 75.57025}
+\CommentTok{\#\textgreater{} fitted.Predictor.001 76.52862 0.2163334   76.10393 76.52862}
+\CommentTok{\#\textgreater{} fitted.Predictor.002 51.61089 0.2442212   51.13145 51.61089}
+\CommentTok{\#\textgreater{} fitted.Predictor.003 54.48601 0.2190712   54.05594 54.48601}
+\CommentTok{\#\textgreater{} fitted.Predictor.004 69.82000 0.1750869   69.47628 69.82000}
+\CommentTok{\#\textgreater{} fitted.Predictor.005 59.27789 0.1856558   58.91341 59.27789}
+\CommentTok{\#\textgreater{} fitted.Predictor.006 75.57025 0.2088287   75.16029 75.57025}
 \CommentTok{\#\textgreater{}                      0.975quant mode}
-\CommentTok{\#\textgreater{} fitted.Predictor.001   76.95321   NA}
-\CommentTok{\#\textgreater{} fitted.Predictor.002   52.09021   NA}
-\CommentTok{\#\textgreater{} fitted.Predictor.003   54.91597   NA}
-\CommentTok{\#\textgreater{} fitted.Predictor.004   70.16364   NA}
-\CommentTok{\#\textgreater{} fitted.Predictor.005   59.64226   NA}
-\CommentTok{\#\textgreater{} fitted.Predictor.006   75.98011   NA}
+\CommentTok{\#\textgreater{} fitted.Predictor.001   76.95332   NA}
+\CommentTok{\#\textgreater{} fitted.Predictor.002   52.09034   NA}
+\CommentTok{\#\textgreater{} fitted.Predictor.003   54.91609   NA}
+\CommentTok{\#\textgreater{} fitted.Predictor.004   70.16373   NA}
+\CommentTok{\#\textgreater{} fitted.Predictor.005   59.64236   NA}
+\CommentTok{\#\textgreater{} fitted.Predictor.006   75.98021   NA}
 \end{Highlighting}
 \end{Shaded}
 
@@ -651,23 +652,21 @@ Si queremos hacer un \textbf{análisis de sensibilidad} sobre las distribuciones
             \AttributeTok{control.family =} \FunctionTok{list}\NormalTok{(}\AttributeTok{hyper =} \FunctionTok{list}\NormalTok{(}
               \AttributeTok{prec =} \FunctionTok{list}\NormalTok{(}\AttributeTok{prior=}\StringTok{"loggamma"}\NormalTok{, }\AttributeTok{param =}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\FloatTok{0.001}\NormalTok{)))))}
 \NormalTok{fit2}\SpecialCharTok{$}\NormalTok{summary.fixed}
-\CommentTok{\#\textgreater{}                  mean         sd 0.025quant  0.5quant}
-\CommentTok{\#\textgreater{} (Intercept) 3.3859342 0.81577662  1.7941226 3.3824734}
-\CommentTok{\#\textgreater{} repwt       0.9488563 0.01215735  0.9248445 0.9489068}
+\CommentTok{\#\textgreater{}                 mean         sd 0.025quant  0.5quant}
+\CommentTok{\#\textgreater{} (Intercept) 3.386158 0.81593177  1.7940943 3.3826777}
+\CommentTok{\#\textgreater{} repwt       0.948853 0.01215965  0.9248357 0.9489038}
 \CommentTok{\#\textgreater{}             0.975quant mode          kld}
-\CommentTok{\#\textgreater{} (Intercept)  4.9973585   NA 2.204325e{-}09}
-\CommentTok{\#\textgreater{} repwt        0.9725817   NA 2.141045e{-}09}
+\CommentTok{\#\textgreater{} (Intercept)  4.9979589   NA 2.235262e{-}09}
+\CommentTok{\#\textgreater{} repwt        0.9725822   NA 2.170459e{-}09}
 \NormalTok{fit2}\SpecialCharTok{$}\NormalTok{summary.hyperpar}
-\CommentTok{\#\textgreater{}                                              mean}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.1983981}
-\CommentTok{\#\textgreater{}                                                 sd}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.02084352}
+\CommentTok{\#\textgreater{}                                              mean        sd}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.1983711 0.0208651}
 \CommentTok{\#\textgreater{}                                         0.025quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations  0.1602208}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations  0.1600946}
 \CommentTok{\#\textgreater{}                                          0.5quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.1976839}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.1976578}
 \CommentTok{\#\textgreater{}                                         0.975quant mode}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations  0.2410992   NA}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations  0.2410166   NA}
 \end{Highlighting}
 \end{Shaded}
 
@@ -815,11 +814,11 @@ Esto nos devuelve una lista de la dimensión del número de simulaciones, y en c
 \CommentTok{\#\textgreater{} [1] "hyperpar" "latent"   "logdens"}
 \NormalTok{sims[[}\DecValTok{1}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{hyperpar}
 \CommentTok{\#\textgreater{} Precision for the Gaussian observations }
-\CommentTok{\#\textgreater{}                               0.2514044}
+\CommentTok{\#\textgreater{}                               0.2509022}
 \NormalTok{sims[[}\DecValTok{1}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{latent}
-\CommentTok{\#\textgreater{}                sample:1}
-\CommentTok{\#\textgreater{} (Intercept):1 2.9201273}
-\CommentTok{\#\textgreater{} repwt:1       0.9577521}
+\CommentTok{\#\textgreater{}               sample:1}
+\CommentTok{\#\textgreater{} (Intercept):1 3.342977}
+\CommentTok{\#\textgreater{} repwt:1       0.946803}
 \end{Highlighting}
 \end{Shaded}
 
@@ -829,13 +828,13 @@ y la log-densidad de la posterior en esos valores (\texttt{logdens})
 \begin{Highlighting}[]
 \NormalTok{ sims[[}\DecValTok{1}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{logdens}
 \CommentTok{\#\textgreater{} $hyperpar}
-\CommentTok{\#\textgreater{} [1] 0.1424985}
+\CommentTok{\#\textgreater{} [1] 0.1881221}
 \CommentTok{\#\textgreater{} }
 \CommentTok{\#\textgreater{} $latent}
-\CommentTok{\#\textgreater{} [1] 1008.068}
+\CommentTok{\#\textgreater{} [1] 1003.212}
 \CommentTok{\#\textgreater{} }
 \CommentTok{\#\textgreater{} $joint}
-\CommentTok{\#\textgreater{} [1] 1008.21}
+\CommentTok{\#\textgreater{} [1] 1003.4}
 \end{Highlighting}
 \end{Shaded}
 
@@ -847,7 +846,7 @@ Ahora con la función \texttt{inla.posterior.sample.eval}, dado que nuestra func
 \NormalTok{theta\_beta}\OtherTok{=}\FunctionTok{as.vector}\NormalTok{(theta\_beta)}
 \FunctionTok{summary}\NormalTok{(theta\_beta)}
 \CommentTok{\#\textgreater{}    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. }
-\CommentTok{\#\textgreater{}  0.9381  3.2327  3.8525  3.8418  4.4880  5.5453}
+\CommentTok{\#\textgreater{}   1.766   3.116   3.776   3.726   4.321   6.577}
 \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{tb=}\NormalTok{theta\_beta),}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{tb))}\SpecialCharTok{+}
   \FunctionTok{geom\_histogram}\NormalTok{(}\AttributeTok{stat=}\StringTok{"density"}\NormalTok{)}
 \CommentTok{\#\textgreater{} Warning: Ignoring unknown parameters: binwidth, bins, pad}
@@ -958,11 +957,11 @@ Vayamos pues con el ajuste del modelo de regresión con todas las variables. Rec
 \CommentTok{\#summary(fit)}
 \FunctionTok{round}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{summary.fixed,}\DecValTok{3}\NormalTok{)}
 \CommentTok{\#\textgreater{}                mean     sd 0.025quant 0.5quant 0.975quant}
-\CommentTok{\#\textgreater{} (Intercept) 135.490 49.850     37.178  135.497    233.760}
-\CommentTok{\#\textgreater{} negtemp       1.769  0.634      0.518    1.769      3.019}
+\CommentTok{\#\textgreater{} (Intercept) 135.490 49.829     37.224  135.497    233.715}
+\CommentTok{\#\textgreater{} negtemp       1.769  0.634      0.519    1.769      3.019}
 \CommentTok{\#\textgreater{} manuf         0.026  0.005      0.017    0.026      0.035}
-\CommentTok{\#\textgreater{} wind         {-}3.723  1.934     {-}7.536   {-}3.723      0.092}
-\CommentTok{\#\textgreater{} precip        0.625  0.387     {-}0.139    0.625      1.388}
+\CommentTok{\#\textgreater{} wind         {-}3.723  1.933     {-}7.534   {-}3.723      0.090}
+\CommentTok{\#\textgreater{} precip        0.625  0.387     {-}0.138    0.625      1.388}
 \CommentTok{\#\textgreater{} days         {-}0.057  0.174     {-}0.400   {-}0.057      0.287}
 \CommentTok{\#\textgreater{}             mode kld}
 \CommentTok{\#\textgreater{} (Intercept)   NA   0}
@@ -981,13 +980,13 @@ La inferencia posterior sobre la desviación típica de los datos, \(\sigma\), l
 \NormalTok{sigma.post}\OtherTok{=} \FunctionTok{inla.tmarginal}\NormalTok{(}\ControlFlowTok{function}\NormalTok{(tau) tau}\SpecialCharTok{\^{}}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{1}\SpecialCharTok{/}\DecValTok{2}\NormalTok{),}
 \NormalTok{                           fit}\SpecialCharTok{$}\NormalTok{marginals.hyperpar[[}\DecValTok{1}\NormalTok{]])}
 \FunctionTok{inla.zmarginal}\NormalTok{(sigma.post)}
-\CommentTok{\#\textgreater{} Mean            15.6706 }
-\CommentTok{\#\textgreater{} Stdev           1.85534 }
-\CommentTok{\#\textgreater{} Quantile  0.025 12.5293 }
-\CommentTok{\#\textgreater{} Quantile  0.25  14.347 }
-\CommentTok{\#\textgreater{} Quantile  0.5   15.4919 }
-\CommentTok{\#\textgreater{} Quantile  0.75  16.7975 }
-\CommentTok{\#\textgreater{} Quantile  0.975 19.817}
+\CommentTok{\#\textgreater{} Mean            15.6702 }
+\CommentTok{\#\textgreater{} Stdev           1.85408 }
+\CommentTok{\#\textgreater{} Quantile  0.025 12.5286 }
+\CommentTok{\#\textgreater{} Quantile  0.25  14.3474 }
+\CommentTok{\#\textgreater{} Quantile  0.5   15.4924 }
+\CommentTok{\#\textgreater{} Quantile  0.75  16.7983 }
+\CommentTok{\#\textgreater{} Quantile  0.975 19.8118}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1048,30 +1047,30 @@ Las inferencias sobre los efectos fijos y la precisión de los datos se muestran
 \NormalTok{fit}\OtherTok{=}\FunctionTok{inla}\NormalTok{(formula, }\AttributeTok{family=}\StringTok{"gaussian"}\NormalTok{, }\AttributeTok{data=}\NormalTok{usair, }\AttributeTok{control.compute=}\FunctionTok{list}\NormalTok{(}\AttributeTok{dic=}\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{waic=}\ConstantTok{TRUE}\NormalTok{))}
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.fixed}
 \CommentTok{\#\textgreater{}                     mean          sd   0.025quant}
-\CommentTok{\#\textgreater{} (Intercept) 100.01549484 30.15083880 40.555055784}
-\CommentTok{\#\textgreater{} negtemp       1.12026612  0.41444673  0.302988558}
-\CommentTok{\#\textgreater{} manuf         0.06489651  0.01549632  0.034341608}
-\CommentTok{\#\textgreater{} pop          {-}0.03934787  0.01488967 {-}0.068708294}
-\CommentTok{\#\textgreater{} wind         {-}3.07258456  1.75727508 {-}6.536740141}
-\CommentTok{\#\textgreater{} precip        0.41922295  0.21555728 {-}0.005830357}
+\CommentTok{\#\textgreater{} (Intercept) 100.01664714 30.14108420 40.577624319}
+\CommentTok{\#\textgreater{} negtemp       1.12028262  0.41431207  0.303300729}
+\CommentTok{\#\textgreater{} manuf         0.06489613  0.01549125  0.034352230}
+\CommentTok{\#\textgreater{} pop          {-}0.03934751  0.01488478 {-}0.068697224}
+\CommentTok{\#\textgreater{} wind         {-}3.07262088  1.75669752 {-}6.535522366}
+\CommentTok{\#\textgreater{} precip        0.41922490  0.21548564 {-}0.005672149}
 \CommentTok{\#\textgreater{}                 0.5quant    0.975quant mode          kld}
-\CommentTok{\#\textgreater{} (Intercept) 100.01906558 159.455494342   NA 1.152499e{-}08}
-\CommentTok{\#\textgreater{} negtemp       1.12029301   1.937389819   NA 1.155082e{-}08}
-\CommentTok{\#\textgreater{} manuf         0.06489625   0.095452868   NA 1.156335e{-}08}
-\CommentTok{\#\textgreater{} pop          {-}0.03934751  {-}0.009989461   NA 1.156286e{-}08}
-\CommentTok{\#\textgreater{} wind         {-}3.07283892   0.393027080   NA 1.150245e{-}08}
-\CommentTok{\#\textgreater{} precip        0.41922935   0.844239641   NA 1.156060e{-}08}
+\CommentTok{\#\textgreater{} (Intercept) 100.02016080 159.435557737   NA 1.155251e{-}08}
+\CommentTok{\#\textgreater{} negtemp       1.12030861   1.937115772   NA 1.158080e{-}08}
+\CommentTok{\#\textgreater{} manuf         0.06489590   0.095441362   NA 1.159060e{-}08}
+\CommentTok{\#\textgreater{} pop          {-}0.03934718  {-}0.009999701   NA 1.159010e{-}08}
+\CommentTok{\#\textgreater{} wind         {-}3.07287378   0.391727884   NA 1.152503e{-}08}
+\CommentTok{\#\textgreater{} precip        0.41923116   0.844086175   NA 1.158798e{-}08}
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.hyperpar}
 \CommentTok{\#\textgreater{}                                                mean}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.005073499}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.005065417}
 \CommentTok{\#\textgreater{}                                                  sd}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.001196977}
-\CommentTok{\#\textgreater{}                                          0.025quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.003032416}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.001178916}
+\CommentTok{\#\textgreater{}                                         0.025quant}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.00303563}
 \CommentTok{\#\textgreater{}                                            0.5quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.004968958}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.004974062}
 \CommentTok{\#\textgreater{}                                          0.975quant mode}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.007512641   NA}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.007616641   NA}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1126,13 +1125,13 @@ Por último, si queremos predecir nuevas observaciones con la \textbf{distribuci
 \DocumentationTok{\#\# y describimos los valores ajustados para los tres escenarios añadidos}
 \NormalTok{fit.pred}\SpecialCharTok{$}\NormalTok{summary.fitted.values[(}\FunctionTok{nrow}\NormalTok{(usair)}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(usair.combinado),]}
 \CommentTok{\#\textgreater{}                         mean       sd 0.025quant 0.5quant}
-\CommentTok{\#\textgreater{} fitted.Predictor.42 31.62397 8.209857   15.43620 31.62473}
-\CommentTok{\#\textgreater{} fitted.Predictor.43 26.42298 5.477699   15.62271 26.42334}
-\CommentTok{\#\textgreater{} fitted.Predictor.44 53.16307 7.096415   39.17095 53.16362}
+\CommentTok{\#\textgreater{} fitted.Predictor.42 31.62377 8.208593   15.43857 31.62454}
+\CommentTok{\#\textgreater{} fitted.Predictor.43 26.42288 5.476871   15.62430 26.42324}
+\CommentTok{\#\textgreater{} fitted.Predictor.44 53.16290 7.095308   39.17302 53.16348}
 \CommentTok{\#\textgreater{}                     0.975quant mode}
-\CommentTok{\#\textgreater{} fitted.Predictor.42   47.80712   NA}
-\CommentTok{\#\textgreater{} fitted.Predictor.43   37.22103   NA}
-\CommentTok{\#\textgreater{} fitted.Predictor.44   67.15178   NA}
+\CommentTok{\#\textgreater{} fitted.Predictor.42   47.80428   NA}
+\CommentTok{\#\textgreater{} fitted.Predictor.43   37.21921   NA}
+\CommentTok{\#\textgreater{} fitted.Predictor.44   67.14929   NA}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1219,22 +1218,22 @@ Estamos planteando un modelo de Anova como el propuesto en la sección anterior,
          \AttributeTok{control.compute=}\FunctionTok{list}\NormalTok{(}\AttributeTok{return.marginals.predictor=}\ConstantTok{TRUE}\NormalTok{))}
 \NormalTok{fijos}\OtherTok{=}\FunctionTok{round}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{summary.fixed,}\DecValTok{3}\NormalTok{);fijos}
 \CommentTok{\#\textgreater{}               mean    sd 0.025quant 0.5quant 0.975quant}
-\CommentTok{\#\textgreater{} (Intercept) 61.016 1.173     58.698   61.016     63.339}
-\CommentTok{\#\textgreater{} dietB        4.979 1.514      1.980    4.980      7.973}
-\CommentTok{\#\textgreater{} dietC        6.977 1.514      3.978    6.978      9.971}
-\CommentTok{\#\textgreater{} dietD       {-}0.016 1.437     {-}2.861   {-}0.016      2.824}
+\CommentTok{\#\textgreater{} (Intercept) 61.016 1.172     58.700   61.016     63.337}
+\CommentTok{\#\textgreater{} dietB        4.979 1.513      1.983    4.980      7.970}
+\CommentTok{\#\textgreater{} dietC        6.977 1.513      3.981    6.978      9.968}
+\CommentTok{\#\textgreater{} dietD       {-}0.016 1.435     {-}2.859   {-}0.016      2.822}
 \CommentTok{\#\textgreater{}             mode kld}
 \CommentTok{\#\textgreater{} (Intercept)   NA   0}
 \CommentTok{\#\textgreater{} dietB         NA   0}
 \CommentTok{\#\textgreater{} dietC         NA   0}
 \CommentTok{\#\textgreater{} dietD         NA   0}
 \NormalTok{tau}\OtherTok{=}\FunctionTok{round}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{summary.hyperpar,}\DecValTok{3}\NormalTok{);tau}
-\CommentTok{\#\textgreater{}                                          mean   sd}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.197 0.06}
+\CommentTok{\#\textgreater{}                                          mean    sd}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.197 0.059}
 \CommentTok{\#\textgreater{}                                         0.025quant 0.5quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations      0.099     0.19}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations      0.099    0.191}
 \CommentTok{\#\textgreater{}                                         0.975quant mode}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations      0.323   NA}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations      0.328   NA}
 \NormalTok{medias}\OtherTok{=}\FunctionTok{round}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{summary.linear.predictor,}\DecValTok{4}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -1244,13 +1243,13 @@ Atendiendo a los descriptivos de la distribución posterior para los efectos fij
 \begin{itemize}
 \tightlist
 \item
-  El tiempo esperado de coagulación para los animales que han seguido la dieta A es de 61.016(58.698,63.339).
+  El tiempo esperado de coagulación para los animales que han seguido la dieta A es de 61.016(58.7,63.337).
 \item
-  Los animales que han seguido la dieta B tienen un tiempo de coagulación esperado superior en 4.979 unidades a los de la dieta A, y dicha diferencia es \emph{significativamente distinta de cero} en el contexto bayesiano, dado que su HPD no incluye al cero, (1.98,7.973).
+  Los animales que han seguido la dieta B tienen un tiempo de coagulación esperado superior en 4.979 unidades a los de la dieta A, y dicha diferencia es \emph{significativamente distinta de cero} en el contexto bayesiano, dado que su HPD no incluye al cero, (1.983,7.97).
 \item
-  Una conclusión similar se deriva para la dieta C, que da un tiempo de coagulación esperado superior en 6.977 unidades a los de la dieta A, y un HPD (3.978,9.971).
+  Una conclusión similar se deriva para la dieta C, que da un tiempo de coagulación esperado superior en 6.977 unidades a los de la dieta A, y un HPD (3.981,9.968).
 \item
-  Las diferencias en los tiempos de coagulación de seguir una dieta D frente a la dieta A no son relevantes. De hecho, la diferencia entre ellos es de -0.016 y el intervalo HPD contiene al cero, (-2.861,2.824).
+  Las diferencias en los tiempos de coagulación de seguir una dieta D frente a la dieta A no son relevantes. De hecho, la diferencia entre ellos es de -0.016 y el intervalo HPD contiene al cero, (-2.859,2.822).
 \end{itemize}
 
 Pintamos a continuación en la Figura \ref{fig:anova01} la distribución posterior de las medias \(\mu_i\) (o predictores lineales) para cada una de las dietas.
@@ -1332,7 +1331,7 @@ Como ya hacíamos en regresión, podemos inferir sobre la desviación típica de
 \CommentTok{\# HPD95\%}
 \NormalTok{sigma.hpd}\OtherTok{=}\FunctionTok{round}\NormalTok{(}\FunctionTok{inla.hpdmarginal}\NormalTok{(}\FloatTok{0.95}\NormalTok{,sigma.post),}\DecValTok{3}\NormalTok{)}
 \FunctionTok{paste}\NormalTok{(}\StringTok{"E(sigma.post)="}\NormalTok{,sigma.e,}\StringTok{"HPD95\%=("}\NormalTok{,sigma.hpd[}\DecValTok{1}\NormalTok{],}\StringTok{","}\NormalTok{,sigma.hpd[}\DecValTok{2}\NormalTok{],}\StringTok{")"}\NormalTok{)}
-\CommentTok{\#\textgreater{} [1] "E(sigma.post)= 2.3368 HPD95\%=( 1.687 , 3.064 )"}
+\CommentTok{\#\textgreater{} [1] "E(sigma.post)= 2.3347 HPD95\%=( 1.681 , 3.069 )"}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1385,51 +1384,51 @@ Veamos cómo ajustar con INLA este modelo.
          \AttributeTok{control.compute=}\FunctionTok{list}\NormalTok{(}\AttributeTok{dic =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{waic =} \ConstantTok{TRUE}\NormalTok{))}
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.fixed}
 \CommentTok{\#\textgreater{}                                        mean        sd}
-\CommentTok{\#\textgreater{} (Intercept)                      3.96605050 0.1314191}
-\CommentTok{\#\textgreater{} BreedCanadian                    0.52193553 0.1858571}
-\CommentTok{\#\textgreater{} BreedGuernsey                    0.93293190 0.1858571}
-\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian           {-}0.30304829 0.1858571}
-\CommentTok{\#\textgreater{} BreedJersey                      1.16693161 0.1858571}
-\CommentTok{\#\textgreater{} AgeMature                        0.18793906 0.1858497}
-\CommentTok{\#\textgreater{} BreedCanadian:AgeMature         {-}0.28692013 0.2628364}
-\CommentTok{\#\textgreater{} BreedGuernsey:AgeMature         {-}0.08591997 0.2628364}
-\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian:AgeMature {-}0.17493825 0.2628364}
-\CommentTok{\#\textgreater{} BreedJersey:AgeMature            0.13107657 0.2628364}
+\CommentTok{\#\textgreater{} (Intercept)                      3.96605050 0.1314176}
+\CommentTok{\#\textgreater{} BreedCanadian                    0.52193553 0.1858549}
+\CommentTok{\#\textgreater{} BreedGuernsey                    0.93293190 0.1858549}
+\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian           {-}0.30304829 0.1858549}
+\CommentTok{\#\textgreater{} BreedJersey                      1.16693161 0.1858549}
+\CommentTok{\#\textgreater{} AgeMature                        0.18793906 0.1858476}
+\CommentTok{\#\textgreater{} BreedCanadian:AgeMature         {-}0.28692013 0.2628334}
+\CommentTok{\#\textgreater{} BreedGuernsey:AgeMature         {-}0.08591997 0.2628334}
+\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian:AgeMature {-}0.17493825 0.2628334}
+\CommentTok{\#\textgreater{} BreedJersey:AgeMature            0.13107657 0.2628334}
 \CommentTok{\#\textgreater{}                                 0.025quant    0.5quant}
-\CommentTok{\#\textgreater{} (Intercept)                      3.7077533  3.96604997}
-\CommentTok{\#\textgreater{} BreedCanadian                    0.1566392  0.52193621}
-\CommentTok{\#\textgreater{} BreedGuernsey                    0.5676355  0.93293262}
-\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian           {-}0.6683441 {-}0.30304778}
-\CommentTok{\#\textgreater{} BreedJersey                      0.8016352  1.16693233}
-\CommentTok{\#\textgreater{} AgeMature                       {-}0.1773425  0.18793970}
-\CommentTok{\#\textgreater{} BreedCanadian:AgeMature         {-}0.8035116 {-}0.28692097}
-\CommentTok{\#\textgreater{} BreedGuernsey:AgeMature         {-}0.6025115 {-}0.08592082}
-\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian:AgeMature {-}0.6915303 {-}0.17493890}
-\CommentTok{\#\textgreater{} BreedJersey:AgeMature           {-}0.3855150  0.13107577}
+\CommentTok{\#\textgreater{} (Intercept)                      3.7077565  3.96604997}
+\CommentTok{\#\textgreater{} BreedCanadian                    0.1566437  0.52193621}
+\CommentTok{\#\textgreater{} BreedGuernsey                    0.5676400  0.93293262}
+\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian           {-}0.6683396 {-}0.30304778}
+\CommentTok{\#\textgreater{} BreedJersey                      0.8016397  1.16693233}
+\CommentTok{\#\textgreater{} AgeMature                       {-}0.1773380  0.18793970}
+\CommentTok{\#\textgreater{} BreedCanadian:AgeMature         {-}0.8035053 {-}0.28692097}
+\CommentTok{\#\textgreater{} BreedGuernsey:AgeMature         {-}0.6025052 {-}0.08592082}
+\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian:AgeMature {-}0.6915240 {-}0.17493890}
+\CommentTok{\#\textgreater{} BreedJersey:AgeMature           {-}0.3855087  0.13107576}
 \CommentTok{\#\textgreater{}                                 0.975quant mode}
-\CommentTok{\#\textgreater{} (Intercept)                     4.22435069   NA}
-\CommentTok{\#\textgreater{} BreedCanadian                   0.88722796   NA}
-\CommentTok{\#\textgreater{} BreedGuernsey                   1.29822422   NA}
-\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian           0.06224463   NA}
-\CommentTok{\#\textgreater{} BreedJersey                     1.53222392   NA}
-\CommentTok{\#\textgreater{} AgeMature                       0.55321697   NA}
-\CommentTok{\#\textgreater{} BreedCanadian:AgeMature         0.22967617   NA}
-\CommentTok{\#\textgreater{} BreedGuernsey:AgeMature         0.43067633   NA}
-\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian:AgeMature 0.34165750   NA}
-\CommentTok{\#\textgreater{} BreedJersey:AgeMature           0.64767277   NA}
+\CommentTok{\#\textgreater{} (Intercept)                     4.22434753   NA}
+\CommentTok{\#\textgreater{} BreedCanadian                   0.88722350   NA}
+\CommentTok{\#\textgreater{} BreedGuernsey                   1.29821977   NA}
+\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian           0.06224017   NA}
+\CommentTok{\#\textgreater{} BreedJersey                     1.53221946   NA}
+\CommentTok{\#\textgreater{} AgeMature                       0.55321251   NA}
+\CommentTok{\#\textgreater{} BreedCanadian:AgeMature         0.22966986   NA}
+\CommentTok{\#\textgreater{} BreedGuernsey:AgeMature         0.43067002   NA}
+\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian:AgeMature 0.34165120   NA}
+\CommentTok{\#\textgreater{} BreedJersey:AgeMature           0.64766646   NA}
 \CommentTok{\#\textgreater{}                                          kld}
-\CommentTok{\#\textgreater{} (Intercept)                     2.743621e{-}09}
-\CommentTok{\#\textgreater{} BreedCanadian                   2.743955e{-}09}
-\CommentTok{\#\textgreater{} BreedGuernsey                   2.743953e{-}09}
-\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian           2.743954e{-}09}
-\CommentTok{\#\textgreater{} BreedJersey                     2.743957e{-}09}
-\CommentTok{\#\textgreater{} AgeMature                       2.743117e{-}09}
-\CommentTok{\#\textgreater{} BreedCanadian:AgeMature         2.743536e{-}09}
-\CommentTok{\#\textgreater{} BreedGuernsey:AgeMature         2.743536e{-}09}
-\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian:AgeMature 2.743535e{-}09}
-\CommentTok{\#\textgreater{} BreedJersey:AgeMature           2.743536e{-}09}
+\CommentTok{\#\textgreater{} (Intercept)                     2.741551e{-}09}
+\CommentTok{\#\textgreater{} BreedCanadian                   2.741827e{-}09}
+\CommentTok{\#\textgreater{} BreedGuernsey                   2.741827e{-}09}
+\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian           2.741827e{-}09}
+\CommentTok{\#\textgreater{} BreedJersey                     2.741832e{-}09}
+\CommentTok{\#\textgreater{} AgeMature                       2.740990e{-}09}
+\CommentTok{\#\textgreater{} BreedCanadian:AgeMature         2.741409e{-}09}
+\CommentTok{\#\textgreater{} BreedGuernsey:AgeMature         2.741408e{-}09}
+\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian:AgeMature 2.741408e{-}09}
+\CommentTok{\#\textgreater{} BreedJersey:AgeMature           2.741408e{-}09}
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{dic}\SpecialCharTok{$}\NormalTok{dic}
-\CommentTok{\#\textgreater{} [1] 120.486}
+\CommentTok{\#\textgreater{} [1] 120.4909}
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{waic}\SpecialCharTok{$}\NormalTok{waic}
 \CommentTok{\#\textgreater{} [1] 121.7376}
 \end{Highlighting}
@@ -1446,26 +1445,26 @@ Observamos en la inferencia posterior para los efectos fijos, que todas las HPD 
                               \AttributeTok{dic =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{waic =} \ConstantTok{TRUE}\NormalTok{))}
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.fixed}
 \CommentTok{\#\textgreater{}                             mean         sd  0.025quant}
-\CommentTok{\#\textgreater{} (Intercept)            4.0077184 0.10124855  3.80873711}
-\CommentTok{\#\textgreater{} BreedCanadian          0.3784787 0.13071130  0.12159375}
-\CommentTok{\#\textgreater{} BreedGuernsey          0.8899744 0.13071130  0.63308926}
-\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian {-}0.3905147 0.13071130 {-}0.64739949}
-\CommentTok{\#\textgreater{} BreedJersey            1.2324714 0.13071130  0.97558625}
-\CommentTok{\#\textgreater{} AgeMature              0.1045993 0.08267006 {-}0.05787061}
+\CommentTok{\#\textgreater{} (Intercept)            4.0077184 0.10124856  3.80873708}
+\CommentTok{\#\textgreater{} BreedCanadian          0.3784787 0.13071131  0.12159372}
+\CommentTok{\#\textgreater{} BreedGuernsey          0.8899744 0.13071131  0.63308923}
+\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian {-}0.3905147 0.13071131 {-}0.64739952}
+\CommentTok{\#\textgreater{} BreedJersey            1.2324714 0.13071131  0.97558622}
+\CommentTok{\#\textgreater{} AgeMature              0.1045993 0.08267006 {-}0.05787063}
 \CommentTok{\#\textgreater{}                         0.5quant 0.975quant mode}
 \CommentTok{\#\textgreater{} (Intercept)            4.0077182  4.2067007   NA}
 \CommentTok{\#\textgreater{} BreedCanadian          0.3784790  0.6353625   NA}
 \CommentTok{\#\textgreater{} BreedGuernsey          0.8899746  1.1468580   NA}
 \CommentTok{\#\textgreater{} BreedHolstein{-}Fresian {-}0.3905145 {-}0.1336307   NA}
 \CommentTok{\#\textgreater{} BreedJersey            1.2324717  1.4893550   NA}
-\CommentTok{\#\textgreater{} AgeMature              0.1045993  0.2670691   NA}
+\CommentTok{\#\textgreater{} AgeMature              0.1045993  0.2670692   NA}
 \CommentTok{\#\textgreater{}                                kld}
-\CommentTok{\#\textgreater{} (Intercept)           2.524841e{-}09}
-\CommentTok{\#\textgreater{} BreedCanadian         2.524864e{-}09}
-\CommentTok{\#\textgreater{} BreedGuernsey         2.524860e{-}09}
-\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian 2.524862e{-}09}
-\CommentTok{\#\textgreater{} BreedJersey           2.524862e{-}09}
-\CommentTok{\#\textgreater{} AgeMature             2.525095e{-}09}
+\CommentTok{\#\textgreater{} (Intercept)           2.524753e{-}09}
+\CommentTok{\#\textgreater{} BreedCanadian         2.524905e{-}09}
+\CommentTok{\#\textgreater{} BreedGuernsey         2.524905e{-}09}
+\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian 2.524905e{-}09}
+\CommentTok{\#\textgreater{} BreedJersey           2.524907e{-}09}
+\CommentTok{\#\textgreater{} AgeMature             2.525137e{-}09}
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{waic}\SpecialCharTok{$}\NormalTok{waic}
 \CommentTok{\#\textgreater{} [1] 116.3439}
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{dic}\SpecialCharTok{$}\NormalTok{dic}
@@ -1486,27 +1485,27 @@ Reajustamos de nuevo el modelo, excluyendo la variable \texttt{Age}, y verificam
                               \AttributeTok{dic =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{waic =} \ConstantTok{TRUE}\NormalTok{))}
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.fixed}
 \CommentTok{\#\textgreater{}                             mean         sd 0.025quant}
-\CommentTok{\#\textgreater{} (Intercept)            4.0600181 0.09271686  3.8778080}
-\CommentTok{\#\textgreater{} BreedCanadian          0.3784786 0.13112173  0.1207927}
-\CommentTok{\#\textgreater{} BreedGuernsey          0.8899742 0.13112173  0.6322881}
-\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian {-}0.3905148 0.13112173 {-}0.6482005}
-\CommentTok{\#\textgreater{} BreedJersey            1.2324713 0.13112173  0.9747851}
+\CommentTok{\#\textgreater{} (Intercept)            4.0600181 0.09271799  3.8778057}
+\CommentTok{\#\textgreater{} BreedCanadian          0.3784786 0.13112332  0.1207894}
+\CommentTok{\#\textgreater{} BreedGuernsey          0.8899742 0.13112332  0.6322849}
+\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian {-}0.3905148 0.13112332 {-}0.6482038}
+\CommentTok{\#\textgreater{} BreedJersey            1.2324713 0.13112332  0.9747819}
 \CommentTok{\#\textgreater{}                         0.5quant 0.975quant mode}
-\CommentTok{\#\textgreater{} (Intercept)            4.0600180  4.2422293   NA}
-\CommentTok{\#\textgreater{} BreedCanadian          0.3784788  0.6361633   NA}
-\CommentTok{\#\textgreater{} BreedGuernsey          0.8899745  1.1476588   NA}
-\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian {-}0.3905146 {-}0.1328299   NA}
-\CommentTok{\#\textgreater{} BreedJersey            1.2324715  1.4901558   NA}
+\CommentTok{\#\textgreater{} (Intercept)            4.0600180  4.2422316   NA}
+\CommentTok{\#\textgreater{} BreedCanadian          0.3784788  0.6361666   NA}
+\CommentTok{\#\textgreater{} BreedGuernsey          0.8899745  1.1476620   NA}
+\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian {-}0.3905146 {-}0.1328266   NA}
+\CommentTok{\#\textgreater{} BreedJersey            1.2324715  1.4901590   NA}
 \CommentTok{\#\textgreater{}                                kld}
-\CommentTok{\#\textgreater{} (Intercept)           2.471631e{-}09}
-\CommentTok{\#\textgreater{} BreedCanadian         2.471474e{-}09}
-\CommentTok{\#\textgreater{} BreedGuernsey         2.471475e{-}09}
-\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian 2.471474e{-}09}
-\CommentTok{\#\textgreater{} BreedJersey           2.471469e{-}09}
+\CommentTok{\#\textgreater{} (Intercept)           2.473535e{-}09}
+\CommentTok{\#\textgreater{} BreedCanadian         2.473520e{-}09}
+\CommentTok{\#\textgreater{} BreedGuernsey         2.473520e{-}09}
+\CommentTok{\#\textgreater{} BreedHolstein{-}Fresian 2.473520e{-}09}
+\CommentTok{\#\textgreater{} BreedJersey           2.473527e{-}09}
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{waic}\SpecialCharTok{$}\NormalTok{waic}
 \CommentTok{\#\textgreater{} [1] 115.9279}
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{dic}\SpecialCharTok{$}\NormalTok{dic}
-\CommentTok{\#\textgreater{} [1] 115.0094}
+\CommentTok{\#\textgreater{} [1] 115.0074}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1624,7 +1623,7 @@ Con estas distribuciones podemos calcular cualquier probabilidad, como por ejemp
 \begin{Shaded}
 \begin{Highlighting}[]
 \DecValTok{1}\SpecialCharTok{{-}}\FunctionTok{inla.pmarginal}\NormalTok{(}\DecValTok{5}\NormalTok{,fit}\SpecialCharTok{$}\NormalTok{marginals.fixed}\SpecialCharTok{$}\StringTok{"GenderM"}\NormalTok{)}
-\CommentTok{\#\textgreater{} [1] 0.941422}
+\CommentTok{\#\textgreater{} [1] 0.9414368}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1701,7 +1700,12 @@ También graficar las distribuciones predictivas y probabilidades (Figura \ref{f
 \end{Highlighting}
 \end{Shaded}
 
+\begin{figure}
+\centering
 \includegraphics{02-anova_files/figure-latex/galton3-1.pdf}
+\caption{\label{fig:galton3}Distribución predictiva de la estatura de un sujeto cuyo padre mide 1,75cm y madre 1,07cm.}
+\end{figure}
+
 Y calcular probabilidades, como la probabilidad de que dicho sujeto supere el 1.65m si es mujer, o el 1.78m si es hombre.
 
 \begin{Shaded}
@@ -1726,10 +1730,10 @@ Podríamos también, modificar las especificaciones a priori sobre los parámetr
                    \AttributeTok{mean.intercept=}\DecValTok{0}\NormalTok{, }\AttributeTok{prec.intercept=}\FloatTok{0.0001}\NormalTok{))}
 \FunctionTok{round}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{summary.fixed,}\DecValTok{3}\NormalTok{)}
 \CommentTok{\#\textgreater{}               mean    sd 0.025quant 0.5quant 0.975quant}
-\CommentTok{\#\textgreater{} (Intercept) 15.335 2.745      9.950   15.335     20.721}
+\CommentTok{\#\textgreater{} (Intercept) 15.335 2.745      9.949   15.335     20.720}
 \CommentTok{\#\textgreater{} Father       0.406 0.029      0.349    0.406      0.463}
 \CommentTok{\#\textgreater{} Mother       0.322 0.031      0.260    0.322      0.383}
-\CommentTok{\#\textgreater{} GenderM      5.225 0.144      4.942    5.225      5.507}
+\CommentTok{\#\textgreater{} GenderM      5.225 0.144      4.943    5.225      5.507}
 \CommentTok{\#\textgreater{}             mode kld}
 \CommentTok{\#\textgreater{} (Intercept)   NA   0}
 \CommentTok{\#\textgreater{} Father        NA   0}
@@ -1746,7 +1750,7 @@ Si queremos especificar medias a priori diferentes para los coeficientes de los 
                    \AttributeTok{control.fixed=}\FunctionTok{list}\NormalTok{(}\AttributeTok{mean=}\FunctionTok{list}\NormalTok{(}\AttributeTok{Father=}\FloatTok{0.2}\NormalTok{,}\AttributeTok{Mother=}\FloatTok{0.1}\NormalTok{)))}
 \FunctionTok{round}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{summary.fixed,}\DecValTok{3}\NormalTok{)}
 \CommentTok{\#\textgreater{}               mean    sd 0.025quant 0.5quant 0.975quant}
-\CommentTok{\#\textgreater{} (Intercept) 15.345 2.747      9.957   15.345     20.734}
+\CommentTok{\#\textgreater{} (Intercept) 15.345 2.747      9.957   15.345     20.733}
 \CommentTok{\#\textgreater{} Father       0.406 0.029      0.349    0.406      0.463}
 \CommentTok{\#\textgreater{} Mother       0.321 0.031      0.260    0.321      0.383}
 \CommentTok{\#\textgreater{} GenderM      5.226 0.144      4.943    5.226      5.508}
@@ -1780,7 +1784,7 @@ Si queremos modificar la especificación de la prior en \(\sigma^2\), o lo que e
 \CommentTok{\#\textgreater{}                                         0.025quant 0.5quant}
 \CommentTok{\#\textgreater{} Precision for the Gaussian observations      0.197    0.216}
 \CommentTok{\#\textgreater{}                                         0.975quant mode}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations      0.237   NA}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations      0.236   NA}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1869,6 +1873,29 @@ En INLA la fórmula de predicción de una respuesta \(y\) a partir de un conjunt
 
 donde la función \(f()\) especifica la relación entre el predictor lineal de la respuesta y los efectos aleatorios \(z\). El tipo de relación asumida se incluye en el argumento \texttt{model} o modelo latente, que tiene como posibilidades \texttt{names(inla.models()\$latent)}, si bien en el modelo lineal la opción habitual es \texttt{model="iid"}, que asume efectos aleatorios independientes e idénticamente distribuidos. La función \(f()\) tiene muchos argumentos, que se pueden consultar con el comando \texttt{?f}.
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{names}\NormalTok{(}\FunctionTok{inla.models}\NormalTok{()}\SpecialCharTok{$}\NormalTok{latent)}
+\CommentTok{\#\textgreater{}  [1] "linear"       "iid"          "mec"         }
+\CommentTok{\#\textgreater{}  [4] "meb"          "rgeneric"     "cgeneric"    }
+\CommentTok{\#\textgreater{}  [7] "rw1"          "rw2"          "crw2"        }
+\CommentTok{\#\textgreater{} [10] "seasonal"     "besag"        "besag2"      }
+\CommentTok{\#\textgreater{} [13] "bym"          "bym2"         "besagproper" }
+\CommentTok{\#\textgreater{} [16] "besagproper2" "fgn"          "fgn2"        }
+\CommentTok{\#\textgreater{} [19] "ar1"          "ar1c"         "ar"          }
+\CommentTok{\#\textgreater{} [22] "ou"           "intslope"     "generic"     }
+\CommentTok{\#\textgreater{} [25] "generic0"     "generic1"     "generic2"    }
+\CommentTok{\#\textgreater{} [28] "generic3"     "spde"         "spde2"       }
+\CommentTok{\#\textgreater{} [31] "spde3"        "iid1d"        "iid2d"       }
+\CommentTok{\#\textgreater{} [34] "iid3d"        "iid4d"        "iid5d"       }
+\CommentTok{\#\textgreater{} [37] "iidkd"        "2diid"        "z"           }
+\CommentTok{\#\textgreater{} [40] "rw2d"         "rw2diid"      "slm"         }
+\CommentTok{\#\textgreater{} [43] "matern2d"     "dmatern"      "copy"        }
+\CommentTok{\#\textgreater{} [46] "clinear"      "sigm"         "revsigm"     }
+\CommentTok{\#\textgreater{} [49] "log1exp"      "logdist"}
+\end{Highlighting}
+\end{Shaded}
+
 Veamos cómo ajustar un modelo de efectos aleatorios a partir de un ejemplo sencillo. Comenzamos con la base de datos \texttt{broccoli} en la librería \href{https://cran.r-project.org/web/packages/faraway/faraway.pdf}{\texttt{faraway}}. Varios cultivadores suministran brócoli a una planta de procesamiento de alimentos. La planta da instrucciones a los cultivadores para que empaquen el brócoli en cajas de tamaño estándar. Debe haber 18 racimos de brócoli por caja y cada racimo debe pesar entre 1,33 y 1,5 libras. Debido a que los productores utilizan diferentes variedades, métodos de cultivo, etc., hay cierta variación en el peso de los racimos. El responsable de la planta seleccionó 3 cultivadores al azar y luego 4 cajas al azar suministradas por estos cultivadores. Se seleccionaron 3 racimos de brocoli de cada caja.
 
 La variable de interés es el peso del racimo de brócoli, en la variable \texttt{wt}. Sin embargo, dado cómo se ha seleccionado la muestra, el objetivo no es ni la comparación entre cultivadores (\texttt{grower}), ni entre cajas (\texttt{box}) ni entre racimos (\texttt{cluster}). Sin embargo, de manera lógica intuimos que habrá variabilidad también entre cajas (efecto aleatorio \texttt{box}) y también entre cultivadores (efecto aleatorio \texttt{grower}), lo que nos conduce a un modelo en el que todos los predictores, \texttt{box} y \texttt{grower} intervienen como efectos aleatorios; la variable \texttt{cluster} la aprovechamos a modo de repeticiones de medidas en una misma caja de un mismo cultivador.
@@ -1912,69 +1939,6 @@ Surgen pues, tres niveles de especificación del modelo: datos, parámetros e hi
 \NormalTok{formula }\OtherTok{=}\NormalTok{ wt }\SpecialCharTok{\textasciitilde{}} \FunctionTok{f}\NormalTok{(grower,}\AttributeTok{model=}\StringTok{"iid"}\NormalTok{)}\SpecialCharTok{+} \FunctionTok{f}\NormalTok{(box,}\AttributeTok{model=}\StringTok{"iid"}\NormalTok{)}
 \NormalTok{fit }\OtherTok{=} \FunctionTok{inla}\NormalTok{(formula, }\AttributeTok{family=}\StringTok{"gaussian"}\NormalTok{,}\AttributeTok{data=}\NormalTok{broccoli,}
            \AttributeTok{control.compute =} \FunctionTok{list}\NormalTok{(}\AttributeTok{dic=}\ConstantTok{TRUE}\NormalTok{,}\AttributeTok{waic=}\ConstantTok{TRUE}\NormalTok{))  }
-\FunctionTok{summary}\NormalTok{(fit)}
-\CommentTok{\#\textgreater{} }
-\CommentTok{\#\textgreater{} Call:}
-\CommentTok{\#\textgreater{}    c("inla.core(formula = formula, family = family, }
-\CommentTok{\#\textgreater{}    contrasts = contrasts, ", " data = data, quantiles = }
-\CommentTok{\#\textgreater{}    quantiles, E = E, offset = offset, ", " scale = }
-\CommentTok{\#\textgreater{}    scale, weights = weights, Ntrials = Ntrials, strata = }
-\CommentTok{\#\textgreater{}    strata, ", " lp.scale = lp.scale, link.covariates = }
-\CommentTok{\#\textgreater{}    link.covariates, verbose = verbose, ", " lincomb = }
-\CommentTok{\#\textgreater{}    lincomb, selection = selection, control.compute = }
-\CommentTok{\#\textgreater{}    control.compute, ", " control.predictor = }
-\CommentTok{\#\textgreater{}    control.predictor, control.family = control.family, }
-\CommentTok{\#\textgreater{}    ", " control.inla = control.inla, control.fixed = }
-\CommentTok{\#\textgreater{}    control.fixed, ", " control.mode = control.mode, }
-\CommentTok{\#\textgreater{}    control.expert = control.expert, ", " control.hazard }
-\CommentTok{\#\textgreater{}    = control.hazard, control.lincomb = control.lincomb, }
-\CommentTok{\#\textgreater{}    ", " control.update = control.update, }
-\CommentTok{\#\textgreater{}    control.lp.scale = control.lp.scale, ", " }
-\CommentTok{\#\textgreater{}    control.pardiso = control.pardiso, only.hyperparam = }
-\CommentTok{\#\textgreater{}    only.hyperparam, ", " inla.call = inla.call, inla.arg }
-\CommentTok{\#\textgreater{}    = inla.arg, num.threads = num.threads, ", " }
-\CommentTok{\#\textgreater{}    blas.num.threads = blas.num.threads, keep = keep, }
-\CommentTok{\#\textgreater{}    working.directory = working.directory, ", " silent = }
-\CommentTok{\#\textgreater{}    silent, inla.mode = inla.mode, safe = FALSE, debug = }
-\CommentTok{\#\textgreater{}    debug, ", " .parent.frame = .parent.frame)") }
-\CommentTok{\#\textgreater{} Time used:}
-\CommentTok{\#\textgreater{}     Pre = 2.56, Running = 0.238, Post = 0.0176, Total = 2.81 }
-\CommentTok{\#\textgreater{} Fixed effects:}
-\CommentTok{\#\textgreater{}                mean    sd 0.025quant 0.5quant 0.975quant}
-\CommentTok{\#\textgreater{} (Intercept) 358.167 2.734    352.778  358.167    363.555}
-\CommentTok{\#\textgreater{}             mode kld}
-\CommentTok{\#\textgreater{} (Intercept)   NA   0}
-\CommentTok{\#\textgreater{} }
-\CommentTok{\#\textgreater{} Random effects:}
-\CommentTok{\#\textgreater{}   Name     Model}
-\CommentTok{\#\textgreater{}     grower IID model}
-\CommentTok{\#\textgreater{}    box IID model}
-\CommentTok{\#\textgreater{} }
-\CommentTok{\#\textgreater{} Model hyperparameters:}
-\CommentTok{\#\textgreater{}                                             mean       sd}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 4.00e{-}03 1.00e{-}03}
-\CommentTok{\#\textgreater{} Precision for grower                    1.55e+04 1.56e+04}
-\CommentTok{\#\textgreater{} Precision for box                       2.11e+04 2.23e+04}
-\CommentTok{\#\textgreater{}                                         0.025quant 0.5quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations      0.002 4.00e{-}03}
-\CommentTok{\#\textgreater{} Precision for grower                      1765.697 1.09e+04}
-\CommentTok{\#\textgreater{} Precision for box                         2122.090 1.44e+04}
-\CommentTok{\#\textgreater{}                                         0.975quant mode}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations   6.00e{-}03   NA}
-\CommentTok{\#\textgreater{} Precision for grower                      5.70e+04   NA}
-\CommentTok{\#\textgreater{} Precision for box                         8.04e+04   NA}
-\CommentTok{\#\textgreater{} }
-\CommentTok{\#\textgreater{} Deviance Information Criterion (DIC) ...............: 307.75}
-\CommentTok{\#\textgreater{} Deviance Information Criterion (DIC, saturated) ....: 26089.22}
-\CommentTok{\#\textgreater{} Effective number of parameters .....................: 1.84}
-\CommentTok{\#\textgreater{} }
-\CommentTok{\#\textgreater{} Watanabe{-}Akaike information criterion (WAIC) ...: 307.66}
-\CommentTok{\#\textgreater{} Effective number of parameters .................: 1.67}
-\CommentTok{\#\textgreater{} }
-\CommentTok{\#\textgreater{} Marginal log{-}Likelihood:  {-}166.64 }
-\CommentTok{\#\textgreater{}  is computed }
-\CommentTok{\#\textgreater{} Posterior summaries for the linear predictor and the fitted values are computed}
-\CommentTok{\#\textgreater{} (Posterior marginals needs also \textquotesingle{}control.compute=list(return.marginals.predictor=TRUE)\textquotesingle{})}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1996,25 +1960,25 @@ Cuando queremos mostrar los resultados a posteriori sobre los efectos aleatorios
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.random}
 \CommentTok{\#\textgreater{} $grower}
 \CommentTok{\#\textgreater{}   ID          mean         sd  0.025quant      0.5quant}
-\CommentTok{\#\textgreater{} 1  1  1.492374e{-}06 0.01130853 {-}0.02439995  8.736887e{-}07}
-\CommentTok{\#\textgreater{} 2  2 {-}1.044657e{-}05 0.01130854 {-}0.02442924 {-}6.115819e{-}06}
-\CommentTok{\#\textgreater{} 3  3  8.954184e{-}06 0.01130853 {-}0.02438167  5.242123e{-}06}
-\CommentTok{\#\textgreater{}   0.975quant mode          kld}
-\CommentTok{\#\textgreater{} 1 0.02440727   NA 0.0001310971}
-\CommentTok{\#\textgreater{} 2 0.02437801   NA 0.0001310977}
-\CommentTok{\#\textgreater{} 3 0.02442558   NA 0.0001310975}
+\CommentTok{\#\textgreater{} 1  1  1.985980e{-}06 0.01315983 {-}0.02996227  8.981825e{-}07}
+\CommentTok{\#\textgreater{} 2  2 {-}1.390190e{-}05 0.01315986 {-}0.03004579 {-}6.287420e{-}06}
+\CommentTok{\#\textgreater{} 3  3  1.191598e{-}05 0.01315985 {-}0.02991009  5.389257e{-}06}
+\CommentTok{\#\textgreater{}   0.975quant mode         kld}
+\CommentTok{\#\textgreater{} 1 0.02998314   NA 0.006097810}
+\CommentTok{\#\textgreater{} 2 0.02989966   NA 0.006097838}
+\CommentTok{\#\textgreater{} 3 0.03003535   NA 0.006097830}
 \CommentTok{\#\textgreater{} }
 \CommentTok{\#\textgreater{} $box}
-\CommentTok{\#\textgreater{}   ID          mean         sd  0.025quant      0.5quant}
-\CommentTok{\#\textgreater{} 1  1  1.634571e{-}05 0.01047978 {-}0.02247619  9.734234e{-}06}
-\CommentTok{\#\textgreater{} 2  2 {-}9.371546e{-}06 0.01047977 {-}0.02254043 {-}5.580916e{-}06}
-\CommentTok{\#\textgreater{} 3  3 {-}4.140913e{-}06 0.01047977 {-}0.02252735 {-}2.465972e{-}06}
-\CommentTok{\#\textgreater{} 4  4 {-}2.833264e{-}06 0.01047977 {-}0.02252408 {-}1.687243e{-}06}
-\CommentTok{\#\textgreater{}   0.975quant mode          kld}
-\CommentTok{\#\textgreater{} 1 0.02255789   NA 0.0001322533}
-\CommentTok{\#\textgreater{} 2 0.02249359   NA 0.0001322526}
-\CommentTok{\#\textgreater{} 3 0.02250665   NA 0.0001322523}
-\CommentTok{\#\textgreater{} 4 0.02250992   NA 0.0001322523}
+\CommentTok{\#\textgreater{}   ID        mean       sd 0.025quant    0.5quant 0.975quant}
+\CommentTok{\#\textgreater{} 1  1  0.29220708 1.504071  {-}2.476249  0.23643442   3.563340}
+\CommentTok{\#\textgreater{} 2  2 {-}0.16749264 1.487971  {-}3.271176 {-}0.13580544   2.656885}
+\CommentTok{\#\textgreater{} 3  3 {-}0.07400084 1.481622  {-}3.076984 {-}0.06005145   2.807207}
+\CommentTok{\#\textgreater{} 4  4 {-}0.05063106 1.480802  {-}3.031491 {-}0.04109151   2.847049}
+\CommentTok{\#\textgreater{}   mode          kld}
+\CommentTok{\#\textgreater{} 1   NA 0.0003927971}
+\CommentTok{\#\textgreater{} 2   NA 0.0003020735}
+\CommentTok{\#\textgreater{} 3   NA 0.0002670739}
+\CommentTok{\#\textgreater{} 4   NA 0.0002626010}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2024,25 +1988,25 @@ Más que la inferencia sobre los efectos aleatorios, es importante la que se hac
 \begin{Highlighting}[]
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.hyperpar}
 \CommentTok{\#\textgreater{}                                                 mean}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 3.831722e{-}03}
-\CommentTok{\#\textgreater{} Precision for grower                    1.547070e+04}
-\CommentTok{\#\textgreater{} Precision for box                       2.106179e+04}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 3.098359e{-}03}
+\CommentTok{\#\textgreater{} Precision for grower                    1.089611e+04}
+\CommentTok{\#\textgreater{} Precision for box                       2.613325e{-}01}
 \CommentTok{\#\textgreater{}                                                   sd}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 8.988398e{-}04}
-\CommentTok{\#\textgreater{} Precision for grower                    1.562618e+04}
-\CommentTok{\#\textgreater{} Precision for box                       2.234736e+04}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 8.762370e{-}04}
+\CommentTok{\#\textgreater{} Precision for grower                    2.139107e+04}
+\CommentTok{\#\textgreater{} Precision for box                       7.181807e{-}01}
 \CommentTok{\#\textgreater{}                                           0.025quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 2.271079e{-}03}
-\CommentTok{\#\textgreater{} Precision for grower                    1.765697e+03}
-\CommentTok{\#\textgreater{} Precision for box                       2.122090e+03}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 1.965925e{-}03}
+\CommentTok{\#\textgreater{} Precision for grower                    3.341883e+02}
+\CommentTok{\#\textgreater{} Precision for box                       1.381779e{-}02}
 \CommentTok{\#\textgreater{}                                             0.5quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 3.767080e{-}03}
-\CommentTok{\#\textgreater{} Precision for grower                    1.087754e+04}
-\CommentTok{\#\textgreater{} Precision for box                       1.440273e+04}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 2.973353e{-}03}
+\CommentTok{\#\textgreater{} Precision for grower                    4.852999e+03}
+\CommentTok{\#\textgreater{} Precision for box                       9.855093e{-}02}
 \CommentTok{\#\textgreater{}                                           0.975quant mode}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 5.782886e{-}03   NA}
-\CommentTok{\#\textgreater{} Precision for grower                    5.702135e+04   NA}
-\CommentTok{\#\textgreater{} Precision for box                       8.039870e+04   NA}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 4.956842e{-}03   NA}
+\CommentTok{\#\textgreater{} Precision for grower                    5.957611e+04   NA}
+\CommentTok{\#\textgreater{} Precision for box                       1.549269e+00   NA}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2089,13 +2053,13 @@ No obstante, antes de tomar una decisión sobre la exclusión de los efectos ale
 \CommentTok{\# contribución a la varianza de grower}
 \NormalTok{cB}\OtherTok{=}\NormalTok{ sigma2[,}\DecValTok{3}\NormalTok{]}\SpecialCharTok{/}\FunctionTok{apply}\NormalTok{(sigma2,}\DecValTok{1}\NormalTok{,sum)}
 \FunctionTok{cat}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Contribución media de grower a la varianza:"}\NormalTok{,}\FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(cG)}\SpecialCharTok{*}\DecValTok{100}\NormalTok{,}\DecValTok{6}\NormalTok{),}\StringTok{"por 100"}\NormalTok{,}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{))}
-\CommentTok{\#\textgreater{} Contribución media de grower a la varianza: 5.1e{-}05 por 100}
+\CommentTok{\#\textgreater{} Contribución media de grower a la varianza: 0.000147 por 100}
 \FunctionTok{cat}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Contribución media de box a la varianza:"}\NormalTok{,}\FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(cB)}\SpecialCharTok{*}\DecValTok{100}\NormalTok{,}\DecValTok{6}\NormalTok{),}\StringTok{"por 100"}\NormalTok{))}
-\CommentTok{\#\textgreater{} Contribución media de box a la varianza: 4.5e{-}05 por 100}
+\CommentTok{\#\textgreater{} Contribución media de box a la varianza: 4.415927 por 100}
 \end{Highlighting}
 \end{Shaded}
 
-Ante estos resultados, y dados los valores del DIC (307.7519675) y del WAIC (307.6586291), se justifica la opción de prescindir de los efectos \texttt{grower} y \texttt{box} como efectos aleatorios y ajustar el modelo con un único efecto fijo global.
+Ante estos resultados, y dados los valores del DIC (305.5829015) y del WAIC (306.7749495), se justifica la opción de prescindir de los efectos \texttt{grower} y \texttt{box} como efectos aleatorios y ajustar el modelo con un único efecto fijo global.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2103,25 +2067,25 @@ Ante estos resultados, y dados los valores del DIC (307.7519675) y del WAIC (307
 \NormalTok{fit }\OtherTok{=} \FunctionTok{inla}\NormalTok{(formula, }\AttributeTok{family=}\StringTok{"gaussian"}\NormalTok{,}\AttributeTok{data=}\NormalTok{broccoli,}
            \AttributeTok{control.compute =} \FunctionTok{list}\NormalTok{(}\AttributeTok{dic=}\ConstantTok{TRUE}\NormalTok{,}\AttributeTok{waic=}\ConstantTok{TRUE}\NormalTok{))  }
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.fixed}
-\CommentTok{\#\textgreater{}                 mean       sd 0.025quant 0.5quant}
-\CommentTok{\#\textgreater{} (Intercept) 358.1667 2.793582   352.6576 358.1667}
-\CommentTok{\#\textgreater{}             0.975quant mode          kld}
-\CommentTok{\#\textgreater{} (Intercept)   363.6758   NA 1.090747e{-}08}
+\CommentTok{\#\textgreater{}                 mean      sd 0.025quant 0.5quant 0.975quant}
+\CommentTok{\#\textgreater{} (Intercept) 358.1667 2.79132   352.6611 358.1667   363.6722}
+\CommentTok{\#\textgreater{}             mode          kld}
+\CommentTok{\#\textgreater{} (Intercept)   NA 1.246858e{-}08}
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.hyperpar}
 \CommentTok{\#\textgreater{}                                                mean}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.003790063}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.003757592}
 \CommentTok{\#\textgreater{}                                                   sd}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.0008736111}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.0008836951}
 \CommentTok{\#\textgreater{}                                          0.025quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.002286081}
-\CommentTok{\#\textgreater{}                                            0.5quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.003715627}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.002258693}
+\CommentTok{\#\textgreater{}                                           0.5quant}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.00367462}
 \CommentTok{\#\textgreater{}                                          0.975quant mode}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.005654613   NA}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.005689411   NA}
 \end{Highlighting}
 \end{Shaded}
 
-Vemos que la variación en los indicadores DIC (308.1460381) y WAIC (307.8947917) es despreciable para este nuevo modelo.
+Vemos que la variación en los indicadores DIC (308.1333981) y WAIC (307.8685218) es despreciable para este nuevo modelo.
 
 Inferimos a continuación con las posteriores para la media global y la varianza de los datos.
 
@@ -2142,7 +2106,7 @@ Inferimos a continuación con las posteriores para la media global y la varianza
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{02-anova_files/figure-latex/unnamed-chunk-24-1.pdf}
+\includegraphics{02-anova_files/figure-latex/unnamed-chunk-25-1.pdf}
 
 \hypertarget{modelos-mixtos}{%
 \section{Modelos mixtos}\label{modelos-mixtos}}
@@ -2160,259 +2124,6 @@ En INLA la fórmula de predicción de una respuesta \(y\) a partir de un conjunt
 \end{Shaded}
 
 De nuevo mencionar que la opción más habitual para los efectos aleatorios en un modelo lineal es \texttt{model="iid"}.
-
-Veamos cómo resolver las inferencias con la base de datos \texttt{penicillin} en la librería (\texttt{faraway}{]}(\url{https://cran.r-project.org/web/packages/faraway/faraway.pdf}). Se recogen datos de la producción de penicilina (\texttt{yield}) para cuatro procesos de fabricación distintos (\texttt{treat}) y con varias mezclas de la materia prima, que son bastante variables. El objetivo es investigar las diferencias entre los procesos de fabricación, pero teniendo en cuenta la variabilidad extra que podrían introducir las mezclas. Es decir, estamos pensando en un modelo lineal para predecir \texttt{yield}, en el que \texttt{treat} interviene como efecto fijo y \texttt{blend} como efecto aleatorio.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{data}\NormalTok{(penicillin,}\AttributeTok{package=}\StringTok{"faraway"}\NormalTok{)}
-\FunctionTok{ggplot}\NormalTok{(penicillin,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{treat,}\AttributeTok{y=}\NormalTok{yield))}\SpecialCharTok{+}
-  \FunctionTok{geom\_point}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{color=}\NormalTok{blend))}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{02-anova_files/figure-latex/unnamed-chunk-26-1.pdf}
-Modelizamos pues con INLA:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{penicillin}\SpecialCharTok{$}\NormalTok{treat }\OtherTok{=} \FunctionTok{relevel}\NormalTok{(penicillin}\SpecialCharTok{$}\NormalTok{treat,}\StringTok{"D"}\NormalTok{)}
-\NormalTok{prec.prior}\OtherTok{=}\FunctionTok{list}\NormalTok{(}\AttributeTok{prec=}\FunctionTok{list}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\AttributeTok{param =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.001}\NormalTok{, }\FloatTok{0.001}\NormalTok{))))}
-\NormalTok{  formula }\OtherTok{=}\NormalTok{ yield }\SpecialCharTok{\textasciitilde{}} \SpecialCharTok{{-}}\DecValTok{1}\SpecialCharTok{+}\NormalTok{ treat }\SpecialCharTok{+} \FunctionTok{f}\NormalTok{(blend,}\AttributeTok{model=}\StringTok{"iid"}\NormalTok{,}\AttributeTok{hyper=}\NormalTok{prec.prior)}
-\NormalTok{fit}\OtherTok{=}\FunctionTok{inla}\NormalTok{(formula,}\AttributeTok{family=}\StringTok{"gaussian"}\NormalTok{,}\AttributeTok{data=}\NormalTok{penicillin,}
-         \AttributeTok{control.predictor=}\FunctionTok{list}\NormalTok{(}\AttributeTok{compute=}\ConstantTok{TRUE}\NormalTok{),}
-         \AttributeTok{control.compute=}\FunctionTok{list}\NormalTok{(}\AttributeTok{dic=}\ConstantTok{TRUE}\NormalTok{,}\AttributeTok{waic=}\ConstantTok{TRUE}\NormalTok{))}
-\NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.fixed}
-\CommentTok{\#\textgreater{}            mean       sd 0.025quant 0.5quant 0.975quant}
-\CommentTok{\#\textgreater{} treatD 85.51299 2.383184   80.74987 85.53106   90.17464}
-\CommentTok{\#\textgreater{} treatA 83.52432 2.383016   78.76269 83.54196   88.18683}
-\CommentTok{\#\textgreater{} treatB 84.51865 2.383099   79.75628 84.53651   89.18073}
-\CommentTok{\#\textgreater{} treatC 88.49600 2.383442   83.73063 88.51470   93.15637}
-\CommentTok{\#\textgreater{}        mode          kld}
-\CommentTok{\#\textgreater{} treatD   NA 2.457502e{-}08}
-\CommentTok{\#\textgreater{} treatA   NA 2.447486e{-}08}
-\CommentTok{\#\textgreater{} treatB   NA 2.452448e{-}08}
-\CommentTok{\#\textgreater{} treatC   NA 2.472949e{-}08}
-\NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.random}
-\CommentTok{\#\textgreater{} $blend}
-\CommentTok{\#\textgreater{}       ID          mean         sd  0.025quant      0.5quant}
-\CommentTok{\#\textgreater{} 1 Blend1  1.594697e{-}04 0.01274530 {-}0.02672789  8.430042e{-}05}
-\CommentTok{\#\textgreater{} 2 Blend2 {-}6.276773e{-}05 0.01274325 {-}0.02736032 {-}3.324530e{-}05}
-\CommentTok{\#\textgreater{} 3 Blend3 {-}1.338306e{-}05 0.01274287 {-}0.02721817 {-}7.129237e{-}06}
-\CommentTok{\#\textgreater{} 4 Blend4  6.069374e{-}05 0.01274320 {-}0.02700668  3.204153e{-}05}
-\CommentTok{\#\textgreater{} 5 Blend5 {-}8.746062e{-}05 0.01274361 {-}0.02743175 {-}4.630681e{-}05}
-\CommentTok{\#\textgreater{}   0.975quant mode         kld}
-\CommentTok{\#\textgreater{} 1 0.02764182   NA 0.009996808}
-\CommentTok{\#\textgreater{} 2 0.02700140   NA 0.009959472}
-\CommentTok{\#\textgreater{} 3 0.02714209   NA 0.009952884}
-\CommentTok{\#\textgreater{} 4 0.02735487   NA 0.009958947}
-\CommentTok{\#\textgreater{} 5 0.02693139   NA 0.009965956}
-\NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.hyperpar}
-\CommentTok{\#\textgreater{}                                                mean}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.062132647}
-\CommentTok{\#\textgreater{} Precision for blend                     0.004159303}
-\CommentTok{\#\textgreater{}                                                 sd}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.02359525}
-\CommentTok{\#\textgreater{} Precision for blend                     0.02345196}
-\CommentTok{\#\textgreater{}                                           0.025quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.0263688200}
-\CommentTok{\#\textgreater{} Precision for blend                     0.0000938719}
-\CommentTok{\#\textgreater{}                                             0.5quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.0587500392}
-\CommentTok{\#\textgreater{} Precision for blend                     0.0008409634}
-\CommentTok{\#\textgreater{}                                         0.975quant mode}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations  0.1178322   NA}
-\CommentTok{\#\textgreater{} Precision for blend                      0.0272079   NA}
-\NormalTok{fit}\SpecialCharTok{$}\NormalTok{dic}\SpecialCharTok{$}\NormalTok{dic; fit}\SpecialCharTok{$}\NormalTok{waic}\SpecialCharTok{$}\NormalTok{waic}
-\CommentTok{\#\textgreater{} [1] 128.3473}
-\CommentTok{\#\textgreater{} [1] 131.1274}
-\end{Highlighting}
-\end{Shaded}
-
-Representamos en la figura \ref{fig:penicillin2} las distribuciones posteriores de los efectos fijos y de los efectos aleatorios.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{fixed}\OtherTok{=}\ConstantTok{NULL}
-\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\DecValTok{4}\NormalTok{)\{}
-\NormalTok{  fixed}\OtherTok{=}\FunctionTok{rbind}\NormalTok{(fixed,}\FunctionTok{as.data.frame}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{marginals.fixed[[i]]))}
-\NormalTok{\}}
-\NormalTok{fixed}
-\CommentTok{\#\textgreater{}            x            y}
-\CommentTok{\#\textgreater{} 1   74.33659 2.030611e{-}05}
-\CommentTok{\#\textgreater{} 2   75.78705 1.357323e{-}04}
-\CommentTok{\#\textgreater{} 3   77.62177 1.164368e{-}03}
-\CommentTok{\#\textgreater{} 4   79.76863 9.779470e{-}03}
-\CommentTok{\#\textgreater{} 5   80.74987 2.220118e{-}02}
-\CommentTok{\#\textgreater{} 6   81.56739 4.037222e{-}02}
-\CommentTok{\#\textgreater{} 7   82.48144 7.096317e{-}02}
-\CommentTok{\#\textgreater{} 8   83.08280 9.613228e{-}02}
-\CommentTok{\#\textgreater{} 9   83.55309 1.170101e{-}01}
-\CommentTok{\#\textgreater{} 10  83.95194 1.341712e{-}01}
-\CommentTok{\#\textgreater{} 11  84.30699 1.479577e{-}01}
-\CommentTok{\#\textgreater{} 12  84.63378 1.585861e{-}01}
-\CommentTok{\#\textgreater{} 13  84.78980 1.627630e{-}01}
-\CommentTok{\#\textgreater{} 14  84.94221 1.661987e{-}01}
-\CommentTok{\#\textgreater{} 15  85.09186 1.689024e{-}01}
-\CommentTok{\#\textgreater{} 16  85.23944 1.708801e{-}01}
-\CommentTok{\#\textgreater{} 17  85.29804 1.714690e{-}01}
-\CommentTok{\#\textgreater{} 18  85.35646 1.719426e{-}01}
-\CommentTok{\#\textgreater{} 19  85.38562 1.721363e{-}01}
-\CommentTok{\#\textgreater{} 20  85.41475 1.723011e{-}01}
-\CommentTok{\#\textgreater{} 21  85.47294 1.725445e{-}01}
-\CommentTok{\#\textgreater{} 22  85.53106 1.726726e{-}01}
-\CommentTok{\#\textgreater{} 23  85.58916 1.726855e{-}01}
-\CommentTok{\#\textgreater{} 24  85.64728 1.725830e{-}01}
-\CommentTok{\#\textgreater{} 25  85.67635 1.724884e{-}01}
-\CommentTok{\#\textgreater{} 26  85.70544 1.723650e{-}01}
-\CommentTok{\#\textgreater{} 27  85.76370 1.720312e{-}01}
-\CommentTok{\#\textgreater{} 28  85.82210 1.715812e{-}01}
-\CommentTok{\#\textgreater{} 29  85.96892 1.699456e{-}01}
-\CommentTok{\#\textgreater{} 30  86.11751 1.675737e{-}01}
-\CommentTok{\#\textgreater{} 31  86.26853 1.644555e{-}01}
-\CommentTok{\#\textgreater{} 32  86.42280 1.605787e{-}01}
-\CommentTok{\#\textgreater{} 33  86.74485 1.504805e{-}01}
-\CommentTok{\#\textgreater{} 34  87.09320 1.370977e{-}01}
-\CommentTok{\#\textgreater{} 35  87.48262 1.201661e{-}01}
-\CommentTok{\#\textgreater{} 36  87.93938 9.927727e{-}02}
-\CommentTok{\#\textgreater{} 37  88.51993 7.375585e{-}02}
-\CommentTok{\#\textgreater{} 38  89.39597 4.228720e{-}02}
-\CommentTok{\#\textgreater{} 39  90.17464 2.336039e{-}02}
-\CommentTok{\#\textgreater{} 40  91.10584 1.031342e{-}02}
-\CommentTok{\#\textgreater{} 41  93.14554 1.219365e{-}03}
-\CommentTok{\#\textgreater{} 42  94.91260 1.383652e{-}04}
-\CommentTok{\#\textgreater{} 43  96.40410 1.813512e{-}05}
-\CommentTok{\#\textgreater{} 44  72.35137 2.027775e{-}05}
-\CommentTok{\#\textgreater{} 45  73.80241 1.357513e{-}04}
-\CommentTok{\#\textgreater{} 46  75.63644 1.164949e{-}03}
-\CommentTok{\#\textgreater{} 47  77.78206 9.785538e{-}03}
-\CommentTok{\#\textgreater{} 48  78.76269 2.221485e{-}02}
-\CommentTok{\#\textgreater{} 49  79.57972 4.039563e{-}02}
-\CommentTok{\#\textgreater{} 50  80.49327 7.099902e{-}02}
-\CommentTok{\#\textgreater{} 51  81.09435 9.617439e{-}02}
-\CommentTok{\#\textgreater{} 52  81.56445 1.170543e{-}01}
-\CommentTok{\#\textgreater{} 53  81.96316 1.342144e{-}01}
-\CommentTok{\#\textgreater{} 54  82.31811 1.479975e{-}01}
-\CommentTok{\#\textgreater{} 55  82.64481 1.586208e{-}01}
-\CommentTok{\#\textgreater{} 56  82.80080 1.627947e{-}01}
-\CommentTok{\#\textgreater{} 57  82.95319 1.662271e{-}01}
-\CommentTok{\#\textgreater{} 58  83.10282 1.689272e{-}01}
-\CommentTok{\#\textgreater{} 59  83.25037 1.709011e{-}01}
-\CommentTok{\#\textgreater{} 60  83.30897 1.714885e{-}01}
-\CommentTok{\#\textgreater{} 61  83.36738 1.719605e{-}01}
-\CommentTok{\#\textgreater{} 62  83.39654 1.721533e{-}01}
-\CommentTok{\#\textgreater{} 63  83.42567 1.723174e{-}01}
-\CommentTok{\#\textgreater{} 64  83.48386 1.725592e{-}01}
-\CommentTok{\#\textgreater{} 65  83.54196 1.726857e{-}01}
-\CommentTok{\#\textgreater{} 66  83.60006 1.726969e{-}01}
-\CommentTok{\#\textgreater{} 67  83.65818 1.725928e{-}01}
-\CommentTok{\#\textgreater{} 68  83.68725 1.724974e{-}01}
-\CommentTok{\#\textgreater{} 69  83.71634 1.723731e{-}01}
-\CommentTok{\#\textgreater{} 70  83.77459 1.720376e{-}01}
-\CommentTok{\#\textgreater{} 71  83.83299 1.715860e{-}01}
-\CommentTok{\#\textgreater{} 72  83.97981 1.699462e{-}01}
-\CommentTok{\#\textgreater{} 73  84.12839 1.675703e{-}01}
-\CommentTok{\#\textgreater{} 74  84.27942 1.644481e{-}01}
-\CommentTok{\#\textgreater{} 75  84.43370 1.605674e{-}01}
-\CommentTok{\#\textgreater{} 76  84.75578 1.504621e{-}01}
-\CommentTok{\#\textgreater{} 77  85.10418 1.370733e{-}01}
-\CommentTok{\#\textgreater{} 78  85.49369 1.201373e{-}01}
-\CommentTok{\#\textgreater{} 79  85.95057 9.924673e{-}02}
-\CommentTok{\#\textgreater{} 80  86.53132 7.372720e{-}02}
-\CommentTok{\#\textgreater{} 81  87.40775 4.226638e{-}02}
-\CommentTok{\#\textgreater{} 82  88.18683 2.334728e{-}02}
-\CommentTok{\#\textgreater{} 83  89.11857 1.030715e{-}02}
-\CommentTok{\#\textgreater{} 84  91.15952 1.218668e{-}03}
-\CommentTok{\#\textgreater{} 85  92.92745 1.383207e{-}04}
-\CommentTok{\#\textgreater{} 86  94.41865 1.815604e{-}05}
-\CommentTok{\#\textgreater{} 87  73.34399 2.029191e{-}05}
-\CommentTok{\#\textgreater{} 88  74.79474 1.357418e{-}04}
-\CommentTok{\#\textgreater{} 89  76.62911 1.164659e{-}03}
-\CommentTok{\#\textgreater{} 90  78.77534 9.782508e{-}03}
-\CommentTok{\#\textgreater{} 91  79.75628 2.220803e{-}02}
-\CommentTok{\#\textgreater{} 92  80.57356 4.038394e{-}02}
-\CommentTok{\#\textgreater{} 93  81.48736 7.098113e{-}02}
-\CommentTok{\#\textgreater{} 94  82.08857 9.615338e{-}02}
-\CommentTok{\#\textgreater{} 95  82.55878 1.170322e{-}01}
-\CommentTok{\#\textgreater{} 96  82.95755 1.341928e{-}01}
-\CommentTok{\#\textgreater{} 97  83.31255 1.479777e{-}01}
-\CommentTok{\#\textgreater{} 98  83.63930 1.586035e{-}01}
-\CommentTok{\#\textgreater{} 99  83.79530 1.627789e{-}01}
-\CommentTok{\#\textgreater{} 100 83.94770 1.662130e{-}01}
-\CommentTok{\#\textgreater{} 101 84.09734 1.689149e{-}01}
-\CommentTok{\#\textgreater{} 102 84.24491 1.708907e{-}01}
-\CommentTok{\#\textgreater{} 103 84.30351 1.714788e{-}01}
-\CommentTok{\#\textgreater{} 104 84.36192 1.719516e{-}01}
-\CommentTok{\#\textgreater{} 105 84.39108 1.721449e{-}01}
-\CommentTok{\#\textgreater{} 106 84.42021 1.723093e{-}01}
-\CommentTok{\#\textgreater{} 107 84.47840 1.725519e{-}01}
-\CommentTok{\#\textgreater{} 108 84.53651 1.726792e{-}01}
-\CommentTok{\#\textgreater{} 109 84.59461 1.726913e{-}01}
-\CommentTok{\#\textgreater{} 110 84.65273 1.725880e{-}01}
-\CommentTok{\#\textgreater{} 111 84.68180 1.724930e{-}01}
-\CommentTok{\#\textgreater{} 112 84.71089 1.723691e{-}01}
-\CommentTok{\#\textgreater{} 113 84.76914 1.720345e{-}01}
-\CommentTok{\#\textgreater{} 114 84.82754 1.715836e{-}01}
-\CommentTok{\#\textgreater{} 115 84.97437 1.699459e{-}01}
-\CommentTok{\#\textgreater{} 116 85.12295 1.675720e{-}01}
-\CommentTok{\#\textgreater{} 117 85.27398 1.644519e{-}01}
-\CommentTok{\#\textgreater{} 118 85.42825 1.605731e{-}01}
-\CommentTok{\#\textgreater{} 119 85.75032 1.504713e{-}01}
-\CommentTok{\#\textgreater{} 120 86.09869 1.370856e{-}01}
-\CommentTok{\#\textgreater{} 121 86.48815 1.201518e{-}01}
-\CommentTok{\#\textgreater{} 122 86.94498 9.926203e{-}02}
-\CommentTok{\#\textgreater{} 123 87.52562 7.374155e{-}02}
-\CommentTok{\#\textgreater{} 124 88.40186 4.227681e{-}02}
-\CommentTok{\#\textgreater{} 125 89.18073 2.335384e{-}02}
-\CommentTok{\#\textgreater{} 126 90.11220 1.031029e{-}02}
-\CommentTok{\#\textgreater{} 127 92.15253 1.219017e{-}03}
-\CommentTok{\#\textgreater{} 128 93.92002 1.383430e{-}04}
-\CommentTok{\#\textgreater{} 129 95.41137 1.814556e{-}05}
-\CommentTok{\#\textgreater{} 130 77.31444 2.034869e{-}05}
-\CommentTok{\#\textgreater{} 131 78.76401 1.357042e{-}04}
-\CommentTok{\#\textgreater{} 132 80.59977 1.163500e{-}03}
-\CommentTok{\#\textgreater{} 133 82.74847 9.770391e{-}03}
-\CommentTok{\#\textgreater{} 134 83.73063 2.218069e{-}02}
-\CommentTok{\#\textgreater{} 135 84.54889 4.033710e{-}02}
-\CommentTok{\#\textgreater{} 136 85.46368 7.090934e{-}02}
-\CommentTok{\#\textgreater{} 137 86.06546 9.606897e{-}02}
-\CommentTok{\#\textgreater{} 138 86.53605 1.169436e{-}01}
-\CommentTok{\#\textgreater{} 139 86.93510 1.341062e{-}01}
-\CommentTok{\#\textgreater{} 140 87.29031 1.478976e{-}01}
-\CommentTok{\#\textgreater{} 141 87.61722 1.585336e{-}01}
-\CommentTok{\#\textgreater{} 142 87.77329 1.627150e{-}01}
-\CommentTok{\#\textgreater{} 143 87.92574 1.661558e{-}01}
-\CommentTok{\#\textgreater{} 144 88.07543 1.688648e{-}01}
-\CommentTok{\#\textgreater{} 145 88.22304 1.708482e{-}01}
-\CommentTok{\#\textgreater{} 146 88.28165 1.714394e{-}01}
-\CommentTok{\#\textgreater{} 147 88.34008 1.719153e{-}01}
-\CommentTok{\#\textgreater{} 148 88.36924 1.721102e{-}01}
-\CommentTok{\#\textgreater{} 149 88.39838 1.722762e{-}01}
-\CommentTok{\#\textgreater{} 150 88.45658 1.725220e{-}01}
-\CommentTok{\#\textgreater{} 151 88.51470 1.726526e{-}01}
-\CommentTok{\#\textgreater{} 152 88.57281 1.726679e{-}01}
-\CommentTok{\#\textgreater{} 153 88.63093 1.725679e{-}01}
-\CommentTok{\#\textgreater{} 154 88.66001 1.724746e{-}01}
-\CommentTok{\#\textgreater{} 155 88.68910 1.723523e{-}01}
-\CommentTok{\#\textgreater{} 156 88.74736 1.720210e{-}01}
-\CommentTok{\#\textgreater{} 157 88.80576 1.715735e{-}01}
-\CommentTok{\#\textgreater{} 158 88.95259 1.699441e{-}01}
-\CommentTok{\#\textgreater{} 159 89.10117 1.675784e{-}01}
-\CommentTok{\#\textgreater{} 160 89.25219 1.644662e{-}01}
-\CommentTok{\#\textgreater{} 161 89.40645 1.605952e{-}01}
-\CommentTok{\#\textgreater{} 162 89.72845 1.505078e{-}01}
-\CommentTok{\#\textgreater{} 163 90.07673 1.371341e{-}01}
-\CommentTok{\#\textgreater{} 164 90.46603 1.202089e{-}01}
-\CommentTok{\#\textgreater{} 165 90.92261 9.932285e{-}02}
-\CommentTok{\#\textgreater{} 166 91.50285 7.379869e{-}02}
-\CommentTok{\#\textgreater{} 167 92.37832 4.231838e{-}02}
-\CommentTok{\#\textgreater{} 168 93.15637 2.338006e{-}02}
-\CommentTok{\#\textgreater{} 169 94.08675 1.032285e{-}02}
-\CommentTok{\#\textgreater{} 170 96.12458 1.220413e{-}03}
-\CommentTok{\#\textgreater{} 171 97.89032 1.384329e{-}04}
-\CommentTok{\#\textgreater{} 172 99.38228 1.810403e{-}05}
-\end{Highlighting}
-\end{Shaded}
 
 Veamos cómo resolver las inferencias a través de un ejemplo disponible en \href{https://www.r-bloggers.com/2019/09/bayesian-linear-mixed-models-random-intercepts-slopes-and-missing-data/}{R-bloggers}, proporcionado por \href{https://curran.web.unc.edu/}{Patrick Curran} y descargable desde \href{https://github.com/MultiLevelAnalysis/Datasets-third-edition-Multilevel-book/blob/master/chapter\%205/Curran/CurranLong.sav}{Github}. Se refieren estos datos, a un estudio con 405 niños en los dos primeros años de la escuela infantil, medidos a lo largo de cuatro instantes equidistantes (no medidos todos en todos los sujetos) para registrar su progreso en lectura y en comportamiento antisocial. Nos centramos aquí exclusivamente en intentar predecir los progresos en lectura (variable \texttt{read}) a partir de su estimulación cognitiva en casa (\texttt{homecog}), teniendo en cuenta la existencia de medidas repetidas para cada sujeto (identificado como \texttt{id}) en los 4 instantes de medición (\texttt{occasion}).
 
@@ -2451,9 +2162,14 @@ Como base vamos a asumir normalidad en la respuesta de un sujeto \(i\) en un ins
 
 A continuación, planteamos distintas alternativas de modelización que dan lugar a diversos predictores lineales. En los primeros modelos prescindimos de momento del efecto de la estimulación cognitiva.
 
-\textbf{M0}. Solo estamos interesados en cuantificar el nivel general de habilidades lectoras, pero teniendo en cuenta posibles diferencias entre los niños. No nos interesan sin embargo, dichas diferencias. Pensamos pues en utilizar la variable \texttt{id} como efecto aleatorio y modelizar
+\hypertarget{m0-interceptaciones-distintas-por-sujetos}{%
+\subsection{M0: interceptaciones distintas por sujetos}\label{m0-interceptaciones-distintas-por-sujetos}}
+
+Solo estamos interesados en cuantificar el nivel general de habilidades lectoras, pero teniendo en cuenta posibles diferencias entre los niños. No nos interesan sin embargo, dichas diferencias. Pensamos pues en utilizar la variable \texttt{id} como efecto aleatorio y modelizar el predictor lineal con:
 \[\eta_{ij}=\eta_i=\theta + \alpha_i^{id}\]
-con \(\alpha_i^{id} \sim N(0,\sigma_{\alpha}^2)\) y a priori \(\tau_{\alpha} \sim Ga(0.001,0.001)\).
+donde \(\alpha_i^{id} \sim N(0,\sigma_{\alpha}^2)\) y a priori \(\tau_{\alpha} \sim Ga(0.001,0.001)\).
+
+El modelo que ajustamos genera la inferencia posterior para un efecto fijo de interacción, \(\theta\), y dos varianzas (precisiones) que explican la variabilidad existente: debida a los datos \(\sigma^2\), y debida a la variabilidad entre los sujetos \(\sigma_{\alpha}^2\). En la Figura \ref{fig:curranm0} se muestran las distribuciones posteriores obtenidas sobre efectos fijos y varianzas.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2463,25 +2179,25 @@ con \(\alpha_i^{id} \sim N(0,\sigma_{\alpha}^2)\) y a priori \(\tau_{\alpha} \si
 \NormalTok{fit}\OtherTok{=}\NormalTok{fit0}
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.fixed}
 \CommentTok{\#\textgreater{}                 mean         sd 0.025quant 0.5quant}
-\CommentTok{\#\textgreater{} (Intercept) 4.114053 0.05109346   4.013248 4.114248}
+\CommentTok{\#\textgreater{} (Intercept) 4.114053 0.05109306   4.013248 4.114248}
 \CommentTok{\#\textgreater{}             0.975quant mode          kld}
-\CommentTok{\#\textgreater{} (Intercept)   4.213757   NA 1.440195e{-}09}
+\CommentTok{\#\textgreater{} (Intercept)   4.213756   NA 1.440557e{-}09}
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.hyperpar}
 \CommentTok{\#\textgreater{}                                              mean}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.4181767}
-\CommentTok{\#\textgreater{} Precision for id                        3.7355177}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.4182785}
+\CommentTok{\#\textgreater{} Precision for id                        3.7326816}
 \CommentTok{\#\textgreater{}                                                 sd}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.01924267}
-\CommentTok{\#\textgreater{} Precision for id                        1.07498923}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.01924282}
+\CommentTok{\#\textgreater{} Precision for id                        1.07716432}
 \CommentTok{\#\textgreater{}                                         0.025quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations  0.3809534}
-\CommentTok{\#\textgreater{} Precision for id                         2.1867716}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations  0.3810323}
+\CommentTok{\#\textgreater{} Precision for id                         2.1871261}
 \CommentTok{\#\textgreater{}                                          0.5quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.4179702}
-\CommentTok{\#\textgreater{} Precision for id                        3.5464628}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.4180809}
+\CommentTok{\#\textgreater{} Precision for id                        3.5412659}
 \CommentTok{\#\textgreater{}                                         0.975quant mode}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations  0.4567565   NA}
-\CommentTok{\#\textgreater{} Precision for id                         6.3647887   NA}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations  0.4568346   NA}
+\CommentTok{\#\textgreater{} Precision for id                         6.3715903   NA}
 
 \NormalTok{nfixed}\OtherTok{=}\FunctionTok{length}\NormalTok{(}\FunctionTok{names}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{marginals.fixed))}
 \NormalTok{nhyp}\OtherTok{=}\FunctionTok{length}\NormalTok{(}\FunctionTok{names}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{marginals.hyperpar))}
@@ -2505,9 +2221,13 @@ con \(\alpha_i^{id} \sim N(0,\sigma_{\alpha}^2)\) y a priori \(\tau_{\alpha} \si
 \end{Highlighting}
 \end{Shaded}
 
+\begin{figure}
+\centering
 \includegraphics{02-anova_files/figure-latex/curranm0-1.pdf}
+\caption{\label{fig:curranm0}Distribuciones posteriores para el modelo con interceptaciones aleatorias por sujeto.}
+\end{figure}
 
-La matriz de diseño \(Z\) asociada a los efectos aleatorios se obtiene con la función \texttt{model.matrix}, y la podemos utilizar para ajustar el modelo con \texttt{inla}. Para ello habremos de definir un nuevo índice para todos los registros de la base de datos, y aplicar sobre ellos la matriz de efectos aleatorios:
+La matriz de diseño \(Z\) asociada a los efectos aleatorios se obtiene con la función \texttt{model.matrix}, y la podemos utilizar también para ajustar el modelo con \texttt{inla}, sustituyendo la modelización \texttt{model="iid"} por \texttt{model="z"} en la especificación de los efectos aleatorios. Para ello habremos de definir un nuevo índice para todos los registros de la base de datos, y aplicar sobre ellos la matriz de efectos aleatorios:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2520,24 +2240,24 @@ La matriz de diseño \(Z\) asociada a los efectos aleatorios se obtiene con la f
 \CommentTok{\#\textgreater{}   Use this model with extra care!!! Further warnings are disabled.}
 \NormalTok{fit00}\SpecialCharTok{$}\NormalTok{summary.hyperpar}
 \CommentTok{\#\textgreater{}                                              mean}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.4182615}
-\CommentTok{\#\textgreater{} Precision for ID                        3.7319300}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.4180811}
+\CommentTok{\#\textgreater{} Precision for ID                        3.7326069}
 \CommentTok{\#\textgreater{}                                                 sd}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.01928087}
-\CommentTok{\#\textgreater{} Precision for ID                        1.07622200}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.01955321}
+\CommentTok{\#\textgreater{} Precision for ID                        1.07788425}
 \CommentTok{\#\textgreater{}                                         0.025quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations  0.3809454}
-\CommentTok{\#\textgreater{} Precision for ID                         2.1865180}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations  0.3801053}
+\CommentTok{\#\textgreater{} Precision for ID                         2.1934543}
 \CommentTok{\#\textgreater{}                                          0.5quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.4180623}
-\CommentTok{\#\textgreater{} Precision for ID                        3.5410230}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 0.4179313}
+\CommentTok{\#\textgreater{} Precision for ID                        3.5390516}
 \CommentTok{\#\textgreater{}                                         0.975quant mode}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations  0.4568972   NA}
-\CommentTok{\#\textgreater{} Precision for ID                         6.3675389   NA}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations  0.4571309   NA}
+\CommentTok{\#\textgreater{} Precision for ID                         6.3797445   NA}
 \end{Highlighting}
 \end{Shaded}
 
-La diferencia entre ajustar los efectos aleatorios con ``iid'' o con ``z'' es que con la primera opción tendremos tantos efectos aleatorios como están definidos en el modelo. Sin embargo, la modelización con ``z'' producirá tantos efectos aleatorios como datos, con una única precisión/varianza asociada. Generalmente ambos modelos producen unas medias posterioris de los efectos aleatorios bastante parecidas.
+La diferencia entre ajustar los efectos aleatorios con ``iid'' o con ``z'' es que con la primera opción tendremos tantos efectos aleatorios como están definidos en el modelo. Sin embargo, la modelización con ``z'' producirá tantos efectos aleatorios como datos, con una única precisión/varianza asociada. Generalmente ambos modelos producen unas medias posterioris de los efectos aleatorios bastante parecidas, como se muestra en la Figura \ref{fig:curranm0b}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2550,9 +2270,16 @@ La diferencia entre ajustar los efectos aleatorios con ``iid'' o con ``z'' es qu
 \end{Highlighting}
 \end{Shaded}
 
+\begin{figure}
+\centering
 \includegraphics{02-anova_files/figure-latex/curranm0b-1.pdf}
+\caption{\label{fig:curranm0b}Concordancia entre las medias posteriores de los efectos aleatorios para el modelo iid y el especificado con la matriz de diseño para los efectos aleatorios.}
+\end{figure}
 
-\textbf{M1}. Dado que tenemos varias mediciones de un mismo sujeto, es razonable asumir que, por defecto, las habilidades cognitivas propias de un sujeto, \(\alpha_i^{id}\), influyen en sus habilidades lectoras.
+\hypertarget{m1-interceptaciones-distintas-por-sujetos-e-instantes}{%
+\subsection{M1: interceptaciones distintas por sujetos e instantes}\label{m1-interceptaciones-distintas-por-sujetos-e-instantes}}
+
+Dado que tenemos varias mediciones de un mismo sujeto, es razonable asumir que, por defecto, las habilidades cognitivas propias de un sujeto, \(\alpha_i^{id}\), influyen en sus habilidades lectoras.
 
 \[\eta_{ij}=\theta + \alpha_i^{id}\]
 
@@ -2576,6 +2303,8 @@ con
 \tau_{\beta}=1/\sigma_{\beta}^2 &\sim&Ga(0.001,0.001)
 \end{eqnarray*}
 
+En la Figura \ref{fig:curran2} se muestran las distribuciones posteriores obtenidas sobre efectos fijos y varianzas.
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{prec.prior}\OtherTok{=}\FunctionTok{list}\NormalTok{(}\AttributeTok{prec=}\FunctionTok{list}\NormalTok{(}\AttributeTok{param=}\FunctionTok{c}\NormalTok{(}\FloatTok{0.001}\NormalTok{,}\FloatTok{0.001}\NormalTok{)))}
@@ -2583,27 +2312,27 @@ con
 \NormalTok{fit1}\OtherTok{=}\FunctionTok{inla}\NormalTok{(formula1,}\AttributeTok{family=}\StringTok{"gaussian"}\NormalTok{,}\AttributeTok{data=}\NormalTok{curran\_dat)}
 \NormalTok{fit}\OtherTok{=}\NormalTok{fit1}
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.fixed}
-\CommentTok{\#\textgreater{}                 mean       sd 0.025quant 0.5quant}
-\CommentTok{\#\textgreater{} (Intercept) 4.353434 0.889756    2.47961 4.353368}
-\CommentTok{\#\textgreater{}             0.975quant mode          kld}
-\CommentTok{\#\textgreater{} (Intercept)   6.227631   NA 0.0002595765}
+\CommentTok{\#\textgreater{}                 mean     sd 0.025quant 0.5quant 0.975quant}
+\CommentTok{\#\textgreater{} (Intercept) 4.353429 0.8501   2.582487 4.353381   6.124708}
+\CommentTok{\#\textgreater{}             mode          kld}
+\CommentTok{\#\textgreater{} (Intercept)   NA 0.0004859045}
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.hyperpar}
 \CommentTok{\#\textgreater{}                                              mean        sd}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 2.4595751 0.1147768}
-\CommentTok{\#\textgreater{} Precision for id                        1.2681469 0.1053370}
-\CommentTok{\#\textgreater{} Precision for occasion                  0.4871471 0.3919959}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 2.4704987 0.1102818}
+\CommentTok{\#\textgreater{} Precision for id                        1.2807519 0.1012373}
+\CommentTok{\#\textgreater{} Precision for occasion                  0.4165207 0.3047343}
 \CommentTok{\#\textgreater{}                                         0.025quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 2.23998977}
-\CommentTok{\#\textgreater{} Precision for id                        1.07269487}
-\CommentTok{\#\textgreater{} Precision for occasion                  0.05849255}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 2.26386738}
+\CommentTok{\#\textgreater{} Precision for id                        1.09977732}
+\CommentTok{\#\textgreater{} Precision for occasion                  0.04845845}
 \CommentTok{\#\textgreater{}                                          0.5quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 2.4573888}
-\CommentTok{\#\textgreater{} Precision for id                        1.2640450}
-\CommentTok{\#\textgreater{} Precision for occasion                  0.3835039}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 2.4666179}
+\CommentTok{\#\textgreater{} Precision for id                        1.2741962}
+\CommentTok{\#\textgreater{} Precision for occasion                  0.3354912}
 \CommentTok{\#\textgreater{}                                         0.975quant mode}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations   2.692123   NA}
-\CommentTok{\#\textgreater{} Precision for id                          1.487437   NA}
-\CommentTok{\#\textgreater{} Precision for occasion                    1.509043   NA}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations   2.698610   NA}
+\CommentTok{\#\textgreater{} Precision for id                          1.498455   NA}
+\CommentTok{\#\textgreater{} Precision for occasion                    1.190375   NA}
 
 \NormalTok{nfixed}\OtherTok{=}\FunctionTok{length}\NormalTok{(}\FunctionTok{names}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{marginals.fixed))}
 \NormalTok{nhyp}\OtherTok{=}\FunctionTok{length}\NormalTok{(}\FunctionTok{names}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{marginals.hyperpar))}
@@ -2627,13 +2356,16 @@ con
 \end{Highlighting}
 \end{Shaded}
 
+\begin{figure}
+\centering
 \includegraphics{02-anova_files/figure-latex/curran2-1.pdf}
+\caption{\label{fig:curran2}Distribuciones posteriores para el modelo con interceptaciones aleatorias por sujeto y tiempo.}
+\end{figure}
 
-\begin{itemize}
-\tightlist
-\item
-  \textbf{M2}. Por otro lado, y en base a la Figura \ref{fig:curran3} podríamos considerar el efecto del tiempo que transcurre desde el inicio del estudio (\texttt{t=time}), como una covariable numérica que afecta de modo lineal a las habilidades lectoras.
-\end{itemize}
+\hypertarget{m2-interceptaciones-distintas-por-sujeto-y-pendiente-comuxfan}{%
+\subsection{M2: interceptaciones distintas por sujeto y pendiente común}\label{m2-interceptaciones-distintas-por-sujeto-y-pendiente-comuxfan}}
+
+Por otro lado, y en base a la Figura \ref{fig:curran3} podríamos considerar el efecto del tiempo que transcurre desde el inicio del estudio (\texttt{t=time}), como una covariable numérica que afecta de modo lineal a las habilidades lectoras.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2650,7 +2382,7 @@ con
 
 Podríamos seguir planteando un efecto aleatorio del sujeto sobre sus resultados lectores, y un efecto fijo asociado al tiempo transcurrido hasta el instante \(t_j=j\), esto es, una interceptación aleatoria y una pendiente fija.
 
-\[\eta_{ij}=\theta + \alpha_i^{id} + \beta \cdot t_j \]
+\[\eta_{ij}=\theta + \alpha_i^{id} + \beta \cdot t_{ij} \]
 con
 \begin{eqnarray*}
 \text{Nivel II} && \\
@@ -2661,6 +2393,8 @@ con
 \tau_{\alpha}=1/\sigma_{\alpha}^2 &\sim& Ga(0.001,0.001) 
 \end{eqnarray*}
 
+En la Figura \ref{fig:curran4} se muestran las distribuciones posteriores obtenidas sobre efectos fijos y varianzas.
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{prec.prior}\OtherTok{=}\FunctionTok{list}\NormalTok{(}\AttributeTok{prec=}\FunctionTok{list}\NormalTok{(}\AttributeTok{param=}\FunctionTok{c}\NormalTok{(}\FloatTok{0.001}\NormalTok{,}\FloatTok{0.001}\NormalTok{)))}
@@ -2669,21 +2403,21 @@ con
 \NormalTok{fit}\OtherTok{=}\NormalTok{fit2}
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.fixed}
 \CommentTok{\#\textgreater{}                 mean         sd 0.025quant 0.5quant}
-\CommentTok{\#\textgreater{} (Intercept) 2.703744 0.05265826   2.600420 2.703750}
-\CommentTok{\#\textgreater{} time        1.101341 0.01758962   1.066827 1.101345}
+\CommentTok{\#\textgreater{} (Intercept) 2.703744 0.05265822   2.600420 2.703750}
+\CommentTok{\#\textgreater{} time        1.101341 0.01758964   1.066827 1.101345}
 \CommentTok{\#\textgreater{}             0.975quant mode          kld}
-\CommentTok{\#\textgreater{} (Intercept)   2.807034   NA 1.185142e{-}11}
-\CommentTok{\#\textgreater{} time          1.135834   NA 5.561966e{-}12}
+\CommentTok{\#\textgreater{} (Intercept)   2.807034   NA 1.225182e{-}11}
+\CommentTok{\#\textgreater{} time          1.135834   NA 5.561958e{-}12}
 \NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.hyperpar}
 \CommentTok{\#\textgreater{}                                             mean        sd}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations 2.174407 0.1013782}
-\CommentTok{\#\textgreater{} Precision for id                        1.285604 0.1091225}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 2.174387 0.1013879}
+\CommentTok{\#\textgreater{} Precision for id                        1.285625 0.1091213}
 \CommentTok{\#\textgreater{}                                         0.025quant 0.5quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations   1.980419 2.172490}
-\CommentTok{\#\textgreater{} Precision for id                          1.083308 1.281299}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations   1.980400 2.172463}
+\CommentTok{\#\textgreater{} Precision for id                          1.083291 1.281336}
 \CommentTok{\#\textgreater{}                                         0.975quant mode}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations   2.379770   NA}
-\CommentTok{\#\textgreater{} Precision for id                          1.512947   NA}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations   2.379789   NA}
+\CommentTok{\#\textgreater{} Precision for id                          1.512927   NA}
 
 \NormalTok{nfixed}\OtherTok{=}\FunctionTok{length}\NormalTok{(}\FunctionTok{names}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{marginals.fixed))}
 \NormalTok{nhyp}\OtherTok{=}\FunctionTok{length}\NormalTok{(}\FunctionTok{names}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{marginals.hyperpar))}
@@ -2707,173 +2441,445 @@ con
 \end{Highlighting}
 \end{Shaded}
 
+\begin{figure}
+\centering
 \includegraphics{02-anova_files/figure-latex/curran4-1.pdf}
+\caption{\label{fig:curran4}Distribuciones posteriores para el modelo con interceptaciones aleatorias por sujeto y efecto fijo del tiempo.}
+\end{figure}
 
-\begin{itemize}
-\tightlist
-\item
-  \textbf{M3}. Siendo más estrictos al mirar la Figura \ref{fig:curran3}, podríamos pensar que, además de tener diferentes orígenes en las habilidades lectoras para cada sujeto (interceptaciones distintas), dado el efecto lineal ascendente del tiempo sobre las habilidades lectoras de los sujetos, no todos los sujetos evolucionan al mismo ritmo, esto es, no todas las rectas son paralelas. Tendríamos entonces efectos aleatorios asociados a los sujetos, y vinculados a las interceptaciones y a las pendientes de las rectas.
-\end{itemize}
+\hypertarget{efectos-anidados}{%
+\section{Efectos anidados}\label{efectos-anidados}}
 
-\[\eta_{ij}=\theta + \alpha_i^{id} + \beta \cdot t_j + \beta_{ij}\]
+Hablamos de efectos anidados cuando cada miembro de un grupo está contenido completamente dentro de una única unidad de otro grupo. Que un factor A esté anidado en otro B, implica que cada nivel de B contiene niveles distintos de A, esto es, cada nivel de A está vinculado solo a algún nivel de B.
+
+La base de datos \texttt{eggs} en la librería \href{https://cran.r-project.org/web/packages/faraway/faraway.pdf}{\texttt{faraway}} nos resulta útil para describir este tipo de modelos con efectos anidados. Estos datos son los resultantes de un experimento para testar la consistencia en los tests de laboratorio que realizaban laboratorios distintos, técnicos distintos. Para ello se dividió en varias muestras un tarro de polvo de huevo seco homogeneizado (con idéntico contenido graso). Se enviaron 4 muestras a cada uno de los 6 laboratorios. De esas 4 muestras, 2 se etiquetaron como G y 2 como H (aun siendo idénticas). Se dieron instrucciones a los laboratorios de dar dos muestras a dos técnicos distintos. Los técnicos recibieron instrucciones de dividir sus muestras en dos partes y medir el contenido graso de cada una. Así, cada laboratorio reportó 8 mediciones del contenido graso (\texttt{Fat}), cada técnico 4 mediciones, con 2 réplicas en cada una de las dos muestras.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{data}\NormalTok{(eggs,}\AttributeTok{package=}\StringTok{"faraway"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Tenemos así en este ejemplo, a los técnicos (\texttt{Technician}) anidados en los laboratorios (\texttt{Lab}). En la Figura \ref{fig:eggs1} se muestra claramente la variación entre laboratorios, entre técnicos, y debida al efecto irreal de tener dos muestras distintas G y H (\texttt{Sample}).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(eggs,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Lab,}\AttributeTok{y=}\NormalTok{Fat))}\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{color=}\NormalTok{Technician))}\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\FunctionTok{vars}\NormalTok{(Sample))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{02-anova_files/figure-latex/eggs1-1.pdf}
+\caption{\label{fig:eggs1}Descripción de eggs: variación entre laboratorios y técnicos.}
+\end{figure}
+
+El modelo que planteamos para estimar la respuesta \(y_{ijk}\), contenido graso de la muestra \(k\) (\(k=1,2\)) del laboratorio \(i\) (\(i=1,...,6\)), por el técnico \(j\) (\(j=1,2\)) está basado como siempre, en el modelo normal, \((y_{ijk}\mu_{ijk},\sigma^2) \sim N(\mu_{ijk},\sigma^2)\), con una media o predictor lineal representado por:
+
+\[ \mu_{ijk}= \theta + \alpha_i^{lab} + \beta_{j:i}^{tec} + \gamma_{k:(j:i)}^{sam}\]
+y asumiendo las distribuciones a priori
+\begin{eqnarray*}
+\theta &\sim& N(0,1000) \\
+\tau=1/\sigma^2 &\sim& Ga(0.001,0.001) \\
+\alpha_i^{lab}&\sim& N(0,\sigma_{lab}^2); \  i = 1,...,4 \\
+\beta_{j:i}^{tec}&\sim& N(0,\sigma_{tec}^2); \  j:i = 1,...,12 \\
+\gamma_{k:(j:i)}^{sam}&\sim& N(0,\sigma_{sam}^2); \ k:(j:i)=1,...,24
+\end{eqnarray*}
+
+Para especificar en INLA los efectos anidados hemos de recurrir a la matriz del modelo, \texttt{model.matrix()}, para crear las matrices de los efectos aleatorios anidados.
+
+A continuación hemos de crear los correspondientes índices, de longitud similar a la del número de registros en la base de datos, para aplicarles las correspondientes matrices de efectos anidados, y ya proceder con el ajuste como habitualmente hacemos.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# matrices de efectos aleatorios anidados}
+\NormalTok{Zlt }\OtherTok{\textless{}{-}} \FunctionTok{as}\NormalTok{(}\FunctionTok{model.matrix}\NormalTok{( }\SpecialCharTok{\textasciitilde{}} \DecValTok{0} \SpecialCharTok{+}\NormalTok{ Lab}\SpecialCharTok{:}\NormalTok{Technician, }\AttributeTok{data =}\NormalTok{ eggs), }\StringTok{"Matrix"}\NormalTok{)}
+\NormalTok{Zlts }\OtherTok{\textless{}{-}} \FunctionTok{as}\NormalTok{(}\FunctionTok{model.matrix}\NormalTok{( }\SpecialCharTok{\textasciitilde{}} \DecValTok{0} \SpecialCharTok{+}\NormalTok{ Lab}\SpecialCharTok{:}\NormalTok{Technician}\SpecialCharTok{:}\NormalTok{Sample, }\AttributeTok{data =}\NormalTok{ eggs), }\StringTok{"Matrix"}\NormalTok{)}
+
+\CommentTok{\# índices para aplicar los efectos aleatorios}
+\NormalTok{eggs}\SpecialCharTok{$}\NormalTok{IDt }\OtherTok{=}\NormalTok{ eggs}\SpecialCharTok{$}\NormalTok{IDts }\OtherTok{=} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(eggs)}
+
+\CommentTok{\# Ajuste}
+\NormalTok{prec.prior}\OtherTok{=}\FunctionTok{list}\NormalTok{(}\AttributeTok{prec=}\FunctionTok{list}\NormalTok{(}\AttributeTok{param=}\FunctionTok{c}\NormalTok{(}\FloatTok{0.001}\NormalTok{,}\FloatTok{0.001}\NormalTok{)))}
+\NormalTok{formula }\OtherTok{=}\NormalTok{ Fat }\SpecialCharTok{\textasciitilde{}} \DecValTok{1} \SpecialCharTok{+} \FunctionTok{f}\NormalTok{(Lab,}\AttributeTok{model=}\StringTok{"iid"}\NormalTok{,}\AttributeTok{hyper=}\NormalTok{prec.prior) }\SpecialCharTok{+}
+  \FunctionTok{f}\NormalTok{(IDt,}\AttributeTok{model=}\StringTok{"z"}\NormalTok{,}\AttributeTok{Z=}\NormalTok{Zlt,}\AttributeTok{hyper=}\NormalTok{prec.prior)}\SpecialCharTok{+}
+  \FunctionTok{f}\NormalTok{(IDts,}\AttributeTok{model=}\StringTok{"z"}\NormalTok{,}\AttributeTok{Z=}\NormalTok{Zlts,}\AttributeTok{hyper=}\NormalTok{prec.prior)}
+
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{inla}\NormalTok{(formula,}\AttributeTok{data =}\NormalTok{ eggs, }
+            \AttributeTok{control.predictor =} \FunctionTok{list}\NormalTok{(}\AttributeTok{compute =} \ConstantTok{TRUE}\NormalTok{), }
+            \AttributeTok{control.family=}\FunctionTok{list}\NormalTok{(}\AttributeTok{hyper=}\NormalTok{prec.prior),}
+            \AttributeTok{control.fixed=}\FunctionTok{list}\NormalTok{(}\AttributeTok{prec.intercept=}\FloatTok{0.001}\NormalTok{))}
+\FunctionTok{round}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{summary.fixed,}\DecValTok{4}\NormalTok{)}
+\CommentTok{\#\textgreater{}               mean     sd 0.025quant 0.5quant 0.975quant}
+\CommentTok{\#\textgreater{} (Intercept) 0.3875 0.0554     0.2756   0.3875     0.4994}
+\CommentTok{\#\textgreater{}             mode kld}
+\CommentTok{\#\textgreater{} (Intercept)   NA   0}
+\FunctionTok{round}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{summary.hyperpar,}\DecValTok{4}\NormalTok{)}
+\CommentTok{\#\textgreater{}                                             mean       sd}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 142.0216  39.6765}
+\CommentTok{\#\textgreater{} Precision for Lab                       349.8811 651.0716}
+\CommentTok{\#\textgreater{} Precision for IDt                       206.0598 210.5203}
+\CommentTok{\#\textgreater{} Precision for IDts                      366.9448 335.2806}
+\CommentTok{\#\textgreater{}                                         0.025quant 0.5quant}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations    77.8346 137.4878}
+\CommentTok{\#\textgreater{} Precision for Lab                          22.4909 170.1948}
+\CommentTok{\#\textgreater{} Precision for IDt                          26.6541 144.1514}
+\CommentTok{\#\textgreater{} Precision for IDts                         59.8953 270.7312}
+\CommentTok{\#\textgreater{}                                         0.975quant mode}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations   232.9088   NA}
+\CommentTok{\#\textgreater{} Precision for Lab                        1808.4478   NA}
+\CommentTok{\#\textgreater{} Precision for IDt                         762.2898   NA}
+\CommentTok{\#\textgreater{} Precision for IDts                       1256.5560   NA}
+\end{Highlighting}
+\end{Shaded}
+
+Alternativamente podríamos crear una variable índice a partir de las matrices de efectos aleatorios, para utilizarlas con \texttt{model="iid"} para describir los efectos aleatorios:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{eggs}\SpecialCharTok{$}\NormalTok{labtech }\OtherTok{\textless{}{-}} \FunctionTok{as.factor}\NormalTok{(}\FunctionTok{apply}\NormalTok{(Zlt, }\DecValTok{1}\NormalTok{, }\ControlFlowTok{function}\NormalTok{(x)\{}\FunctionTok{names}\NormalTok{(x)[x }\SpecialCharTok{==} \DecValTok{1}\NormalTok{]\}))}
+\NormalTok{eggs}\SpecialCharTok{$}\NormalTok{labtechsamp }\OtherTok{\textless{}{-}} \FunctionTok{as.factor}\NormalTok{(}\FunctionTok{apply}\NormalTok{(Zlts, }\DecValTok{1}\NormalTok{, }\ControlFlowTok{function}\NormalTok{(x)\{}\FunctionTok{names}\NormalTok{(x)[x }\SpecialCharTok{==} \DecValTok{1}\NormalTok{]\}))}
+
+\NormalTok{formula}\OtherTok{=}\NormalTok{Fat }\SpecialCharTok{\textasciitilde{}} \DecValTok{1} \SpecialCharTok{+} \FunctionTok{f}\NormalTok{(Lab, }\AttributeTok{model =} \StringTok{"iid"}\NormalTok{, }\AttributeTok{hyper =}\NormalTok{ prec.prior) }\SpecialCharTok{+}
+    \FunctionTok{f}\NormalTok{(labtech, }\AttributeTok{model =} \StringTok{"iid"}\NormalTok{, }\AttributeTok{hyper =}\NormalTok{ prec.prior) }\SpecialCharTok{+}
+  \FunctionTok{f}\NormalTok{(labtechsamp, }\AttributeTok{model =} \StringTok{"iid"}\NormalTok{, }\AttributeTok{hyper =}\NormalTok{ prec.prior)}
+\NormalTok{fit}\OtherTok{=}\FunctionTok{inla}\NormalTok{(formula, }\AttributeTok{data =}\NormalTok{ eggs, }
+            \AttributeTok{control.predictor =} \FunctionTok{list}\NormalTok{(}\AttributeTok{compute =} \ConstantTok{TRUE}\NormalTok{), }
+            \AttributeTok{control.family=}\FunctionTok{list}\NormalTok{(}\AttributeTok{hyper=}\NormalTok{prec.prior),}
+         \AttributeTok{control.fixed=}\FunctionTok{list}\NormalTok{(}\AttributeTok{prec.intercept=}\FloatTok{0.001}\NormalTok{))}
+\FunctionTok{round}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{summary.fixed,}\DecValTok{4}\NormalTok{)}
+\CommentTok{\#\textgreater{}               mean     sd 0.025quant 0.5quant 0.975quant}
+\CommentTok{\#\textgreater{} (Intercept) 0.3875 0.0554     0.2756   0.3875     0.4994}
+\CommentTok{\#\textgreater{}             mode kld}
+\CommentTok{\#\textgreater{} (Intercept)   NA   0}
+\FunctionTok{round}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{summary.hyperpar,}\DecValTok{4}\NormalTok{)}
+\CommentTok{\#\textgreater{}                                             mean       sd}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 141.9188  39.6195}
+\CommentTok{\#\textgreater{} Precision for Lab                       349.8671 651.1093}
+\CommentTok{\#\textgreater{} Precision for labtech                   206.0269 210.4740}
+\CommentTok{\#\textgreater{} Precision for labtechsamp               366.9583 335.2964}
+\CommentTok{\#\textgreater{}                                         0.025quant 0.5quant}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations    77.8090 137.3964}
+\CommentTok{\#\textgreater{} Precision for Lab                          22.4874 170.1767}
+\CommentTok{\#\textgreater{} Precision for labtech                      26.6550 144.1327}
+\CommentTok{\#\textgreater{} Precision for labtechsamp                  59.8972 270.7399}
+\CommentTok{\#\textgreater{}                                         0.975quant mode}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations   232.6619   NA}
+\CommentTok{\#\textgreater{} Precision for Lab                        1808.4558   NA}
+\CommentTok{\#\textgreater{} Precision for labtech                     762.1349   NA}
+\CommentTok{\#\textgreater{} Precision for labtechsamp                1256.6104   NA}
+\end{Highlighting}
+\end{Shaded}
+
+El hecho de que las estimaciones de la precisión sean tan altas podría indicar que estos parámetros están identificados de modo pobre en el modelo y pueden requerir del uso de priors menos vagas.
+
+\hypertarget{datos-longitudinales}{%
+\section{Datos longitudinales}\label{datos-longitudinales}}
+
+Belenky et al.~(2003) describen un estudio de los tiempos de reacción en pacientes a los que se ha privado de sueño durante 10 días; cada día se ha ido registrando la respuesta para cada uno de los 18 sujetos en el estudio. Los datos están disponibles como \texttt{sleepstudy} en la librería \texttt{lme4} y tienen como variables el tiempo medio de reacción en microsegundos (\texttt{Reaction}), el número de días con privación de sueño (\texttt{Days}) y un id para cada sujeto (\texttt{Subject}). Los tiempos de reacción se transforman a segundos para tener mayor estabilidad. Aun así, en la Figura \ref{fig:sleep1} se aprecia que el número de días de falta de sueño afecta de modo distinto a cada sujeto.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{data}\NormalTok{(sleepstudy,}\AttributeTok{package=}\StringTok{"lme4"}\NormalTok{)}
+\NormalTok{sleepstudy}\SpecialCharTok{$}\NormalTok{Reaction }\OtherTok{\textless{}{-}}\NormalTok{ sleepstudy}\SpecialCharTok{$}\NormalTok{Reaction }\SpecialCharTok{/} \DecValTok{1000}
+\FunctionTok{ggplot}\NormalTok{(sleepstudy,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Days,}\AttributeTok{y=}\NormalTok{Reaction))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size=}\FloatTok{0.5}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method=}\StringTok{"lm"}\NormalTok{,}\AttributeTok{color=}\StringTok{"blue"}\NormalTok{,}\AttributeTok{size=}\FloatTok{0.5}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\FunctionTok{vars}\NormalTok{(Subject),}\AttributeTok{ncol=}\DecValTok{6}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{5}\NormalTok{),}
+        \AttributeTok{axis.text.y =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{5}\NormalTok{))}
+\CommentTok{\#\textgreater{} \textasciigrave{}geom\_smooth()\textasciigrave{} using formula \textquotesingle{}y \textasciitilde{} x\textquotesingle{}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{02-anova_files/figure-latex/sleep1-1.pdf}
+\caption{\label{fig:sleep1}Tiempos de reacción en función del número de días con falta de sueño (sleepstudy) para los 18 sujetos en el estudio}
+\end{figure}
+
+Un modelo razonable para estos datos es un modelo lineal que relacione los tiempos de reacción con los días, pero que tenga interceptaciones y pendientes diferentes para cada sujeto. El efecto sujeto entraría en el modelo como un efecto aleatorio y para relacionar todos los datos del mismo sujeto sin perder la asunción de independencia entre las observaciones de sujetos distintos. Si llamamos \(y=Reaction\), estaríamos planteando el siguiente modelo:
+
+\[ y_{ij}|\mu_{ij},\sigma^2 \sim N(\mu,\sigma^2), i=1,...,18; j=1, ...,10\]
+
+con
+
+\[\mu_{ij}=\theta + \alpha_i + \beta \cdot x_{ij} + \gamma_{ij}\]
+
+donde \(x=Days\), (\(theta,\beta\)) se tratarían como efectos fijos con a prioris difusas ante falta de información, y \((\alpha_i,\gamma_{ij})\) como efectos aleatorios, con normales centradas en cero y una varianza desconocida a la que habría que asignar así mismo, una distribución a priori.
 
 con
 \begin{eqnarray*}
 \text{Nivel II} && \\
-\theta &\sim & N(0,100) \\
-\beta &\sim& N(0,100) \\
-\alpha_i^{id} &\sim& N(0,\sigma_{\alpha}^2) \\
-\beta_{ij} &\sim & N(0,\sigma_{j})^2 \\
+\theta &\sim & N(0,1000) \\
+\beta &\sim& N(0,1000) \\
+\alpha_i &\sim& N(0,\sigma_{\alpha}^2) \\
+\gamma_{ij} &\sim & N(0,\sigma_{\gamma})^2 \\
+\tau=1/\sigma^2 &\sim& Ga(0.001,0.001)\\
 \text{Nivel III} && \\
 \tau_{\alpha}=1/\sigma_{\alpha}^2 &\sim& Ga(0.001,0.001) \\
-\tau_{j}=1/\sigma_{j}^2 &\sim&Ga(0.001,0.001)
-\end{eqnarray*}
+\tau_{\gamma}=1/\sigma_{\alpha}^2 &\sim& Ga(0.001,0.001) \end{eqnarray*}
 
-Además, dado que no disponemos de todas las mediciones temporales para todos los sujetos, tendremos que la variable tiempo (\texttt{time}) está anidada en la variable \texttt{id}. Este efecto de anidación que nos va a reportar la variabilidad que hay entre las pendientes distintas de los sujetos para cada instante de tiempo.
+En INLA modelizamos interceptaciones y pendientes distintas y vinculadas a un efecto aleatorio, incluyendo la interacción entre la covariable y el efecto aleatorio, como un efecto aleatorio en sí mismo, y asumiendo un modelo \texttt{iid} como habitualmente. A la hora de especificar tal interacción, es preciso ubicar en primer lugar el efecto aleatorio y detrás la covariable. Así la primera variable define el número de grupos y la segunda el valor de la covariable.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{prec.prior}\OtherTok{=}\FunctionTok{list}\NormalTok{(}\AttributeTok{prec=}\FunctionTok{list}\NormalTok{(}\AttributeTok{param=}\FunctionTok{c}\NormalTok{(}\FloatTok{0.001}\NormalTok{,}\FloatTok{0.001}\NormalTok{)))}
-\NormalTok{Z }\OtherTok{\textless{}{-}} \FunctionTok{as}\NormalTok{(}\FunctionTok{model.matrix}\NormalTok{( }\SpecialCharTok{\textasciitilde{}} \DecValTok{0} \SpecialCharTok{+}\NormalTok{ id}\SpecialCharTok{:}\NormalTok{time, }\AttributeTok{data =}\NormalTok{ curran\_dat), }\StringTok{"Matrix"}\NormalTok{)}
-\NormalTok{ID}\OtherTok{=}\DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(curran\_dat)}
-\NormalTok{formula3}\OtherTok{=}\NormalTok{ read }\SpecialCharTok{\textasciitilde{}}\NormalTok{ time }\SpecialCharTok{+} \FunctionTok{f}\NormalTok{(id,}\AttributeTok{model=}\StringTok{"iid"}\NormalTok{,}\AttributeTok{hyper=}\NormalTok{prec.prior)}\SpecialCharTok{+}
-                        \FunctionTok{f}\NormalTok{(ID,}\AttributeTok{model=}\StringTok{"z"}\NormalTok{,}\AttributeTok{Z=}\NormalTok{Z,}\AttributeTok{hyper =}\NormalTok{ prec.prior) }
-\NormalTok{fit3}\OtherTok{=}\FunctionTok{inla}\NormalTok{(formula3,}\AttributeTok{family=}\StringTok{"gaussian"}\NormalTok{,}\AttributeTok{data=}\NormalTok{curran\_dat)}
-\NormalTok{fit}\OtherTok{=}\NormalTok{fit3}
-\NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.fixed}
-\CommentTok{\#\textgreater{}                 mean         sd 0.025quant 0.5quant}
-\CommentTok{\#\textgreater{} (Intercept) 2.695707 0.04697528   2.603547 2.695705}
-\CommentTok{\#\textgreater{} time        1.120191 0.02267335   1.075918 1.120114}
-\CommentTok{\#\textgreater{}             0.975quant mode          kld}
-\CommentTok{\#\textgreater{} (Intercept)   2.787883   NA 3.994798e{-}11}
-\CommentTok{\#\textgreater{} time          1.164903   NA 1.193638e{-}09}
-\NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.hyperpar}
-\CommentTok{\#\textgreater{}                                              mean        sd}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations  3.016271 0.1690637}
-\CommentTok{\#\textgreater{} Precision for id                         1.565002 0.1432518}
-\CommentTok{\#\textgreater{} Precision for ID                        11.393950 1.7120438}
-\CommentTok{\#\textgreater{}                                         0.025quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations   2.695117}
-\CommentTok{\#\textgreater{} Precision for id                          1.301779}
-\CommentTok{\#\textgreater{} Precision for ID                          8.461430}
-\CommentTok{\#\textgreater{}                                          0.5quant}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations  3.012269}
-\CommentTok{\#\textgreater{} Precision for id                         1.558507}
-\CommentTok{\#\textgreater{} Precision for ID                        11.241642}
+\NormalTok{formula }\OtherTok{=}\NormalTok{ Reaction }\SpecialCharTok{\textasciitilde{}} \DecValTok{1} \SpecialCharTok{+} \FunctionTok{f}\NormalTok{(Subject, Days, }\AttributeTok{model =} \StringTok{"iid"}\NormalTok{,}\AttributeTok{hyper=}\NormalTok{prec.prior)}
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{inla}\NormalTok{(formula,}\AttributeTok{data =}\NormalTok{ sleepstudy, }
+            \AttributeTok{control.predictor =} \FunctionTok{list}\NormalTok{(}\AttributeTok{compute =} \ConstantTok{TRUE}\NormalTok{), }
+            \AttributeTok{control.family=}\FunctionTok{list}\NormalTok{(}\AttributeTok{hyper=}\NormalTok{prec.prior),}
+            \AttributeTok{control.fixed=}\FunctionTok{list}\NormalTok{(}\AttributeTok{prec=}\FloatTok{0.001}\NormalTok{,}\AttributeTok{prec.intercept=}\FloatTok{0.001}\NormalTok{))}
+\FunctionTok{round}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{summary.fixed,}\DecValTok{4}\NormalTok{)}
+\CommentTok{\#\textgreater{}               mean     sd 0.025quant 0.5quant 0.975quant}
+\CommentTok{\#\textgreater{} (Intercept) 0.2532 0.0041     0.2452   0.2532     0.2612}
+\CommentTok{\#\textgreater{}             mode kld}
+\CommentTok{\#\textgreater{} (Intercept)   NA   0}
+\FunctionTok{round}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{summary.hyperpar,}\DecValTok{4}\NormalTok{)}
+\CommentTok{\#\textgreater{}                                             mean        sd}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations 1170.449  130.7965}
+\CommentTok{\#\textgreater{} Precision for Subject                   3732.841 1271.1589}
+\CommentTok{\#\textgreater{}                                         0.025quant 0.5quant}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations   930.7816 1164.475}
+\CommentTok{\#\textgreater{} Precision for Subject                    1757.6093 3563.494}
 \CommentTok{\#\textgreater{}                                         0.975quant mode}
-\CommentTok{\#\textgreater{} Precision for the Gaussian observations   3.361027   NA}
-\CommentTok{\#\textgreater{} Precision for id                          1.865692   NA}
-\CommentTok{\#\textgreater{} Precision for ID                         15.189679   NA}
-
-\NormalTok{nfixed}\OtherTok{=}\FunctionTok{length}\NormalTok{(}\FunctionTok{names}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{marginals.fixed))}
-\NormalTok{nhyp}\OtherTok{=}\FunctionTok{length}\NormalTok{(}\FunctionTok{names}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{marginals.hyperpar))}
-\NormalTok{res}\OtherTok{=}\ConstantTok{NULL}
-\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{nfixed)\{}
-\NormalTok{res}\OtherTok{=}\FunctionTok{rbind}\NormalTok{(res,}\FunctionTok{data.frame}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{marginals.fixed[[i]],}
-                         \AttributeTok{id=}\FunctionTok{names}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{marginals.fixed)[i],}
-                          \AttributeTok{tipo=}\StringTok{"fixed"}\NormalTok{))}
-\NormalTok{\}}
-\ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{nhyp)\{}
-\NormalTok{  res}\OtherTok{=}\FunctionTok{rbind}\NormalTok{(res,}\FunctionTok{data.frame}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{marginals.hyperpar[[j]],}
-                         \AttributeTok{id=}\FunctionTok{names}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{marginals.hyperpar)[j],}
-                          \AttributeTok{tipo=}\StringTok{"prec"}\NormalTok{))}
-\NormalTok{\}}
-\FunctionTok{ggplot}\NormalTok{(res,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{x,}\AttributeTok{y=}\NormalTok{y))}\SpecialCharTok{+}
-  \FunctionTok{geom\_line}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{color=}\NormalTok{id))}\SpecialCharTok{+}
-  \FunctionTok{facet\_wrap}\NormalTok{(}\FunctionTok{vars}\NormalTok{(tipo),}\AttributeTok{scales=}\StringTok{"free"}\NormalTok{)}\SpecialCharTok{+}
-  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position=}\StringTok{"top"}\NormalTok{,}
-        \AttributeTok{legend.title=}\FunctionTok{element\_blank}\NormalTok{(),}
-        \AttributeTok{legend.text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{5}\NormalTok{))}
+\CommentTok{\#\textgreater{} Precision for the Gaussian observations   1445.477   NA}
+\CommentTok{\#\textgreater{} Precision for Subject                     6704.976   NA}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{02-anova_files/figure-latex/curran5-1.pdf}
+En la Figura \ref{fig:sleep2} mostramos los datos y también los valores ajustados para las rectas, en términos de las interceptaciones y pendientes medias de las correspondientes distribuciones posteriores, además de la banda de estimación que construimos con los correspondientes percentiles de las posterioris.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sleepstudy.pred }\OtherTok{=}\NormalTok{ sleepstudy }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{fitted=}\NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.fitted.values}\SpecialCharTok{$}\NormalTok{mean,}
+         \AttributeTok{hpd.low=}\NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.fitted.values}\SpecialCharTok{$}\StringTok{"0.025quant"}\NormalTok{,}
+         \AttributeTok{hpd.up=}\NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.fitted.values}\SpecialCharTok{$}\StringTok{"0.975quant"}\NormalTok{) }
+
+\FunctionTok{ggplot}\NormalTok{(sleepstudy.pred,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Days,}\AttributeTok{y=}\NormalTok{Reaction))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size=}\FloatTok{0.5}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{y=}\NormalTok{fitted),}\AttributeTok{color=}\StringTok{"blue"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{y=}\NormalTok{ hpd.low),}\AttributeTok{color=}\StringTok{"skyblue"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{y=}\NormalTok{hpd.up),}\AttributeTok{color=}\StringTok{"skyblue"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\FunctionTok{vars}\NormalTok{(Subject),}\AttributeTok{ncol=}\DecValTok{6}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{5}\NormalTok{),}
+        \AttributeTok{axis.text.y =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{5}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{02-anova_files/figure-latex/unnamed-chunk-31-1.pdf}
+
+\hypertarget{conclusiones-1}{%
+\section{Conclusiones}\label{conclusiones-1}}
+
+Hasta aquí desarrollamos los modelos lineales basados en Anova, esto es, en la integración de factores de clasificación como variables que van a explicar diferencias en la respuesta, como los efectos fijos, o variabilidad extra en los datos, como los efectos aleatorios, a veces incluso con otros predictores de tipo numérico, e incluso interaccionando con ellos.
 
 \hypertarget{glm}{%
 \chapter{Modelos lineales generalizados}\label{glm}}
 
-Los modelos lineales generalizados (Generalized Linear Models or GLM), son una clase de modelos introducidos por Nelder y Wedderburn (1972) y McCullagh y Nelder (1989), con el objetivo de extender la regresión lineal al caso en el que la variable dependiente no se distribuye necesariamente según una normal, pero su distribución todavía pertenece a la familia exponencial. Trabajamos a continuación con dos de los GLM más comunes en epidemiología y ciencias sociales: la regresión logística y la de Poisson, mostrando cómo usar R-INLA.
+Los modelos lineales generalizados (Generalized Linear Models or GLM), son una clase de modelos introducidos por Nelder y Wedderburn (1972) y McCullagh y Nelder (1989), con el objetivo de extender la regresión lineal al caso en el que la variable dependiente no se distribuya necesariamente según una normal, pero su distribución todavía pertenezca a la familia exponencial (Binomial, Poisson, Gamma, Gausiana inversa básicamente). Trabajamos a continuación con dos de los GLM más comunes en epidemiología y ciencias sociales: la regresión logística y la de Poisson, mostrando cómo usar R-INLA.
 
-Un modelo lineal general (MLG) está basado en asumir una relación lineal entre cierta transformación del valor esperado de la respuesta \(E(y_i)\) y los predictores disponibles, sean covariables, efectos fijos, efectos aleatorios, o incluso alguna función de estos.
+Un modelo lineal generalizado está basado en asumir, además de una distribución de los datos dentro de la familia exponencial, una relación lineal entre cierta transformación del valor esperado de la respuesta \(E(y_i)\) y los predictores disponibles, sean covariables, efectos fijos, efectos aleatorios, o incluso alguna función de estos.
 
-Si \(y\) representa una respuesta observada, \(x_1,x_2,..\) una serie de covariables o efectos fijos, y \(z_1,z_2,...\) efectos aleatorios, el modelo lineal general asume cierto modelo probabilístico para \(y\) dentro de la familia Gausiana, dependiente de los predictores y ciertos parámetros desconocidos \(\theta\), que se especifica en un primer nivel de la modelización.
+Si \(y\) representa una respuesta observada, \(x_1,x_2,..\) una serie de covariables o efectos fijos, y \(z_1,z_2,...\) efectos aleatorios, el valor esperado de la respuesta lo denotamos como \(\mu\), que
 
-\[E(y_i|x,z,\theta)=\gamma_i=g(\eta_i)\]
+\[E(y_i|x,z,\theta)=\mu_i\]
+Pues bien, la relación entre esta media \(\mu\) y un predictor lineal \(\eta\) que construimos a partir de los predictores disponibles, viene dado por una función link \(g\) tal que:
 
-\(\theta\) engloba todos los parámetros de la distribución de los datos, esto es, los involucrados en el predictor lineal, pero también otros como por ejemplo la varianza \(\sigma^2\) del modelo normal.
+\[g(\mu_i)=\eta_i=\mu + \beta_1 x_{1i} +   \beta_2 x_{2i} +...+ z_{1i} + z_{2i}+...\]
+
+Todos los parámetros involucrados en el predictor lineal \(\eta\) son los efectos latentes del modelo (fijos o aleatorios). Estos, junto con el resto de parámetros definidos en este primer nivel de la modelización (nivel de datos), han de modelizarse a continuación, en un segundo nivel del modelo, con sus correspondientes distribuciones a priori.
 
 El predictor lineal \(\eta\) está relacionado linealmente con los predictores según:
 \[\eta_i=\mu + \beta_1 x_{1i} +   \beta_2 x_{2i} +...+ z_{1i} + z_{2i}+...\]
 relación que se suele representar en forma matricial como
 \[\eta=X\beta + Z u\]
-Los modelos lineales que conocemos (regresión, anova, ancova, glm,modelos mixtos, aditivos,\ldots) se engloban dentro del modelo lineal general.
 
-Para obtener la distribución marginal de los valores ajustados y predichos necesitamos incorporar a la función \texttt{inla} el argumento \texttt{control.compute=list(return.marginals.predictor=TRUE)}
-El argumento \texttt{control.predictor=list(compute=TRUE)} en la función \texttt{inla} permite obtener las distribuciones predictivas para el predictor lineal, que en estos casos es distinto a los valores ajustados, \texttt{fit\$summary.fitted}. Además:
+Los modelos lineales que hemos visto antes (regresión, anova, ancova, modelos mixtos) se engloban dentro del modelo lineal generalizado.
+
+El argumento \texttt{control.predictor=list(compute=TRUE)} en la función \texttt{inla} permite obtener las distribuciones predictivas para el predictor lineal, que en estos casos es distinto a los valores ajustados, \texttt{fit\$summary.fitted}. Además para obtener la distribución marginal de los valores ajustados y predichos necesitamos incorporar a la función \texttt{inla} el argumento \texttt{control.compute=list(return.marginals.predictor=TRUE)}, y ya con todo ello podemos:
 
 \begin{itemize}
 \tightlist
 \item
-  \texttt{fit\$summary.linear.predictor} resume la inferencia posterior sobre los
+  \texttt{fit\$summary.linear.predictor} resumir la inferencia posterior sobre los
   predictores lineales (distintos a los fitted cuando hay una función \emph{link})
 \item
-  \texttt{fit\$marginals.linear.predictor} da las distribuciones posteriores marginales para los predictores lineales
+  \texttt{fit\$marginals.linear.predictor} graficar y describir las distribuciones posteriores marginales para los predictores lineales
 \end{itemize}
 
 \hypertarget{modelos-jeruxe1rquicos-bayesianos}{%
-\subsection{Modelos jerárquicos bayesianos}\label{modelos-jeruxe1rquicos-bayesianos}}
+\section{Modelos jerárquicos bayesianos}\label{modelos-jeruxe1rquicos-bayesianos}}
 
-Un modelo bayesiano se modeliza a través de un modelo jerárquico en el que en el nivel 1 se define la distribución asumida sobre la variable respuesta y que determina la verosimilitud. Esta variable depende de unos parámetros que definen los efectos fijos y aleatorios, y para los que hay que proporcionar la información previa disponible a través de una distribución a priori en el segundo nivel del modelo jerárquico. La distribución a priori para los efectos fijos generalmente será común a todos ellos, mientras que la distribución a priori para los efectos aleatorios estará vinculada a otros hiperparámetros para los que también será preciso especificar una distribución a priori en un tercer nivel de la modelización.
+A lo largo del curso ya hemos ido comentando en ocasiones, algo sobre la especificación de un modelo en varios niveles. Presentamos ya de lleno estos modelos lineales generalizados como modelos multi-nivel o modelos jerárquicos, denominados así porque se va especificando por niveles (o jerarquías) la información disponible sobre todo aquello que es desconocido, distribución de los datos y parámetros.
 
-El argumento \texttt{control.predictor=list(compute=TRUE)} en la función \texttt{inla} permite obtener las distribuciones predictivas para el predictor lineal. Así para el modelo anterior tendremos
+Un modelo bayesiano se modeliza a través de un modelo jerárquico o multinivel en el que en el nivel I se define la distribución asumida sobre la variable respuesta y que determina la verosimilitud. Esta variable depende de unos parámetros que definen los efectos fijos y aleatorios, y para los que hay que proporcionar la información previa disponible a través de una distribución a priori en el segundo nivel del modelo jerárquico. La distribución a priori para los efectos fijos generalmente será común a todos ellos, mientras que la distribución a priori para los efectos aleatorios estará vinculada a otros hiperparámetros para los que también será preciso especificar una distribución a priori en un tercer nivel de la modelización, y así sucesivamente.
 
 \begin{eqnarray*}
-(I)& y | X, Z, \theta &\sim f(y|x,z,\theta) \\
-&& E(y_i|x,z,\theta)=\gamma_i=g(\eta_i) \\
-&& \eta=X\beta + Z u \\
-(II)&  \beta &\sim N(0,\sigma_{\beta}), \text{ con un valor dado  para } \sigma_{\beta} \\
-&& u_i|\mu,\sigma \sim_{iid}  N(\mu,{\sigma}) \\
-(III)& \mu  &\sim N(0,\sigma_{\mu}), \text{ con un valor dado  para } \sigma_{\mu} \\
-&& \sigma \sim  GaI(\alpha_{\sigma},\beta_{\sigma}), \text{ con un valor dado  para }\alpha_{\sigma} y \beta_{\sigma}.
+Nivel I &&\\
+( y | X, Z, \theta) &\sim & f(y|x,z,\theta) \text{f en fam.exponencial}\\
+&& E(y|x,z,\theta)=\mu; Var(y|x,z,\theta)=\Sigma \\
+&& g(\mu)=\eta=X\beta + Z u \\
+Nivel II &&\\
+\beta &\sim & N(0,\sigma_{\beta}), \text{ con un valor dado  para } \sigma_{\beta} \\
+u|\sigma_u^2 &\sim_{iid}&  N(0,{\sigma_u^2}) \\
+\Sigma|s &\sim& F_{\Sigma|s} \\
+Nivel III &&\\
+\sigma_u^2 &\sim&  F_{\sigma} \\
+s &\sim&  F_{s}
 \end{eqnarray*}
 
 \hypertarget{regresiuxf3n-loguxedstica}{%
 \section{Regresión logística}\label{regresiuxf3n-loguxedstica}}
 
 La regresión logística es el modelo estándar para respuestas binarias (éxitos/fracasos). Tiene dos variaciones, en función de si la respuesta representa observaciones individuales (0/1) o conteos (de éxitos) en grupos de sujetos.
+
 Si las observaciones son individualizadas, entonces
-\[y_1,...,y_n \sim Ber(\pi_i), \ i=1,...,n\]
+
+\[y_i|\pi_i \sim Ber(\pi_i), \ i=1,...,n\]
 En el caso de que sean conteos en grupos,
-\[y_1,...,y_n \sim Bin(n_i,\pi_i), \ i=1,...,n\]
+
+\[y_i|\pi_i\sim Bin(n_i,\pi_i), \ i=1,...,n\]
 siendo \(n_i\) el tamaño de cada uno de los \(n\) grupos disponibles, y \(\pi_i\) la probabilidad de éxito (output de interés).
 
-La relación entre el predictor lineal \(\eta_i\) construido con los predictores disponibles \(x_i=(x_{i1},...x_{iM})\) y la probabilidad \(\pi_i\) se especifica a través de la función \emph{logit}:
-\[\eta_i=logit(\pi_i)=log\left(\frac{\pi_i}{1-\pi_i}\right)=x_i\beta=\beta_0+\sum_{m=1}^M \beta_mx_{im}\]
+La relación entre el predictor lineal \(\eta\) construido con los predictores disponibles \(x=(x_{1},...x_{M})\) y la probabilidad \(\pi\) se especifica a través de la función \emph{logit}:
+\[logit(\pi)=log\left(\frac{\pi}{1-\pi}\right)=\eta=X\beta=\beta_0+\sum_{j=1}^M \beta_j x_{j}\]
 de forma que
-\[\pi_i=logit^{-1}(x_i\beta)=\frac{exp(x_i\beta)}{1-exp(x_i\beta)}\]
+\[\pi=logit^{-1}(X\beta)=\frac{exp(X\beta)}{1-exp(X\beta)}\]
 Una vez especificado el modelo, si no hay información previa disponible sobre los efectos (fijos) \({\beta_o,\beta_1,...\beta_M}\), se asumen distribuciones a priori independientes y normales con media cero y varianza muy grande.
 
 \hypertarget{interpretaciuxf3n-de-los-coeficientes-en-la-regresiuxf3n-logit}{%
-\subsection{Interpretación de los coeficientes en la regresión logit}\label{interpretaciuxf3n-de-los-coeficientes-en-la-regresiuxf3n-logit}}
+\subsection*{Interpretación de los coeficientes en la regresión logit}\label{interpretaciuxf3n-de-los-coeficientes-en-la-regresiuxf3n-logit}}
+\addcontentsline{toc}{subsection}{Interpretación de los coeficientes en la regresión logit}
 
-Puesto que \(x_i\beta=\beta_0+\sum_{m=1}^M \beta_mx_{im}\),
-- cuando todas las \(x\) son categóricas y su valor coincide con el nivel de referencias
-- o cuando las \(x\) son continuas y su valor es cero,
-el valor del predictor lineal \(\eta_i=\beta_0=logit(\pi_i)\). En consecuencia, el logit inverso de \(\beta_0\) se interpreta como la probabilidad de éxito \(\pi_i\) cuando los predictores están en su nivel de referencia o son cero.
-\[logit^{-1}(\beta_0)=Pr(y=1|x=0).\]
+Puesto que \(X\beta=\beta_0+\sum_{j=1}^M \beta_j x_{j}\), la interceptación del predictor lineal \(\beta_0\) se interpreta como los predictores toman el valor cero si son numéricos, o están en el nivel de referencia (para la estimación) si son categóricos, \(\eta(X=0)=\beta_0=logit(\pi)\). En consecuencia, el logit inverso de \(\beta_0\) se interpreta como la probabilidad de éxito \(\pi_i\) cuando los predictores están en su nivel de referencia o son cero.
+\[logit^{-1}(\beta_0)=Pr(y=1|X=0).\]
 
-En cuanto a la interpretación de cualquier coeficiente de regresión, como \(\beta_1\), echamos mano del concepto de odds y odds ratio. Los odds ratio, OR, representan el cociente de las posibilidades a favor de un evento \(E\) bajo condiciones A y de las posibilidades del mismo evento bajo condiciones B. Nos sirve para evaluar cuánto afecta a dicho evento el hecho de variar las condiciones de B a A.
+En cuanto a la interpretación de cualquier otro coeficiente de regresión en el predictor lineal, como \(\beta_1\), echamos mano del concepto de \emph{odds} y \emph{odds ratio}.
+
+Los odds ratio, OR, comparan, a través de un cociente, las posibilidades a favor de un evento \(E\) bajo condiciones A y de las posibilidades del mismo evento bajo condiciones B. Nos sirve para evaluar cuánto afecta a dicho evento el hecho de variar las condiciones de B a A.
 \[OR(A,B)=\frac{Pr(E|A)/(1-Pr(E|A))}{Pr(E|B)/(1-Pr(E|B))}.\]
 
-En el modelo logístico, nos interesa saber el efecto que tiene sobre la respuesta (sobre las probabilidad de éxito en este caso) el incremento de una unidad en la variable \(x\), y para ello consideramos los odds bajo \(x\) y los odds bajo \(x+1\), y en particular el logaritmo de los odds, log-odds:
-\[log.odds(x+1)=\frac{P(y=1|x+1)}{P(y=0|x+1)}=\beta_0+\beta_1 (x+1)\]
-\[log.odds(x)=\frac{P(y=1|x)}{P(y=0|x)}=\beta_0+\beta_1 x\]
+En el modelo logístico, nos interesa saber el efecto que tiene sobre la respuesta (realmente sobre las probabilidad de éxito) el incremento de una unidad en la variable \(x\), y para ello consideramos los odds bajo \(x\) y los odds bajo \(x+1\), y en particular el logaritmo de los odds, log-odds:
+\[log.odds(x+1)=log \left( \frac{P(y=1|x+1)}{P(y=0|x+1)} \right)=log \left(\frac{\pi}{1-\pi} | x+1\right)=\beta_0+\beta_1 (x+1)\]
+\[log.odds(x)=log \left(\frac{P(y=1|x)}{P(y=0|x)} \right)=log \left(\frac{\pi}{1-\pi} | x\right)=\beta_0+\beta_1 x\]
 de modo que
-\[log.ods (x+1)/x = \beta_1 \rightarrow exp(\beta_1)=\frac{odds(x+1)}{odds(x)}=OR(x+1,x).\]
-Así \(\beta_1\) representa el cambio en los odds a favor de un éxito cuando se incrementa en una unidad el predictor \(x\) al que acompaña en el predictor lineal. Esta interpretación es muy común en Epidemiología.
+\[log(OR(x+1,x))=log \left(\frac{ods (x+1)}{ods(x)} \right) = log.odds(x+1)-log.ods(x)= \beta_1\]
+y tenemos entonces que la exponencial del coeficiente \(\beta_1\) nos da el odds ratio asociado a dicha covariable.
+\[exp(\beta_1)=\frac{odds(x+1)}{odds(x)}=OR(x+1,x).\]
+Es decir, el coeficiente \(\beta_1\) representa el cambio en los odds a favor de un éxito cuando se incrementa en una unidad el predictor \(x\) al que acompaña en el predictor linea. Esta interpretación es muy común en Epidemiología.
 
-\hypertarget{ejemplo-modelo-logit.-mortalidad-por-infarto-en-sheffield.}{%
-\section{Ejemplo modelo logit. Mortalidad por infarto en Sheffield.}\label{ejemplo-modelo-logit.-mortalidad-por-infarto-en-sheffield.}}
+\hypertarget{intenciuxf3n-de-voto-feb2022}{%
+\subsection{Intención de voto feb2022}\label{intenciuxf3n-de-voto-feb2022}}
+
+Tenemos acceso a los datos completos obtenidos en la encuesta encargada por El País y la Cadena Ser a la empresa ``40dB'', en febrero de 2022, sobre la intención de voto nacional (\href{https://elpais.com/espana/2022-02-07/consulte-todos-los-datos-internos-de-la-encuesta-de-el-pais-cuestionarios-cruces-y-respuestas-individuales.html}{fuente}).
+
+Queremos predecir la probabilidad de votar al partido que gobierna mayoritariamente en la actualidad, PSOE, registrado en la variable \texttt{psoe}. Vamos a utilizar como predictores dos factores que nos dicen si el sujeto tiene simpatía por ese partido, \texttt{psoe\_sim}, y si votó PSOE en las últimas elecciones \texttt{psoe\_past}; también utilizaremos la comunidad autónoma \texttt{ccaa} como un efecto aleatorio, para contabilizar posible variación extra.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(readxl)}
+\NormalTok{barometro\_feb22 }\OtherTok{\textless{}{-}} \FunctionTok{read\_excel}\NormalTok{(}\StringTok{"\textasciitilde{}/Desktop/barometro/03\_Datos\_barómetro\_febrero.xlsx"}\NormalTok{)}
+\FunctionTok{names}\NormalTok{(barometro\_feb22)}
+\CommentTok{\#\textgreater{}  [1] "id"                  "sexo"               }
+\CommentTok{\#\textgreater{}  [3] "edad"                "edad\_r"             }
+\CommentTok{\#\textgreater{}  [5] "hab"                 "prov"               }
+\CommentTok{\#\textgreater{}  [7] "ccaa"                "edu"                }
+\CommentTok{\#\textgreater{}  [9] "cs"                  "p1"                 }
+\CommentTok{\#\textgreater{} [11] "p2"                  "p3"                 }
+\CommentTok{\#\textgreater{} [13] "p4\_1"                "p4\_2"               }
+\CommentTok{\#\textgreater{} [15] "p4\_3"                "p4\_4"               }
+\CommentTok{\#\textgreater{} [17] "p5"                  "p6"                 }
+\CommentTok{\#\textgreater{} [19] "p7"                  "hab\_r"              }
+\CommentTok{\#\textgreater{} [21] "clase\_social\_r"      "situacion\_laboral\_r"}
+\CommentTok{\#\textgreater{} [23] "educacion\_r"         "ponde"}
+\NormalTok{datos}\OtherTok{=}\NormalTok{barometro\_feb22 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(id,p2,p3,p5,ccaa) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{psoe=}\DecValTok{1}\SpecialCharTok{*}\NormalTok{(p2}\SpecialCharTok{==}\StringTok{"PSOE (Partido Socialista Obrero Español)"}\NormalTok{),}
+         \AttributeTok{psoe\_simp=}\DecValTok{1}\SpecialCharTok{*}\NormalTok{(p3}\SpecialCharTok{==}\StringTok{"PSOE (Partido Socialista Obrero Español)"}\NormalTok{),}
+         \AttributeTok{psoe\_past=}\DecValTok{1}\SpecialCharTok{*}\NormalTok{(p5}\SpecialCharTok{==}\StringTok{"PSOE (Partido Socialista Obrero Español)"}\NormalTok{)) }
+\CommentTok{\#summary(datos)}
+\end{Highlighting}
+\end{Shaded}
+
+Para ajustar el modelo utilizamos el argumento \texttt{family=binomial} y la opción \texttt{control.predictor\ =\ list(link\ =\ 1)} para establecer la función link apropiada para tener los valores ajustados en la escala correcta.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{prec.prior}\OtherTok{=}\FunctionTok{list}\NormalTok{(}\AttributeTok{prec=}\FunctionTok{list}\NormalTok{(}\AttributeTok{param=}\FunctionTok{c}\NormalTok{(}\FloatTok{0.001}\NormalTok{,}\FloatTok{0.001}\NormalTok{)))}
+\NormalTok{formula }\OtherTok{=}\NormalTok{ psoe }\SpecialCharTok{\textasciitilde{}}\NormalTok{ psoe\_simp }\SpecialCharTok{+}\NormalTok{ psoe\_past}\SpecialCharTok{+} \FunctionTok{f}\NormalTok{(ccaa,}\AttributeTok{model=}\StringTok{"iid"}\NormalTok{,}\AttributeTok{hyper=}\NormalTok{prec.prior)}
+\NormalTok{fit}\OtherTok{=}\FunctionTok{inla}\NormalTok{(formula,}\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{,}\AttributeTok{data=}\NormalTok{datos,}\AttributeTok{control.predictor =} \FunctionTok{list}\NormalTok{(}\AttributeTok{link =} \DecValTok{1}\NormalTok{))}
+\NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.fixed}
+\CommentTok{\#\textgreater{}                  mean        sd 0.025quant  0.5quant}
+\CommentTok{\#\textgreater{} (Intercept) {-}3.590576 0.1897251  {-}3.998945 {-}3.578281}
+\CommentTok{\#\textgreater{} psoe\_simp    3.085802 0.1865732   2.723932  3.084366}
+\CommentTok{\#\textgreater{} psoe\_past    2.352353 0.1856829   1.989732  2.351807}
+\CommentTok{\#\textgreater{}             0.975quant mode          kld}
+\CommentTok{\#\textgreater{} (Intercept)  {-}3.251389   NA 5.812191e{-}07}
+\CommentTok{\#\textgreater{} psoe\_simp     3.455821   NA 3.434611e{-}07}
+\CommentTok{\#\textgreater{} psoe\_past     2.718074   NA 9.426592e{-}07}
+\NormalTok{fit}\SpecialCharTok{$}\NormalTok{summary.hyperpar}
+\CommentTok{\#\textgreater{}                        mean       sd 0.025quant 0.5quant}
+\CommentTok{\#\textgreater{} Precision for ccaa 70.76511 250.8882    1.97876 10.70226}
+\CommentTok{\#\textgreater{}                    0.975quant mode}
+\CommentTok{\#\textgreater{} Precision for ccaa   588.4032   NA}
+\end{Highlighting}
+\end{Shaded}
+
+Las distribuciones posteriores de los exponenciales de los efectos aleatorios se muestran en la Figura \ref{fig:eleccion2}, identificadas en verde las de efectos positivos en la media posterior del predictor lineal (log-odds \(>1\)), y en rojo las de efectos negativos, e interpretables como más y menos favorables a votar por el PSOE.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{random }\OtherTok{=} \FunctionTok{as.data.frame}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{summary.random)}
+\NormalTok{random}\SpecialCharTok{$}\NormalTok{pro}\OtherTok{=}\DecValTok{1}\SpecialCharTok{*}\FunctionTok{exp}\NormalTok{(random}\SpecialCharTok{$}\NormalTok{ccaa.mean)}\SpecialCharTok{\textgreater{}}\DecValTok{1}
+\FunctionTok{ggplot}\NormalTok{(random,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\FunctionTok{exp}\NormalTok{(ccaa.mean),}\AttributeTok{y=}\NormalTok{ccaa.ID)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{color=}\NormalTok{pro))}\SpecialCharTok{+}
+  \FunctionTok{geom\_errorbarh}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{xmin=}\FunctionTok{exp}\NormalTok{(ccaa.}\FloatTok{0.025}\NormalTok{quant),}\AttributeTok{xmax=}\FunctionTok{exp}\NormalTok{(ccaa.}\FloatTok{0.975}\NormalTok{quant),}\AttributeTok{color=}\NormalTok{pro))}\SpecialCharTok{+}
+  \FunctionTok{geom\_vline}\NormalTok{(}\AttributeTok{xintercept=}\DecValTok{1}\NormalTok{,}\AttributeTok{linetype=}\StringTok{"dotted"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x=}\StringTok{"Medias y HPD posteriores para el log{-}odds"}\NormalTok{,}\AttributeTok{y=}\StringTok{"Comunidad autónoma"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position=}\StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{03-glm_files/figure-latex/eleccion2-1.pdf}
+\caption{\label{fig:eleccion2}Medias y HPD posterioris para el log-odds de los efectos aleatorios}
+\end{figure}
+
+La distribución posterior de la probabilidad de voto para el PSOE para la comunidad con más variabilidad en el efecto aleatorio (Castilla-La Mancha), viene representada en la Figura \ref{fig:eleccion3} para las cuatro combinaciones posibles de valores para los predictores de simpatía y voto en el pasado.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{datos\_pred }\OtherTok{=}\NormalTok{ datos }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{f.post=}\FunctionTok{round}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{summary.fitted.values}\SpecialCharTok{$}\NormalTok{mean,}\DecValTok{3}\NormalTok{),}
+        \AttributeTok{f.hpd.low=}\FunctionTok{round}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{summary.fitted.values}\SpecialCharTok{$}\StringTok{"0.025quant"}\NormalTok{,}\DecValTok{3}\NormalTok{),}
+         \AttributeTok{f.hpd.up=}\FunctionTok{round}\NormalTok{(fit}\SpecialCharTok{$}\NormalTok{summary.fitted.values}\SpecialCharTok{$}\StringTok{"0.975quant"}\NormalTok{,}\DecValTok{3}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{distinct}\NormalTok{(f.post,}\AttributeTok{.keep\_all =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(ccaa}\SpecialCharTok{==}\StringTok{"Castilla {-} La Mancha"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{simpast=}\FunctionTok{str\_c}\NormalTok{(psoe\_simp,psoe\_past))}
+\FunctionTok{ggplot}\NormalTok{(datos\_pred,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{f.post,}\AttributeTok{y=}\NormalTok{simpast))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{color=}\NormalTok{simpast))}\SpecialCharTok{+}
+  \FunctionTok{geom\_errorbarh}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{xmin=}\NormalTok{f.hpd.low,}\AttributeTok{xmax=}\NormalTok{f.hpd.up,}\AttributeTok{color=}\NormalTok{simpast),}\AttributeTok{height=}\FloatTok{0.2}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x=}\StringTok{"Medias y HPD posteriores para la probabilidad de voto PSOE"}\NormalTok{,}\AttributeTok{title=}\StringTok{"Castilla {-} La Mancha"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_discrete}\NormalTok{(}\AttributeTok{name=}\StringTok{""}\NormalTok{, }
+                   \AttributeTok{labels=}\FunctionTok{c}\NormalTok{(}\StringTok{"No simpatía/No votó PSOE"}\NormalTok{,}\StringTok{"No simpatía/Votó PSOE"}\NormalTok{,}
+                            \StringTok{"Simpatía/No votó PSOE"}\NormalTok{,}\StringTok{"Simpatía/Votó PSOE"}\NormalTok{))}\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position=}\StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{03-glm_files/figure-latex/eleccion3,-1.pdf}
+\caption{(\#fig:eleccion3,)Medias y HPD posterioris para la probabilidad de voto PSOE}
+\end{figure}
+
+\hypertarget{mortalidad-por-infarto-en-sheffield}{%
+\subsection{Mortalidad por infarto en Sheffield}\label{mortalidad-por-infarto-en-sheffield}}
 
 Utilizamos los datos \emph{stroke}, disponibles en \href{https://sites.google.com/a/r-inla.org/stbook/datasets}{datasets in SSTM-RINLA}. Queremos evaluar la presencia de cierta asociación entre los niveles de NOx y el infarto en Sheffield, UK. Se dispone de la concentración anual de NOx medida en \(\mu g/m^3\) y categorizada en quintiles, promediada durante el periodo 1994-1999, en la variable \emph{NOx.class} y su análoga \(NOx\), y el número de muertes por infarto \(y\) en cada distrito identificado por el índice de desventajas y privación \emph{Townsend} (categorizado en quintiles). Se dispone igualmente del tamaño de la población para cada registro, en la variable \(pop\). La respuesta \(y\) se puede considerar entonces como conteos (de muertes) sobre la población de cada distrito,
 \[y_i|\pi_i \sim Bin(n_i, \pi_i)\]
@@ -2940,7 +2946,7 @@ Para obtener la probabilidad promedio de muerte por infarto en el distrito Towns
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{03-glm_files/figure-latex/unnamed-chunk-4-1.pdf}
+\includegraphics{03-glm_files/figure-latex/unnamed-chunk-6-1.pdf}
 
 El efecto \(\beta_{12}\) representa el efecto en los log.odds de la mortalidad por infarto de estar en el nivel \(NOx=2\) frente al de estar en el nivel \(NOx=1\). Si queremos evaluar el odds-ratio, simplemente calculamos la distribución posterior de \(exp(\beta_{12})\) con \texttt{inla.tmarginal}. Si sólo estamos interesados en su media, bastaría utilizar `inla.emarginal':
 
@@ -2954,7 +2960,8 @@ El efecto \(\beta_{12}\) representa el efecto en los log.odds de la mortalidad p
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{03-glm_files/figure-latex/unnamed-chunk-5-1.pdf}
+\includegraphics{03-glm_files/figure-latex/unnamed-chunk-7-1.pdf}
+
 La probabilidad de muerte por infarto se incrementa en un 14.3\% cuando la exposición de NOx cambia del primer al segundo nivel. Los odds-ratio para el resto de los niveles resultan realmente significativos: 11,3\% el odds-ratio NOx3/NOx1, 30\% NOx4/NOx1 y 53.2\% NOx5/NOx1.
 
 \begin{Shaded}
@@ -2971,8 +2978,8 @@ La probabilidad de muerte por infarto se incrementa en un 14.3\% cuando la expos
 \hypertarget{regresiuxf3n-de-poisson}{%
 \section{Regresión de Poisson}\label{regresiuxf3n-de-poisson}}
 
-La regresión de Poisson es útil cuando la variable respuesta representa conteos y estos toman valores discretos entre 0 y \(+\infty\), sin una cota superior de referencia. El parámetro de interés es el número promedio de eventos \(\lambda_i=E(y_i)\) y el link natural es el logaritmo, de modo que el predictor lineal está ligado con las covariables y factores según:
-\[\eta_i=log(\lambda_i)=x_i \beta, \ \ \mbox{ y } \ \ \lambda_i=exp(x_i \beta)\]
+La regresión de Poisson es útil cuando la variable respuesta representa conteos y estos toman valores discretos entre 0 y \(+\infty\), sin una cota superior de referencia. El parámetro de interés es el número promedio de eventos \(\lambda=E(y)\) y el link natural es el logaritmo, de modo que el predictor lineal está ligado con las covariables y factores según:
+\[\eta=log(\lambda)=x \beta, \ \ \mbox{ y } \ \ \lambda_i=exp(X \beta)\]
 
 Un modelo de Poisson puede especificarse según
 \[y_i \sim Po(\lambda_i), i=1,...,n\]
@@ -2996,8 +3003,8 @@ donde el riesgo relativo de que se produzca un evento se obtiene según
 \[log\left(\frac{\lambda_i}{Offset_i}\right)=\beta_0+\sum_{m=1}^M \beta_mx_{im}\]
 y los coeficientes entonces se interpretan en una escala de riesgo. En este caso al exponenciar la interceptación obtenemos el riesgo base, mientras que \(exp(\beta_m)\) representa el cambio en el riesgo relativo debido a un cambio de unidad en el predictor correspondiente.
 
-\hypertarget{ejemplo-modelo-poisson-incidentes-en-barcos}{%
-\subsection{Ejemplo modelo Poisson: incidentes en barcos}\label{ejemplo-modelo-poisson-incidentes-en-barcos}}
+\hypertarget{incidentes-en-barcos}{%
+\subsection{Incidentes en barcos}\label{incidentes-en-barcos}}
 
 Utilizamos los datos \emph{ships.csv} en \href{https://sites.google.com/a/r-inla.org/stbook/datasets}{datasets for SSTM-RINLA} para estimar el riesgo mensual de incidentes en barcos. Los factores potenciales del riesgo son el periodo de construcción (\emph{built}), el periodo de operación (\emph{oper}) y el tipo de barco (\emph{type}).
 El modelo se escribe en INLA a continuación, utilizando como offset el \emph{log(months)}, que son los meses que ha navegado y ponderan en consecuencia el riesgo de incidentes. El modelo con el offset será entonces
@@ -3080,7 +3087,7 @@ Este modelo se implementa en INLA, a partir de datos simulados, con el siguiente
 \CommentTok{\#\textgreater{}    silent, inla.mode = inla.mode, safe = FALSE, debug = }
 \CommentTok{\#\textgreater{}    debug, ", " .parent.frame = .parent.frame)") }
 \CommentTok{\#\textgreater{} Time used:}
-\CommentTok{\#\textgreater{}     Pre = 2.08, Running = 0.135, Post = 0.00666, Total = 2.22 }
+\CommentTok{\#\textgreater{}     Pre = 2.13, Running = 0.129, Post = 0.00655, Total = 2.26 }
 \CommentTok{\#\textgreater{} Fixed effects:}
 \CommentTok{\#\textgreater{}              mean    sd 0.025quant 0.5quant 0.975quant mode}
 \CommentTok{\#\textgreater{} (Intercept) 2.282 0.071      2.139    2.283       2.42   NA}
