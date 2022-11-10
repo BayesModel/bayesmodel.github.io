@@ -44,10 +44,10 @@ La evaluación es continua basada en la interacción con el profesorado durante 
 1. Curioseando para saber más: manuales y software.
 
 ## Contenidos definitivos
-1. SESIÓN 1: Probabilidad y la aproximación bayesiana. Bayes y una proporción. Bayes y dos proporciones.
-1. SESIÓN 2: INLA y la regresión lineal
-1. SESIÓN 3: INLA y los modelos de ANOVA y ANCOVA
-1. SESIÓN 4: INLA y el modelo lineal generalizado. Modelos jerárquicos.
+1. SESIÓN 1: Probabilidades, Bayes y las proporciones. 
+1. SESIÓN 2: INLA y la regresión.
+1. SESIÓN 3: INLA y el ANOVA.
+1. SESIÓN 4: INLA y los GLM.
 
 ## INLA
 INLA es una librería de R que aproxima la inferencia Bayesiana para

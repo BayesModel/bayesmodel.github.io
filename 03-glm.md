@@ -133,18 +133,18 @@ formula = psoe ~ psoe_simp + psoe_past+ f(ccaa,model="iid",hyper=prec.prior)
 fit=inla(formula,family="binomial",data=datos,control.predictor = list(link = 1))
 fit$summary.fixed
 #>                  mean        sd 0.025quant  0.5quant
-#> (Intercept) -3.590577 0.1897270  -3.998950 -3.578284
-#> psoe_simp    3.085803 0.1865732   2.723933  3.084367
-#> psoe_past    2.352354 0.1856828   1.989732  2.351807
+#> (Intercept) -3.590447 0.1896687  -3.998615 -3.578183
+#> psoe_simp    3.085747 0.1865755   2.723861  3.084316
+#> psoe_past    2.352309 0.1856886   1.989667  2.351767
 #>             0.975quant mode          kld
-#> (Intercept)  -3.251384   NA 5.810899e-07
-#> psoe_simp     3.455821   NA 3.434835e-07
-#> psoe_past     2.718074   NA 9.426843e-07
+#> (Intercept)  -3.251297   NA 5.841852e-07
+#> psoe_simp     3.455757   NA 3.432362e-07
+#> psoe_past     2.718030   NA 9.432015e-07
 fit$summary.hyperpar
 #>                        mean       sd 0.025quant 0.5quant
-#> Precision for ccaa 70.80297 251.2134   1.978424 10.70075
+#> Precision for ccaa 70.80725 250.7334   1.978155 10.72828
 #>                    0.975quant mode
-#> Precision for ccaa   588.0064   NA
+#> Precision for ccaa    588.604   NA
 ```
 
 Las distribuciones posteriores de los exponenciales de los efectos aleatorios se muestran en la Figura \@ref(fig:eleccion2), identificadas en verde las de efectos positivos en la media posterior del predictor lineal (log-odds $>1$), y en rojo las de efectos negativos, e interpretables como más y menos favorables a votar por el PSOE.
@@ -157,11 +157,11 @@ ggplot(random,aes(x=exp(ccaa.mean),y=ccaa.ID)) +
   geom_point(aes(color=pro))+
   geom_errorbarh(aes(xmin=exp(ccaa.0.025quant),xmax=exp(ccaa.0.975quant),color=pro))+
   geom_vline(xintercept=1,linetype="dotted")+
-  labs(x="Medias y HPD posteriores para el log-odds",y="Comunidad autónoma")+
+  labs(x="Medias y RC posteriores para el log-odds",y="Comunidad autónoma")+
   theme(legend.position="none")
 ```
 
-![(\#fig:eleccion2)Medias y HPD posterioris para el log-odds de los efectos aleatorios](03-glm_files/figure-latex/eleccion2-1.pdf) 
+![(\#fig:eleccion2)Medias y RC posterioris para el log-odds de los efectos aleatorios](03-glm_files/figure-latex/eleccion2-1.pdf) 
 
 La distribución posterior de la probabilidad de voto para el PSOE para la comunidad con más variabilidad en el efecto aleatorio (Castilla-La Mancha), viene representada en la Figura \@ref(fig:eleccion3) para las cuatro combinaciones posibles de valores para los predictores de simpatía y voto en el pasado.
 
@@ -169,22 +169,22 @@ La distribución posterior de la probabilidad de voto para el PSOE para la comun
 ```r
 datos_pred = datos %>%
   mutate(f.post=round(fit$summary.fitted.values$mean,3),
-        f.hpd.low=round(fit$summary.fitted.values$"0.025quant",3),
-         f.hpd.up=round(fit$summary.fitted.values$"0.975quant",3)) %>%
+        f.rc.low=round(fit$summary.fitted.values$"0.025quant",3),
+         f.rc.up=round(fit$summary.fitted.values$"0.975quant",3)) %>%
   distinct(f.post,.keep_all = TRUE) %>%
   filter(ccaa=="Castilla - La Mancha") %>%
   mutate(simpast=str_c(psoe_simp,psoe_past))
 ggplot(datos_pred,aes(x=f.post,y=simpast))+
   geom_point(aes(color=simpast))+
-  geom_errorbarh(aes(xmin=f.hpd.low,xmax=f.hpd.up,color=simpast),height=0.2)+
-  labs(x="Medias y HPD posteriores para la probabilidad de voto PSOE",title="Castilla - La Mancha")+
+  geom_errorbarh(aes(xmin=f.rc.low,xmax=f.rc.up,color=simpast),height=0.2)+
+  labs(x="Medias y RC posteriores para la probabilidad de voto PSOE",title="Castilla - La Mancha")+
   scale_y_discrete(name="", 
                    labels=c("No simpatía/No votó PSOE","No simpatía/Votó PSOE",
                             "Simpatía/No votó PSOE","Simpatía/Votó PSOE"))+
   theme(legend.position="none")
 ```
 
-![(\#fig:eleccion3,)Medias y HPD posterioris para la probabilidad de voto PSOE](03-glm_files/figure-latex/eleccion3,-1.pdf) 
+![(\#fig:eleccion3)Medias y RC posteriores para la probabilidad de voto PSOE](03-glm_files/figure-latex/eleccion3-1.pdf) 
 
 
 
@@ -381,7 +381,7 @@ summary(fit)
 #>    silent, inla.mode = inla.mode, safe = FALSE, debug = 
 #>    debug, ", " .parent.frame = .parent.frame)") 
 #> Time used:
-#>     Pre = 2.02, Running = 0.129, Post = 0.0065, Total = 2.15 
+#>     Pre = 2.18, Running = 0.158, Post = 0.00694, Total = 2.35 
 #> Fixed effects:
 #>              mean    sd 0.025quant 0.5quant 0.975quant mode
 #> (Intercept) 2.282 0.071      2.139    2.283       2.42   NA

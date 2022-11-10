@@ -64,27 +64,9 @@
 <span class="header-section-number">2.1</span> Introducción<a class="anchor" aria-label="anchor" href="#introducci%C3%B3n"><i class="fas fa-link"></i></a>
 </h2>
 <p>Una vez presentados los fundamentos de INLA vamos a utilizarlo para trabajar progresivamente desde los modelos más sencillos a los más sofisticados. Empezamos aquí con el modelo de regresión lineal simple, para continuar generalizando con el de regresión lineal múltiple.</p>
-<p>Vamos a empezar a trabajar con INLA modelizando y ajustando un problema
-sencillo de regresión lineal simple. La base de datos Davis (en la librería <code>carData</code>) contiene 200 registros de 5 variables relacionadas con un estudio sobre habituación de hombres y mujeres a la realización de ejercicio físico de forma regular. Las variables que se registraron son sexo, peso y altura (reales y reportados). Vamos a indagar la relación entre el peso real y el reportado a través de un análisis de regresión lineal simple.</p>
+<p>Partimos de la base de datos Davis (en la librería <code>carData</code>), que contiene 200 registros de 5 variables relacionadas con un estudio sobre habituación de hombres y mujeres a la realización de ejercicio físico de forma regular. Las variables que se registraron son sexo, peso y altura (reales y reportados). Vamos a indagar la relación entre el peso real (<code>weight</code>) y el reportado (<code>repwt</code>) a través de un análisis de regresión lineal simple.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://r-forge.r-project.org/projects/car/">"carData"</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">Davis</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  sex         weight          height          repwt       </span></span>
-<span><span class="co">#&gt;  F:112   Min.   : 39.0   Min.   : 57.0   Min.   : 41.00  </span></span>
-<span><span class="co">#&gt;  M: 88   1st Qu.: 55.0   1st Qu.:164.0   1st Qu.: 55.00  </span></span>
-<span><span class="co">#&gt;          Median : 63.0   Median :169.5   Median : 63.00  </span></span>
-<span><span class="co">#&gt;          Mean   : 65.8   Mean   :170.0   Mean   : 65.62  </span></span>
-<span><span class="co">#&gt;          3rd Qu.: 74.0   3rd Qu.:177.2   3rd Qu.: 73.50  </span></span>
-<span><span class="co">#&gt;          Max.   :166.0   Max.   :197.0   Max.   :124.00  </span></span>
-<span><span class="co">#&gt;                                          NA's   :17      </span></span>
-<span><span class="co">#&gt;      repht      </span></span>
-<span><span class="co">#&gt;  Min.   :148.0  </span></span>
-<span><span class="co">#&gt;  1st Qu.:160.5  </span></span>
-<span><span class="co">#&gt;  Median :168.0  </span></span>
-<span><span class="co">#&gt;  Mean   :168.5  </span></span>
-<span><span class="co">#&gt;  3rd Qu.:175.0  </span></span>
-<span><span class="co">#&gt;  Max.   :200.0  </span></span>
-<span><span class="co">#&gt;  NA's   :17</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">Davis</span>,package<span class="op">=</span><span class="st">"carData"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">repwt</span>, data<span class="op">=</span><span class="va">Davis</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="01-regresion_files/figure-html/unnamed-chunk-2-1.png" width="672"></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -97,13 +79,12 @@ sencillo de regresión lineal simple. La base de datos Davis (en la librería <c
 <h2>
 <span class="header-section-number">2.2</span> Variables y relaciones<a class="anchor" aria-label="anchor" href="#variables-y-relaciones"><i class="fas fa-link"></i></a>
 </h2>
-<p>Entendemos como variable respuesta <span class="math inline">\(y=weight\)</span>, de tipo numérico
-(continua), y como variable explicativa o covariable, <code>repwt</code>, que pretendemos relacionar con un modelo de regresión lineal.</p>
+<p>Entendemos como variable respuesta <code>y=weight</code>, de tipo numérico (continua), y como variable explicativa o covariable, <code>x=repwt</code>, también numérica.</p>
 <p>La especificación de respuesta <span class="math inline">\(y\)</span> y predictores <span class="math inline">\(x_1,x_2,...\)</span>, en INLA se registra en una fórmula del tipo:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">formula</span><span class="op">=</span> <span class="va">y</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="va">x_1</span> <span class="op">+</span> <span class="va">x_2</span> <span class="op">+</span><span class="va">...</span></span></code></pre></div>
 <p>en la que podemos prescindir del <span class="math inline">\(1\)</span> que identifica la interceptación, pues el ajuste, por defecto, siempre se resolverá con su estimación, salvo que en su lugar se escriba un ‘-1’.</p>
-<p>En nuestro problema tendríamos pues,</p>
+<p>En nuestro problema tendríamos pues:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">formula</span> <span class="op">=</span> <span class="va">weight</span> <span class="op">~</span> <span class="va">repwt</span></span></code></pre></div>
 <p>A continuación es procedente elegir el modelo sobre la respuesta, o lo
@@ -114,44 +95,32 @@ que es lo mismo, la verosimilitud.</p>
 <span class="header-section-number">2.3</span> Verosimilitud<a class="anchor" aria-label="anchor" href="#verosimilitud"><i class="fas fa-link"></i></a>
 </h2>
 <p>En principio es razonable asumir normalidad en la respuesta, además de independencia entre todas las observaciones. Así, el modelo propuesto para la respuesta es:</p>
-<p><span class="math display">\[(y_i|\theta,\beta,\sigma^2) \sim N(\theta+\beta x_i,\sigma^2), i=1,...,n\]</span></p>
-<p>donde <span class="math inline">\(y=weight\)</span> y <span class="math inline">\(x=repwt\)</span>, e <span class="math inline">\(i=1,...,n\)</span> es un subíndice que identifica a cada uno de los registros disponibles en el banco de datos. <span class="math inline">\(\theta\)</span> es la interceptación de la recta de regresión y <span class="math inline">\(\beta\)</span> el coeficiente que explica la relación lineal entre <span class="math inline">\(s\)</span> e <span class="math inline">\(y\)</span>. Veamos cómo especificar este modelo con INLA.</p>
-<p>En INLA el vector <span class="math inline">\((\theta,\beta)\)</span> identifica los <strong>efectos latentes</strong>, en cuya inferencia posterior estamos interesados. El modelo, o lo que es lo mismo, la verosimilitud, depende también de un parámetro de dispersión <span class="math inline">\(\sigma^2\)</span> sobre el que también querremos inferir.</p>
-<p>La función <code>name(inla.models())</code> proporciona un listado de todos los
-tipos de modelos posibles para los datos (<em>likelihood</em>), parámetros
-(<em>prior</em>), hiperparámetros (<em>latent</em>), … Es más, el listado completo
-de todas las distribuciones disponibles para cada uno de los tipos de
-modelos lo obtenemos con el comando <code><a href="https://rdrr.io/pkg/INLA/man/list-models.html">inla.list.models()</a></code></p>
-<p>En particular, si ejecutamos <code>names(inla.models()$likelihood)</code> obtenemos
-todas las distribuciones disponibles para modelizar los datos. La
-distribución <code>gaussian</code> identifica la distribución normal que buscamos para resolver nuestro problema. Para obtener información sobre cómo está parametrizada y cuáles son los
-hiperparámetros por defecto, basta consultar la documentación <em>Gaussian</em> con el comando:</p>
+<p><span class="math display">\[(y_i|\mu_i,\sigma^2) \sim N(\mu_i,\sigma^2), i=1,...,n\]</span></p>
+<p>donde <code>y=weight</code> y <code>x=repwt</code>, e <span class="math inline">\(i=1,...,n\)</span> es un subíndice que identifica a cada uno de los registros disponibles en el banco de datos. La media esperada contiene la relación lineal entre covariable y respuesta, <span class="math inline">\(\mu_i=\theta+\beta x_i\)</span>, donde <span class="math inline">\(\theta\)</span> es la interceptación de la recta de regresión y <span class="math inline">\(\beta\)</span> el coeficiente que explica la relación lineal entre <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span>. El vector <span class="math inline">\((\theta,\beta)\)</span> identifica los <strong>efectos latentes</strong>, en cuya inferencia posterior estamos interesados, y que están involucrados directamente en la media o predictor lineal. El modelo, o lo que es lo mismo, la verosimilitud, depende también de un parámetro de dispersión <span class="math inline">\(\sigma^2\)</span> sobre el que también querremos inferir.</p>
+<p>Veamos cómo especificar este modelo con INLA. La función <code>names(inla.models())</code> proporciona un listado de todos los
+tipos de modelos posibles, tanto para los datos (<code>likelihood</code>), para los efectos latentes (<code>latent</code>), los parámetros
+(<code>prior</code>), y otras opciones que de momento no nos interesan. El listado completo de todas las distribuciones disponibles para cada uno de los tipos de modelos lo obtenemos con el comando <code><a href="https://rdrr.io/pkg/INLA/man/list-models.html">inla.list.models()</a></code>. En particular, si ejecutamos <code>names(inla.models()$likelihood)</code>, obtenemos todas las distribuciones disponibles para modelizar los datos.</p>
+<p>La distribución <code>gaussian</code> identifica la distribución normal que hemos planteado en nuestro modelo de regresión lineal. Para obtener información sobre cómo está parametrizada y cuáles son las priors por defecto, basta consultar la documentación <em>gaussian</em> con el comando:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># documentación (parametrización y valores por defecto)</span></span>
+<code class="sourceCode R"><span><span class="co"># documentación (parametrización y priors) del modelo normal</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/doc.html">inla.doc</a></span><span class="op">(</span><span class="st">"gaussian"</span><span class="op">)</span></span></code></pre></div>
-<p>Para ajustar un modelo sencillo en INLA hay que echar mano de la función <code>inla</code>, en la que introducimos en primer lugar la <code>formula</code>, con la relación entre las variables, a continuación el modelo, en el argumento <code>family</code>, y después el banco de datos sobre el que trabajamos. Si no especificamos el argumento <code>family</code>, la función <code>inla</code>interpreta por defecto la opción <code>gaussian</code>, esto es, normalidad para los datos, de modo que podríamos excluir dicha especificación cuando modelizamos datos normales.</p>
+<p>Para ajustar un modelo sencillo en INLA hay que echar mano de la función <code>inla</code>, en la que introducimos en primer lugar la <code>formula</code>, con la relación entre las variables, a continuación el modelo, en el argumento <code>family</code>, y después el banco de datos sobre el que trabajamos. Si no especificamos el argumento <code>family</code>, la función <code>inla</code> interpreta por defecto la opción <code>gaussian</code>, esto es, normalidad para los datos, de modo que podríamos excluir dicha especificación cuando modelizamos datos normales.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Asumiendo datos normales</span></span>
 <span><span class="va">fit</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>,family<span class="op">=</span><span class="st">"gaussian"</span>, <span class="va">data</span><span class="op">)</span></span>
 <span><span class="co"># equivalente a</span></span>
 <span><span class="va">fit</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span><span class="op">)</span></span></code></pre></div>
-<p>Adelantamos pues un paso más en nuestro problema, añadiendo la verosimilitud normal y la base de datos. Haciendo acopio de lo que hemos visto antes, bastaría con ejecutar:</p>
+<p>Adelantamos pues un paso más en nuestro problema, añadiendo la verosimilitud normal y la base de datos.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># ajuste del modelo</span></span>
 <span><span class="va">formula</span> <span class="op">=</span> <span class="va">weight</span> <span class="op">~</span> <span class="fl">1</span><span class="op">+</span> <span class="va">repwt</span></span>
 <span><span class="va">fit</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>,family<span class="op">=</span><span class="st">"gaussian"</span>,data<span class="op">=</span><span class="va">davis</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="parámetros-e-hiperparámetros" class="section level2" number="2.4">
+<div id="hiperparámetros" class="section level2" number="2.4">
 <h2>
-<span class="header-section-number">2.4</span> Parámetros e hiperparámetros<a class="anchor" aria-label="anchor" href="#par%C3%A1metros-e-hiperpar%C3%A1metros"><i class="fas fa-link"></i></a>
+<span class="header-section-number">2.4</span> Hiperparámetros<a class="anchor" aria-label="anchor" href="#hiperpar%C3%A1metros"><i class="fas fa-link"></i></a>
 </h2>
-<p>Por defecto INLA asume unas distribuciones difusas sobre los efectos latentes <span class="math inline">\(\theta,\beta\)</span> y la varianza <span class="math inline">\(\sigma^2\)</span>. Veamos cuáles son esas distribuciones, y cómo modificarlas si tenemos información previa.</p>
-<p>Pensando en el significado de los parámetros (reconocidos como <em>hyperpar</em> o hiperparámetros) que aparecen en la verosimilitud, es lógico asumir, ante ausencia de información:</p>
-<ul>
-<li>para los efectos latentes <span class="math inline">\(\theta,\beta\)</span> distribuciones normales independientes difusas y centradas en el cero</li>
-<li>para la varianza <span class="math inline">\(\sigma^2\)</span> es habitual asumir una gamma inversa, también difusa (con media y varianza grandes) si no tenemos información previa.</li>
-</ul>
-<p>Vamos en primer lugar con el parámetro <span class="math inline">\(\sigma^2\)</span> en la verosimilitud.</p>
+<p>INLA identifica como hiperparámetros todos aquellos parámetros en el modelo que no se corresponden con efectos latentes, esto es, relacionados con el predictor o respuesta esperada. En nuestro modelo, el único hiperparámetro es la varianza <span class="math inline">\(\sigma^2\)</span>, sobre la que es preciso especificar una distribución a priori. Para la varianza <span class="math inline">\(\sigma^2\)</span> es habitual asumir una gamma inversa difusa, con media y varianza grandes.</p>
 <p>En INLA, en lugar de asignar distribuciones a priori sobre las
 varianzas, se hace sobre el logaritmo de las precisiones, para facilitar
 el cálculo del máximo de la log-posterior (obtenida de la
@@ -165,21 +134,20 @@ log-gamma difusa <span class="math inline">\(Log-Gamma(\alpha,\beta)\)</span> pa
 <p>Para definir una prior para los parámetros o hiperparámetros en INLA hay
 que definir los siguientes argumentos:</p>
 <ul>
-<li>prior, el nombre de la distribución a priori (alguna de las opciones de <code>names(inla.models()$prior)</code>)</li>
+<li>prior, el nombre de la distribución a priori (para hiperparámetros, alguna de las opciones en <code>names(inla.models()$prior)</code>)</li>
 <li>param, los valores de los parámetros de la prior</li>
 <li>initial, el valor inicial para el hiperparámetro</li>
 <li>fixed, variable booleana para decir si el hiperparámetro es fijo o aleatorio.</li>
 </ul>
 <p>La modificación la haremos con el argumento <code>control.family=list(hyper=list(...))</code> en la función <code>inla</code>, al que le proporcionaremos una lista con el nombre de los parámetros (el <em>short name</em> con el que los identifica INLA en la documentación), que apunta a una lista con la distribución (<em>prior</em>) y los parámetros (<em>param</em>) a utilizar.</p>
-<p>En nuestro problema, si tenemos información previa sobre la precisión del modelo,
-podemos modificarla con la sintaxis:</p>
+<p>En nuestro problema, si tenemos información previa sobre la precisión del modelo, reconocida como <code>prec</code> (short name), y queremos especificar una a priori <span class="math inline">\(Ga(1,0.001)\)</span> para la precisión, habremos de utilizar la siguiente sintaxis:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prec.info</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>prior<span class="op">=</span><span class="st">"loggamma"</span>, param <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0.001</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fit2</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>,family<span class="op">=</span><span class="st">"gaussian"</span>,data<span class="op">=</span><span class="va">davis</span>,</span>
 <span>      control.family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>hyper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>prec <span class="op">=</span> <span class="va">prec.info</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Si nos conformamos con la previa por defecto de INLA, el modelo que estamos asumiendo en nuestro problema de regresión lineal simple será:</p>
 <p><span class="math display">\[\begin{eqnarray*}
-(y_i|\theta,\beta,\sigma^2) &amp;\sim &amp; N(\theta+\beta x_i,\sigma^2), i=1,...,n \\
+(y_i|\mu_i,\sigma^2) &amp;\sim &amp; N(\mu_i,\sigma^2), i=1,...,n \\
 \tau=1/\sigma^2 &amp; \sim &amp; Ga(1,0.00005)
 \end{eqnarray*}\]</span></p>
 </div>
@@ -188,20 +156,19 @@ podemos modificarla con la sintaxis:</p>
 <span class="header-section-number">2.5</span> Efectos fijos<a class="anchor" aria-label="anchor" href="#efectos-fijos"><i class="fas fa-link"></i></a>
 </h2>
 <p>Una variable explicativa entra en el modelo como <strong>efecto fijo</strong> cuando
-se piensa que afecta a todas las observaciones del mismo modo (de un
-modo lineal), y que su efecto es de interés primario en el estudio.</p>
-<p>En un modelo de regresión lineal todos los efectos latentes, interceptación y coeficientes de covariables, son efectos fijos. Por defecto en INLA y ante ausencia de información, las priors para los efectos fijos, esto es, (<span class="math inline">\(\theta,\beta\)</span> en nuestro caso), son gausianas centradas en cero y con varianzas grandes. Así la interceptación <span class="math inline">\(\beta\)</span> tiene una prior gausiana con media y precisión igual a cero (una distribución plana objetiva, que no integra 1), y los coeficientes <span class="math inline">\(\beta\)</span> también tienen una prior gausiana con media cero y precisión igual a 0.001. Estos valores por defecto se pueden consultar con el comando <code><a href="https://rdrr.io/pkg/INLA/man/control.fixed.html">inla.set.control.fixed.default()</a></code>, que da la siguiente información:</p>
+se piensa que afecta a todas las observaciones del mismo modo, y que su efecto es de interés primario en el estudio.</p>
+<p>En un modelo de regresión lineal todos los efectos latentes en el predictor lineal, interceptación y coeficientes de covariables, son efectos fijos. Ante ausencia de información, las priors para los efectos fijos, esto es, (<span class="math inline">\(\theta,\beta\)</span>) en nuestro caso, se asumen normales centradas en cero y con varianzas grandes. En INLA la interceptación <span class="math inline">\(\beta\)</span> tiene por defecto una prior gausiana con media y precisión igual a cero (una distribución plana objetiva, que no integra 1), y los coeficientes <span class="math inline">\(\beta\)</span> también tienen una prior gausiana con media cero y precisión igual a 0.001. Estos valores por defecto se pueden consultar con el comando <code><a href="https://rdrr.io/pkg/INLA/man/control.fixed.html">inla.set.control.fixed.default()</a></code>, que da la siguiente información:</p>
 <ul>
 <li>
 <em>mean=0</em> y <em>mean.intercept=0</em> son las medias de la distribución normal para los coeficientes <span class="math inline">\(\beta\)</span> y la interceptación <span class="math inline">\(\theta\)</span> respectivamente</li>
 <li>
 <em>prec=0.001</em> y <em>prec.intercept=0</em> son las precisiones respectivas de las normales para <span class="math inline">\(\beta\)</span> y <span class="math inline">\(\theta\)</span>.</li>
 </ul>
-<p>Con todo, los parámetros de las priors sobre los efectos fijos se pueden modificar a través del argumento <code>control.fixed=list(...)</code> en la función <code>inla</code>, utilizando siempre los nombres que atribuye INLA a los diferentes parámetros e hiperparámetros (<em>short name</em>).</p>
+<p>Con todo, los parámetros de las priors sobre los efectos fijos se pueden modificar a través del argumento <code>control.fixed=list(...)</code> en la función <code>inla</code>, utilizando siempre los nombres que atribuye INLA a los diferentes parámetros e hiperparámetros (<em>short name</em>). Por ejemplo, si queremos modificar la precisión de los efectos fijos para hacerla igual a 0.001 (esto es, varianza 1000), utilizamos la siguiente sintaxis:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">formula</span> <span class="op">=</span> <span class="va">weight</span> <span class="op">~</span> <span class="fl">1</span><span class="op">+</span> <span class="va">repwt</span></span>
 <span><span class="va">fit</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>,family<span class="op">=</span><span class="st">"gaussian"</span>,data<span class="op">=</span><span class="va">davis</span>,</span>
-<span>         control.fixed<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>prec<span class="op">=</span><span class="fl">0.0001</span>,prec.intercept<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>         control.fixed<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>prec<span class="op">=</span><span class="fl">0.001</span>,prec.intercept<span class="op">=</span><span class="fl">0.001</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Volvemos sobre nuestro ejemplo, y asumiendo las a priori por defecto de INLA tendremos:
 <span class="math display">\[\begin{eqnarray*}
 (y_i|\theta,\beta,\sigma^2) &amp; \sim &amp; N(\theta+\beta x_i,\sigma^2), i=1,...,n \\
@@ -214,7 +181,6 @@ modo lineal), y que su efecto es de interés primario en el estudio.</p>
 <h2>
 <span class="header-section-number">2.6</span> Resultados<a class="anchor" aria-label="anchor" href="#resultados"><i class="fas fa-link"></i></a>
 </h2>
-<p>Para controlar qué resultados ha de mostrar INLA tras realizar un ajuste, hemos de especificar los ajustes del argumento <code>control.results</code> de la función <code>inla</code>.</p>
 <p>Para mostrar una descriptiva de los resultados del ajuste obtenido con <code>fit=inla(...)</code>,
 utilizamos la sintaxis siguiente:</p>
 <ul>
@@ -265,7 +231,7 @@ los parámetros e hiperparámetros</li>
 <span><span class="co">#&gt;    silent, inla.mode = inla.mode, safe = FALSE, debug = </span></span>
 <span><span class="co">#&gt;    debug, ", " .parent.frame = .parent.frame)") </span></span>
 <span><span class="co">#&gt; Time used:</span></span>
-<span><span class="co">#&gt;     Pre = 2.31, Running = 0.265, Post = 0.0218, Total = 2.59 </span></span>
+<span><span class="co">#&gt;     Pre = 2.42, Running = 0.515, Post = 0.0187, Total = 2.95 </span></span>
 <span><span class="co">#&gt; Fixed effects:</span></span>
 <span><span class="co">#&gt;              mean    sd 0.025quant 0.5quant 0.975quant mode</span></span>
 <span><span class="co">#&gt; (Intercept) 2.734 0.814      1.135    2.734      4.333   NA</span></span>
@@ -282,14 +248,14 @@ los parámetros e hiperparámetros</li>
 <span><span class="co">#&gt;                                         0.975quant mode</span></span>
 <span><span class="co">#&gt; Precision for the Gaussian observations      0.242   NA</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Marginal log-Likelihood:  -426.72 </span></span>
+<span><span class="co">#&gt; Marginal log-Likelihood:  -426.74 </span></span>
 <span><span class="co">#&gt;  is computed </span></span>
 <span><span class="co">#&gt; Posterior summaries for the linear predictor and the fitted values are computed</span></span>
 <span><span class="co">#&gt; (Posterior marginals needs also 'control.compute=list(return.marginals.predictor=TRUE)')</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">mlik</span></span>
 <span><span class="co">#&gt;                                            [,1]</span></span>
-<span><span class="co">#&gt; log marginal-likelihood (integration) -426.7315</span></span>
-<span><span class="co">#&gt; log marginal-likelihood (Gaussian)    -426.7168</span></span></code></pre></div>
+<span><span class="co">#&gt; log marginal-likelihood (integration) -426.7334</span></span>
+<span><span class="co">#&gt; log marginal-likelihood (Gaussian)    -426.7381</span></span></code></pre></div>
 <p>Obtenemos pues la salida con un descriptivo de la distribución posterior para los efectos fijos interceptación, <span class="math inline">\(\theta\)</span>, y el coeficiente del regresor <code>repwt</code>, <span class="math inline">\(\beta\)</span>, con la media, desviación típica y cuantiles con los que podemos evaluar la región creíble al 95%.</p>
 <p>También muestra a continuación una tabla con los descriptivos de la distribución posterior para la precisión <span class="math inline">\(\tau=1/\sigma^2\)</span> de los datos.</p>
 <p>Si queremos obtener los nombres con los que INLA reconoce los efectos fijos (interceptación y coeficiente del regresor) e hiperparámetros (precisión de los datos), llamamos a</p>
@@ -298,52 +264,80 @@ los parámetros e hiperparámetros</li>
 <span><span class="co">#&gt; [1] "(Intercept)" "repwt"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.hyperpar</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Precision for the Gaussian observations"</span></span></code></pre></div>
-<p>Y para describir la marginal posterior sobre cada uno de los datos ajustados:</p>
+<p>Y podemos pedir descriptivos específicos de las distribuciones de los efectos fijos y de los hiperparámetros.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># descriptivos efectos fijos</span></span>
+<span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span></span>
+<span><span class="co">#&gt;                  mean         sd 0.025quant  0.5quant</span></span>
+<span><span class="co">#&gt; (Intercept) 2.7338112 0.81444053  1.1347919 2.7338111</span></span>
+<span><span class="co">#&gt; repwt       0.9583742 0.01213746  0.9345443 0.9583742</span></span>
+<span><span class="co">#&gt;             0.975quant mode          kld</span></span>
+<span><span class="co">#&gt; (Intercept)  4.3328311   NA 6.196383e-10</span></span>
+<span><span class="co">#&gt; repwt        0.9822041   NA 6.194944e-10</span></span>
+<span><span class="co"># descriptivos varianza</span></span>
+<span><span class="va">fit</span><span class="op">$</span><span class="va">summary.hyperpar</span></span>
+<span><span class="co">#&gt;                                              mean</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.1990443</span></span>
+<span><span class="co">#&gt;                                                 sd</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.02085693</span></span>
+<span><span class="co">#&gt;                                         0.025quant</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations  0.1609228</span></span>
+<span><span class="co">#&gt;                                          0.5quant</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.1982936</span></span>
+<span><span class="co">#&gt;                                         0.975quant mode</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations  0.2417927   NA</span></span>
+<span><span class="co"># medias de los efectos fijos</span></span>
+<span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span><span class="op">$</span><span class="va">mean</span></span>
+<span><span class="co">#&gt; [1] 2.7338112 0.9583742</span></span>
+<span><span class="co"># descriptivos primer efecto fijo</span></span>
+<span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span></span>
+<span><span class="co">#&gt;                 mean        sd 0.025quant 0.5quant</span></span>
+<span><span class="co">#&gt; (Intercept) 2.733811 0.8144405   1.134792 2.733811</span></span>
+<span><span class="co">#&gt;             0.975quant mode          kld</span></span>
+<span><span class="co">#&gt; (Intercept)   4.332831   NA 6.196383e-10</span></span></code></pre></div>
+<p>Para describir la marginal posterior sobre cada uno de los datos ajustados:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fitted.values</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                          mean        sd 0.025quant 0.5quant</span></span>
-<span><span class="co">#&gt; fitted.Predictor.001 76.52862 0.2162698   76.10405 76.52862</span></span>
-<span><span class="co">#&gt; fitted.Predictor.002 51.61089 0.2441495   51.13159 51.61089</span></span>
-<span><span class="co">#&gt; fitted.Predictor.003 54.48601 0.2190069   54.05607 54.48601</span></span>
-<span><span class="co">#&gt; fitted.Predictor.004 69.82000 0.1750354   69.47638 69.82000</span></span>
-<span><span class="co">#&gt; fitted.Predictor.005 59.27789 0.1856013   58.91352 59.27789</span></span>
-<span><span class="co">#&gt; fitted.Predictor.006 75.57025 0.2087673   75.16040 75.57025</span></span>
+<span><span class="co">#&gt; fitted.Predictor.001 76.52862 0.2162846   76.10402 76.52862</span></span>
+<span><span class="co">#&gt; fitted.Predictor.002 51.61089 0.2441661   51.13156 51.61089</span></span>
+<span><span class="co">#&gt; fitted.Predictor.003 54.48602 0.2190218   54.05604 54.48602</span></span>
+<span><span class="co">#&gt; fitted.Predictor.004 69.82000 0.1750473   69.47636 69.82000</span></span>
+<span><span class="co">#&gt; fitted.Predictor.005 59.27789 0.1856139   58.91350 59.27789</span></span>
+<span><span class="co">#&gt; fitted.Predictor.006 75.57025 0.2087815   75.16038 75.57025</span></span>
 <span><span class="co">#&gt;                      0.975quant mode</span></span>
-<span><span class="co">#&gt; fitted.Predictor.001   76.95320   NA</span></span>
-<span><span class="co">#&gt; fitted.Predictor.002   52.09020   NA</span></span>
-<span><span class="co">#&gt; fitted.Predictor.003   54.91596   NA</span></span>
-<span><span class="co">#&gt; fitted.Predictor.004   70.16363   NA</span></span>
-<span><span class="co">#&gt; fitted.Predictor.005   59.64225   NA</span></span>
-<span><span class="co">#&gt; fitted.Predictor.006   75.98009   NA</span></span></code></pre></div>
+<span><span class="co">#&gt; fitted.Predictor.001   76.95322   NA</span></span>
+<span><span class="co">#&gt; fitted.Predictor.002   52.09023   NA</span></span>
+<span><span class="co">#&gt; fitted.Predictor.003   54.91599   NA</span></span>
+<span><span class="co">#&gt; fitted.Predictor.004   70.16365   NA</span></span>
+<span><span class="co">#&gt; fitted.Predictor.005   59.64227   NA</span></span>
+<span><span class="co">#&gt; fitted.Predictor.006   75.98012   NA</span></span></code></pre></div>
 <p>Si queremos hacer un <strong>análisis de sensibilidad</strong> sobre las distribuciones a priori, reajustamos el modelo con otras priors y comparamos los resultados.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># ajuste del modelo </span></span>
 <span><span class="va">formula</span> <span class="op">=</span> <span class="va">weight</span> <span class="op">~</span> <span class="fl">1</span><span class="op">+</span> <span class="va">repwt</span></span>
 <span><span class="va">fit2</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>,family<span class="op">=</span><span class="st">"gaussian"</span>,data<span class="op">=</span><span class="va">davis</span>,</span>
 <span>         control.fixed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mean.intercept <span class="op">=</span> <span class="fl">100</span>, </span>
-<span>                                 prec.intercept <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">2</span><span class="op">)</span>,</span>
-<span>                                 mean <span class="op">=</span> <span class="fl">0</span>, </span>
-<span>                                 prec <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, </span>
+<span>                                 prec.intercept <span class="op">=</span> <span class="fl">0.001</span>,</span>
+<span>                                 prec <span class="op">=</span> <span class="fl">0.001</span><span class="op">)</span>, </span>
 <span>            control.family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>hyper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
 <span>              prec <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>prior<span class="op">=</span><span class="st">"loggamma"</span>, param <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0.001</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fit2</span><span class="op">$</span><span class="va">summary.fixed</span></span>
 <span><span class="co">#&gt;                  mean         sd 0.025quant  0.5quant</span></span>
-<span><span class="co">#&gt; (Intercept) 3.3858930 0.81574093  1.7941307 3.3824412</span></span>
-<span><span class="co">#&gt; repwt       0.9488569 0.01215682  0.9248466 0.9489073</span></span>
+<span><span class="co">#&gt; (Intercept) 2.7982950 0.81423409   1.200656 2.7979490</span></span>
+<span><span class="co">#&gt; repwt       0.9574336 0.01213454   0.933595 0.9574386</span></span>
 <span><span class="co">#&gt;             0.975quant mode          kld</span></span>
-<span><span class="co">#&gt; (Intercept)  4.9972197   NA 2.193595e-09</span></span>
-<span><span class="co">#&gt; repwt        0.9725816   NA 2.129962e-09</span></span>
+<span><span class="co">#&gt; (Intercept)  4.3978967   NA 6.448609e-10</span></span>
+<span><span class="co">#&gt; repwt        0.9812435   NA 6.444866e-10</span></span>
 <span><span class="va">fit2</span><span class="op">$</span><span class="va">summary.hyperpar</span></span>
-<span><span class="co">#&gt;                                              mean</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.1984091</span></span>
-<span><span class="co">#&gt;                                                 sd</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.02086727</span></span>
+<span><span class="co">#&gt;                                              mean        sd</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.1990557 0.0208414</span></span>
 <span><span class="co">#&gt;                                         0.025quant</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations  0.1602715</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations  0.1607695</span></span>
 <span><span class="co">#&gt;                                          0.5quant</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.1977025</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.1983624</span></span>
 <span><span class="co">#&gt;                                         0.975quant mode</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations  0.2410891   NA</span></span></code></pre></div>
+<span><span class="co">#&gt; Precision for the Gaussian observations  0.2417112   NA</span></span></code></pre></div>
 </div>
 <div id="distribuciones-posteriores" class="section level2" number="2.7">
 <h2>
@@ -355,10 +349,10 @@ los parámetros e hiperparámetros</li>
 <li>
 <code>fit$marginals.fixed</code> da las distribuciones posteriores marginales de los efectos fijos</li>
 <li>
-<code>fit$marginals.fixed$x</code> da la distribución del efecto fijo <code>x</code> (<code>x</code> el nombre del efecto), y también se puede seleccionar con su ordinal en el conjunto de efectos fijos
-<code>fit$marginals.fixed[[i]]</code>
+<code>fit$marginals.fixed$xx</code> da la distribución del efecto fijo <code>xx</code>, y también se puede seleccionar con su ordinal en el conjunto de efectos fijos <code>fit$marginals.fixed[[i]]</code>
 </li>
-<li><pre><code>`fit.marginals.hyperpar` da las distribuciones posteriores marginales de los parámetros e hiperparámetros</code></pre></li>
+<li>
+<code>fit.marginals.hyperpar</code> da las distribuciones posteriores marginales de los parámetros e hiperparámetros</li>
 <li>
 <code>fit$marginals.fitted.values</code> da las distribuciones posteriores marginales para los valores ajustados</li>
 </ul>
@@ -429,18 +423,26 @@ los parámetros e hiperparámetros</li>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">gridExtra</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html">grid.arrange</a></span><span class="op">(</span><span class="va">g</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">g</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,<span class="va">g</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="va">g</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>,ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="01-regresion_files/figure-html/unnamed-chunk-14-1.png" width="672"></div>
+<div class="inline-figure"><img src="01-regresion_files/figure-html/unnamed-chunk-15-1.png" width="672"></div>
+<p>Si queremos la distribución posterior de alguna de las medias <span class="math inline">\(\mu_i=\theta+ \beta x_i\)</span>, necesitamos añadir el argumento <code>control.compute=list(return.marginals.predictor=TRUE)</code> en <code>inla</code>. Así podremos representar, por ejemplo, la distribución posterior sobre el peso esperado para el individuo que aparece en el registro 1 de la base de datos, <span class="math inline">\(\mu_1=\theta+\beta x_1\)</span>:</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>,family<span class="op">=</span><span class="st">"gaussian"</span>,data<span class="op">=</span><span class="va">davis</span>,</span>
+<span>         control.compute<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>return.marginals.predictor<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.fitted.values</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,<span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">mu</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>,y<span class="op">=</span><span class="st">"D.Posterior"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="01-regresion_files/figure-html/unnamed-chunk-16-1.png" width="672"></div>
 </div>
 <div id="simulación-de-la-posterior" class="section level2" number="2.8">
 <h2>
 <span class="header-section-number">2.8</span> Simulación de la posterior<a class="anchor" aria-label="anchor" href="#simulaci%C3%B3n-de-la-posterior"><i class="fas fa-link"></i></a>
 </h2>
-<p>Cuando queremos inferir sobre funciones de los efectos latentes e hiperparámetros que no proporciona por defecto <code>INLA</code>, podemos recurrir a simular de las distribuciones posteriores de los efectos involucrados, y con ellas evaluar la función que nos interesa para conseguir una muestra de su distribución posterior.
-Para ello es preciso que al ajustar el modelo con <code>inla</code> hayamos incluido el argumento <code>control.compute=list(config=TRUE)</code>.</p>
-<p>Para obtener simulaciones utilizamos las funciones:</p>
+<p>Cuando queremos inferir sobre funciones de los efectos latentes e hiperparámetros que no proporciona <code>INLA</code> por defecto , podemos recurrir a simular de las distribuciones posteriores de los efectos involucrados, y con ellas evaluar la función que nos interesa, para conseguir una muestra de su distribución posterior.</p>
+<p>Para ello es preciso que al ajustar el modelo con <code>inla</code> hayamos incluido el argumento <code>control.compute=list(config=TRUE)</code>.</p>
+<p>Para obtener simulaciones de las correspondientes distribuciones posteriores, utilizamos las funciones:</p>
 <ul>
 <li>
-<code>inla.posterior.sample(n, fit,selection)</code>, para simular los efectos latentes, donde <span class="math inline">\(n\)</span> es el número de simulaciones pretendido, <code>fit</code> es el ajuste obtenido con <code>inla</code> y <code>selection</code> es una lista con el nombre de las componentes a simular.<br>
+<code>inla.posterior.sample(n, fit,selection)</code>, para simular los efectos latentes, donde <span class="math inline">\(n\)</span> es el número de simulaciones pretendido, <code>fit</code> es el ajuste obtenido con <code>inla</code> y <code>selection</code> es una lista con el nombre de las componentes (efectos latentes) a simular.<br>
 </li>
 <li>
 <code>inla.hyperpar.sample(n,fit,improve.marginals=TRUE)</code> para simular de parámetros e hiperparámetros.</li>
@@ -448,50 +450,98 @@ Para ello es preciso que al ajustar el modelo con <code>inla</code> hayamos incl
 <p>Para describir las distribuciones de los nuevos parámetros que queremos evaluar con dichas simulaciones, utilizaremos:</p>
 <ul>
 <li>
-<code><a href="https://rdrr.io/pkg/INLA/man/posterior.sample.html">inla.posterior.sample()</a></code> para funciones sobre los efectos fijos</li>
+<code>inla.posterior.eval()</code> para funciones sobre los efectos fijos</li>
 <li>
-<code><a href="https://rdrr.io/pkg/INLA/man/sampler.html">inla.hyperpar.sample()</a></code> para funciones sobre los hiperparámetros</li>
+<code>inla.hyperpar.eval()</code> para funciones sobre los hiperparámetros</li>
 </ul>
-<p>Imaginemos que queremos obtener la distribución posterior de <span class="math inline">\((\theta+\beta)\)</span>. Hemos de simular pues, de las distribuciones posteriores de <span class="math inline">\(\theta\)</span> y de <span class="math inline">\(\beta\)</span>, para luego sumar las simulaciones y obtener una muestra posterior de <span class="math inline">\(\theta+\beta\)</span>.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>, data <span class="op">=</span> <span class="va">davis</span>,</span>
-<span>  control.compute <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>config <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">sims</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/posterior.sample.html">inla.posterior.sample</a></span><span class="op">(</span><span class="fl">100</span>, <span class="va">fit</span>, selection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"(Intercept)"</span><span class="op">=</span><span class="fl">1</span>,repwt <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Esto nos devuelve una lista de la dimensión del número de simulaciones, y en cada uno de los elementos tenemos: los valores simulados de los hiperparámetros (<code>hyper</code>), de los efectos latentes (<code>latent</code>)</p>
+<p>Imaginemos que queremos obtener la distribución posterior de <span class="math inline">\((\theta+\beta \cdot 50)\)</span>, que correspondería con el peso real de un sujeto que ha declarado un peso de 50kg. Hemos de simular pues, de las distribuciones posteriores de <span class="math inline">\(\theta\)</span> y de <span class="math inline">\(\beta\)</span>, para luego aplicar la función correspondiente sobre las simulaciones y obtener una muestra posterior de <span class="math inline">\(\theta+\beta\cdot 50\)</span>.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># reajustamos para poder simular de las posterioris</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>, data <span class="op">=</span> <span class="va">davis</span>,</span>
+<span>  control.compute <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>config <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># simulamos especificando los parámetros en los que tenemos interés</span></span>
+<span><span class="va">sims</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/posterior.sample.html">inla.posterior.sample</a></span><span class="op">(</span><span class="fl">100</span>, <span class="va">fit</span>, selection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"(Intercept)"</span><span class="op">=</span><span class="fl">1</span>,repwt <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Esto nos devuelve una lista de la dimensión del número de simulaciones (cada simulación en un elemento de la lista), y en cada uno de los elementos tenemos los valores simulados de los hiperparámetros (<code>hyper</code>), de los efectos latentes (<code>latent</code>)</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">sims</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 100</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">sims</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "hyperpar" "latent"   "logdens"</span></span>
 <span><span class="va">sims</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">hyperpar</span></span>
 <span><span class="co">#&gt; Precision for the Gaussian observations </span></span>
-<span><span class="co">#&gt;                               0.2501492</span></span>
+<span><span class="co">#&gt;                               0.2531552</span></span>
 <span><span class="va">sims</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">latent</span></span>
 <span><span class="co">#&gt;                sample:1</span></span>
-<span><span class="co">#&gt; (Intercept):1 3.1201585</span></span>
-<span><span class="co">#&gt; repwt:1       0.9526731</span></span></code></pre></div>
+<span><span class="co">#&gt; (Intercept):1 3.1910974</span></span>
+<span><span class="co">#&gt; repwt:1       0.9516128</span></span></code></pre></div>
 <p>y la log-densidad de la posterior en esos valores (<code>logdens</code>)</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span> <span class="va">sims</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">logdens</span></span>
 <span><span class="co">#&gt; $hyperpar</span></span>
-<span><span class="co">#&gt; [1] 0.2623335</span></span>
+<span><span class="co">#&gt; [1] -0.03749465</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $latent</span></span>
-<span><span class="co">#&gt; [1] 996.3555</span></span>
+<span><span class="co">#&gt; [1] 990.2756</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $joint</span></span>
-<span><span class="co">#&gt; [1] 996.6179</span></span></code></pre></div>
-<p>Ahora con la función <code>inla.posterior.sample.eval</code>, dado que nuestra función depende de efectos fijos (latentes), <span class="math inline">\(\theta+\beta\)</span>, evaluamos dicha suma, aproximamos los descriptivos de la posterior, y la graficamos con un histograma:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">theta_beta</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/posterior.sample.html">inla.posterior.sample.eval</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span><span class="op">(</span><span class="va">Intercept</span><span class="op">)</span><span class="op">+</span><span class="va">repwt</span><span class="op">}</span>,<span class="va">sims</span><span class="op">)</span></span>
-<span><span class="va">theta_beta</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="va">theta_beta</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">theta_beta</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
-<span><span class="co">#&gt;   1.600   3.137   3.576   3.593   4.127   5.295</span></span>
-<span><span class="fu">ggplot</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>tb<span class="op">=</span><span class="va">theta_beta</span><span class="op">)</span>,<span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">tb</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span><span class="co">#&gt; [1] 990.2381</span></span></code></pre></div>
+<p>Ahora con la función <code>inla.posterior.sample.eval</code>, dado que nuestra función depende de efectos fijos (latentes), <span class="math inline">\((\theta,\beta)\)</span>, evaluamos la operación pretendida, y con descriptivos gráficos y numéricos de las simulaciones, podemos aproximar los descriptivos de la distribución posterior.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">peso_real</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/posterior.sample.html">inla.posterior.sample.eval</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span><span class="op">(</span><span class="va">Intercept</span><span class="op">)</span><span class="op">+</span><span class="va">repwt</span><span class="op">*</span><span class="fl">50</span><span class="op">}</span>,<span class="va">sims</span><span class="op">)</span></span>
+<span><span class="va">peso_real</span></span>
+<span><span class="co">#&gt;        sample:1 sample:2 sample:3 sample:4 sample:5</span></span>
+<span><span class="co">#&gt; fun[1] 50.77174 51.00157 51.15255 50.72366 50.30358</span></span>
+<span><span class="co">#&gt;        sample:6 sample:7 sample:8 sample:9 sample:10</span></span>
+<span><span class="co">#&gt; fun[1] 50.37503 50.79087 50.77931  50.7705  50.69194</span></span>
+<span><span class="co">#&gt;        sample:11 sample:12 sample:13 sample:14 sample:15</span></span>
+<span><span class="co">#&gt; fun[1]  50.70318  50.96797  50.92836  51.12906  50.63432</span></span>
+<span><span class="co">#&gt;        sample:16 sample:17 sample:18 sample:19 sample:20</span></span>
+<span><span class="co">#&gt; fun[1]  50.90221   50.6486   50.8332   50.4832   50.5437</span></span>
+<span><span class="co">#&gt;        sample:21 sample:22 sample:23 sample:24 sample:25</span></span>
+<span><span class="co">#&gt; fun[1]  50.22051  50.41023  50.98676  50.05926  50.64914</span></span>
+<span><span class="co">#&gt;        sample:26 sample:27 sample:28 sample:29 sample:30</span></span>
+<span><span class="co">#&gt; fun[1]  50.39144  50.79482   50.5478  50.76798  50.67724</span></span>
+<span><span class="co">#&gt;        sample:31 sample:32 sample:33 sample:34 sample:35</span></span>
+<span><span class="co">#&gt; fun[1]  50.05153  50.25822  50.58997  50.77245  50.82153</span></span>
+<span><span class="co">#&gt;        sample:36 sample:37 sample:38 sample:39 sample:40</span></span>
+<span><span class="co">#&gt; fun[1]  50.55472  50.65805  50.47453  50.61518  50.61682</span></span>
+<span><span class="co">#&gt;        sample:41 sample:42 sample:43 sample:44 sample:45</span></span>
+<span><span class="co">#&gt; fun[1]  50.46537  50.39549  50.67911  50.53541  50.49327</span></span>
+<span><span class="co">#&gt;        sample:46 sample:47 sample:48 sample:49 sample:50</span></span>
+<span><span class="co">#&gt; fun[1]  50.56792  50.75557  50.74522  50.55436  50.76103</span></span>
+<span><span class="co">#&gt;        sample:51 sample:52 sample:53 sample:54 sample:55</span></span>
+<span><span class="co">#&gt; fun[1]  50.24405  50.50962  51.06356  50.98105  50.97629</span></span>
+<span><span class="co">#&gt;        sample:56 sample:57 sample:58 sample:59 sample:60</span></span>
+<span><span class="co">#&gt; fun[1]  50.61206   50.1478  50.66087  50.86156  50.92195</span></span>
+<span><span class="co">#&gt;        sample:61 sample:62 sample:63 sample:64 sample:65</span></span>
+<span><span class="co">#&gt; fun[1]  50.68486  50.63138  50.64536  50.58457  50.56607</span></span>
+<span><span class="co">#&gt;        sample:66 sample:67 sample:68 sample:69 sample:70</span></span>
+<span><span class="co">#&gt; fun[1]  50.62237  50.07861  50.40489  50.26369  50.75101</span></span>
+<span><span class="co">#&gt;        sample:71 sample:72 sample:73 sample:74 sample:75</span></span>
+<span><span class="co">#&gt; fun[1]  50.65484  50.39032  50.77523  50.67958  50.39695</span></span>
+<span><span class="co">#&gt;        sample:76 sample:77 sample:78 sample:79 sample:80</span></span>
+<span><span class="co">#&gt; fun[1]  50.92073  50.99432  50.92132  50.79178  50.73587</span></span>
+<span><span class="co">#&gt;        sample:81 sample:82 sample:83 sample:84 sample:85</span></span>
+<span><span class="co">#&gt; fun[1]  50.71757  51.10834  50.48881  50.88729   50.9219</span></span>
+<span><span class="co">#&gt;        sample:86 sample:87 sample:88 sample:89 sample:90</span></span>
+<span><span class="co">#&gt; fun[1]  50.72242  50.76637  50.51499  50.73792  50.93571</span></span>
+<span><span class="co">#&gt;        sample:91 sample:92 sample:93 sample:94 sample:95</span></span>
+<span><span class="co">#&gt; fun[1]  50.44328  50.67557  50.63103   50.7935   50.7579</span></span>
+<span><span class="co">#&gt;        sample:96 sample:97 sample:98 sample:99 sample:100</span></span>
+<span><span class="co">#&gt; fun[1]  50.79659  50.61272  50.59855  50.68408   50.78629</span></span>
+<span><span class="va">pred</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>peso<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="va">peso_real</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">pred</span><span class="op">)</span></span>
+<span><span class="co">#&gt;       peso      </span></span>
+<span><span class="co">#&gt;  Min.   :50.05  </span></span>
+<span><span class="co">#&gt;  1st Qu.:50.54  </span></span>
+<span><span class="co">#&gt;  Median :50.68  </span></span>
+<span><span class="co">#&gt;  Mean   :50.66  </span></span>
+<span><span class="co">#&gt;  3rd Qu.:50.79  </span></span>
+<span><span class="co">#&gt;  Max.   :51.15</span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">pred</span>,<span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">peso</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>stat<span class="op">=</span><span class="st">"density"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: Ignoring unknown parameters: binwidth, bins, pad</span></span></code></pre></div>
-<div class="inline-figure"><img src="01-regresion_files/figure-html/unnamed-chunk-18-1.png" width="672"></div>
+<div class="inline-figure"><img src="01-regresion_files/figure-html/unnamed-chunk-20-1.png" width="672"></div>
 </div>
 <div id="regresión-lineal-múltiple-con-inla" class="section level2" number="2.9">
 <h2>
@@ -503,21 +553,20 @@ Para ello es preciso que al ajustar el modelo con <code>inla</code> hayamos incl
 <span class="math display">\[ (y_i|\mu_i,\sigma^2) \sim N(\mu_i,\sigma^2), \ \ i=1,...n\]</span>
 donde <span class="math inline">\(\mu_i\)</span> representa la media y <span class="math inline">\(\sigma^2\)</span> la varianza de los datos.
 <span class="math display">\[E(y_i|\mu_i,\sigma^2)=\mu_i, \ Var(y_i|\mu_i,\sigma^2)=\sigma^2\]</span>
-Si tenemos varios regresores <span class="math inline">\(x_1,x_2,...,x_J\)</span>, la media <span class="math inline">\(\mu_i\)</span> se relaciona linealmente con un predictor lineal <span class="math inline">\(\eta_i\)</span> que se construye a partir de una combinación lineal de los predictores:
-<span class="math display">\[\eta_i=\theta+ \sum_{j=1}^J \beta_j x_{ij}\]</span>
-En el modelo de regresión la media de los datos <span class="math inline">\(\mu\)</span> coincide con el predictor lineal <span class="math inline">\(\eta\)</span>, <span class="math inline">\(\mu_i=\eta_i, i=1,...,n\)</span>.</p>
-<p>Nos queda a continuación especificar las distribuciones a priori sobre el vector de efectos latentes, en nuestro caso efectos fijos, <span class="math inline">\((\theta,\beta_1,...,\beta_J)\)</span>, y sobre el parámetro de dispersión o hiperparámetro <span class="math inline">\(\sigma^2\)</span>.</p>
+Si tenemos varios regresores <span class="math inline">\(x_1,x_2,...,x_J\)</span>, la media <span class="math inline">\(\mu_i\)</span> coincide con el predictor lineal <span class="math inline">\(\eta_i\)</span> que se construye a partir de una combinación lineal de los predictores:
+<span class="math display">\[\mu_i=\eta_i=\theta+ \sum_{j=1}^J \beta_j x_{ij}\]</span>
+Nos queda a continuación especificar las distribuciones a priori sobre el vector de efectos latentes, en nuestro caso efectos fijos, <span class="math inline">\((\theta,\beta_1,...,\beta_J)\)</span>, y sobre el parámetro de dispersión o hiperparámetro <span class="math inline">\(\sigma^2\)</span>.</p>
 <p>Cuando no tenemos información previa especificamos distribuciones difusas (vagas) sobre los parámetros. En INLA por defecto tendremos:</p>
 <p><span class="math display">\[\begin{eqnarray*}
 \theta &amp;\sim&amp; N(0,\sigma_{\theta}^2)  \\
 \beta_j &amp;\sim&amp; N(0,\sigma_{\beta}^2) \\
 log(\tau=1/\sigma^2) &amp;\sim&amp; Log-Ga(1,0.00005)
 \end{eqnarray*}\]</span>
-con <span class="math inline">\(\sigma_{theta}^2=\infty\)</span> y <span class="math inline">\(\sigma_{\beta}=1000\)</span>.</p>
+con <span class="math inline">\(\sigma_{\theta}^2=\infty\)</span> y <span class="math inline">\(\sigma_{\beta}^2=1000\)</span>.</p>
 <p>Ejemplificamos el análisis de regresión lineal múltiple sobre la base de datos <code>usair</code>, en la librería <code>brinla</code>. Esta BD contiene datos recopilados para investigar los factores determinantes de la polución, utilizando el nivel de SO2 como variable dependiente y las restantes como variables explicativas potenciales. Las relaciones entre las variables que incluye se muestra en la Figura <a href="inlabasics.html#fig:regmul01">2.1</a> a continuación.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">usair</span>, package <span class="op">=</span> <span class="st">"brinla"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggobi.github.io/ggally/">GGally</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggobi.github.io/ggally/">GGally</a></span><span class="op">)</span> <span class="co"># contiene la función de graficado 'ggpairs'</span></span>
 <span><span class="va">pairs.chart</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs</a></span><span class="op">(</span><span class="va">usair</span>, lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>continuous <span class="op">=</span> <span class="st">"cor"</span><span class="op">)</span>, </span>
 <span>                       upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>continuous <span class="op">=</span> <span class="st">"points"</span>, combo <span class="op">=</span> <span class="st">"dot"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span> </span>
@@ -546,13 +595,20 @@ Figura 2.1: Relaciones entre variables en la base de datos usair(brinla).
 </p>
 </div>
 <p>Apreciamos ya en el gráfico una correlación positiva muy alta entre las variables <code>pop</code> y <code>manuf</code>, y relevante para <code>negtemp</code> y <code>days</code> y también para <code>precip</code> y <code>days</code>, lo que posteriormente condicionará la selección de variables.</p>
+<div id="selección-de-variables" class="section level3" number="2.9.1">
+<h3>
+<span class="header-section-number">2.9.1</span> Selección de variables<a class="anchor" aria-label="anchor" href="#selecci%C3%B3n-de-variables"><i class="fas fa-link"></i></a>
+</h3>
 <p>Cuando trabajamos con más de una variable predictora en regresión lineal (realmente en cualquier modelo) surge un problema adicional, que es la <strong>selección de variables</strong>, o selección del mejor modelo de predicción. Esto se resuelve en INLA utilizando diversos criterios de selección entre los que destacamos:</p>
 <ul>
-<li>la verosimilitud marginal (valor de la log-verosimilitud): <code>mlik</code>; al cambiarle el signo tendremos <span class="math inline">\(-loglikelihood\)</span>
+<li>la verosimilitud marginal (valor de la log-verosimilitud): <code>mlik</code>; al cambiarle el signo tendremos <em>-(log-likelihood)</em>
 </li>
 <li>el criterio de información de la deviance (DIC): <code>dic</code>
 </li>
-<li>el criterio de información bayesiana ampliado (WAIC): <code>waic</code>.</li>
+<li>el criterio de información bayesiana ampliado (WAIC): <code>waic</code>
+</li>
+<li>la transformada integral predictiva (PIT): <code>cpo</code>
+</li>
 </ul>
 <p>El procedimiento a utilizar para la selección del modelo (de variables) es el siguiente:</p>
 <ol style="list-style-type: decimal">
@@ -561,19 +617,20 @@ Figura 2.1: Relaciones entre variables en la base de datos usair(brinla).
 <li>proceder con la selección en base a dichos valores.</li>
 </ol>
 <p>Siempre se prefieren modelos con los valores más bajos para estos criterios y se descartan los que proporcionan valores más altos. Cuando no es el mismo modelo el que proporciona el valor mínimo en estos criterios, habremos de optar por alguno de ellos.</p>
-<p>Por defecto, al ajustar un modelo con <code>inla</code>, nos devuelve la log-verosimilitud (accesible con <code>fit$mlik</code> si el ajuste se guardó en el objeto <code>fit</code>). Para obtener las otras medidas de selección, hemos de incluir como argumento de la función <code>inla</code>, la opción <code>control.compute = list(dic = TRUE, waic = TRUE))</code>. Los valores por defecto de <code>control.compute</code> los podemos consultar ejecutando el comando <code><a href="https://rdrr.io/pkg/INLA/man/control.compute.html">inla.set.control.compute.default()</a></code>.</p>
+<p>Por defecto, al ajustar un modelo con <code>inla</code>, nos devuelve la log-verosimilitud marginal (accesible con <code>fit$mlik</code> si el ajuste se guardó en el objeto <code>fit</code>). Para obtener las otras medidas de selección, hemos de incluir como argumento de la función <code>inla</code>, la opción <code>control.compute = list(dic = TRUE, waic = TRUE))</code>. Los valores por defecto de <code>control.compute</code> los podemos consultar ejecutando el comando <code><a href="https://rdrr.io/pkg/INLA/man/control.compute.html">inla.set.control.compute.default()</a></code>.</p>
 <p>Vayamos pues con el ajuste del modelo de regresión con todas las variables. Recordemos que si no especificamos el argumento <code>family</code>, interpreta por defecto la opción <code>gaussian</code>, esto es, normalidad para los datos. Así ajustamos el modelo y obtenemos las siguientes inferencias sobre los efectos fijos.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">formula</span> <span class="op">&lt;-</span>  <span class="va">SO2</span> <span class="op">~</span> <span class="va">negtemp</span> <span class="op">+</span> <span class="va">manuf</span> <span class="op">+</span> <span class="va">wind</span> <span class="op">+</span> <span class="va">precip</span> <span class="op">+</span> <span class="va">days</span></span>
-<span><span class="va">fit</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>, data <span class="op">=</span> <span class="va">usair</span>, control.compute <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>dic <span class="op">=</span> <span class="cn">TRUE</span>, waic <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fit</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>, data <span class="op">=</span> <span class="va">usair</span>, </span>
+<span>          control.compute <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>dic <span class="op">=</span> <span class="cn">TRUE</span>, waic <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#summary(fit)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span>,<span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                mean     sd 0.025quant 0.5quant 0.975quant</span></span>
-<span><span class="co">#&gt; (Intercept) 135.490 49.844     37.192  135.497    233.749</span></span>
-<span><span class="co">#&gt; negtemp       1.769  0.634      0.518    1.769      3.019</span></span>
+<span><span class="co">#&gt; (Intercept) 135.491 49.863     37.151  135.498    233.788</span></span>
+<span><span class="co">#&gt; negtemp       1.769  0.634      0.518    1.769      3.020</span></span>
 <span><span class="co">#&gt; manuf         0.026  0.005      0.017    0.026      0.035</span></span>
-<span><span class="co">#&gt; wind         -3.723  1.934     -7.535   -3.723      0.091</span></span>
-<span><span class="co">#&gt; precip        0.625  0.387     -0.138    0.625      1.388</span></span>
+<span><span class="co">#&gt; wind         -3.723  1.935     -7.537   -3.723      0.093</span></span>
+<span><span class="co">#&gt; precip        0.625  0.387     -0.139    0.625      1.388</span></span>
 <span><span class="co">#&gt; days         -0.057  0.174     -0.400   -0.057      0.287</span></span>
 <span><span class="co">#&gt;             mode kld</span></span>
 <span><span class="co">#&gt; (Intercept)   NA   0</span></span>
@@ -583,27 +640,34 @@ Figura 2.1: Relaciones entre variables en la base de datos usair(brinla).
 <span><span class="co">#&gt; precip        NA   0</span></span>
 <span><span class="co">#&gt; days          NA   0</span></span></code></pre></div>
 <p>La inferencia posterior sobre la desviación típica de los datos, <span class="math inline">\(\sigma\)</span>, la resolvemos con sus descriptivos.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sigma.post</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">tau</span><span class="op">)</span> <span class="va">tau</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span>
 <span>                           <span class="va">fit</span><span class="op">$</span><span class="va">marginals.hyperpar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.zmarginal</a></span><span class="op">(</span><span class="va">sigma.post</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Mean            15.6694 </span></span>
-<span><span class="co">#&gt; Stdev           1.85515 </span></span>
-<span><span class="co">#&gt; Quantile  0.025 12.5284 </span></span>
-<span><span class="co">#&gt; Quantile  0.25  14.3455 </span></span>
-<span><span class="co">#&gt; Quantile  0.5   15.4908 </span></span>
-<span><span class="co">#&gt; Quantile  0.75  16.797 </span></span>
-<span><span class="co">#&gt; Quantile  0.975 19.8145</span></span></code></pre></div>
+<span><span class="co">#&gt; Mean            15.6817 </span></span>
+<span><span class="co">#&gt; Stdev           1.84652 </span></span>
+<span><span class="co">#&gt; Quantile  0.025 12.5826 </span></span>
+<span><span class="co">#&gt; Quantile  0.25  14.3556 </span></span>
+<span><span class="co">#&gt; Quantile  0.5   15.4984 </span></span>
+<span><span class="co">#&gt; Quantile  0.75  16.8027 </span></span>
+<span><span class="co">#&gt; Quantile  0.975 19.8218</span></span></code></pre></div>
 <p>Para seleccionar las variables relevantes seguimos el procedimiento descrito anteriormente. Añadimos también el ajuste del modelo de regresión frecuentista, para el que calculamos como criterio de bondad de ajuste el AIC.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># variables en la bd</span></span>
 <span><span class="va">vars</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">usair</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span> <span class="co"># variables predictoras (excluye v.dpte)</span></span>
 <span><span class="va">nvars</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span> <span class="co"># nº variables predictoras</span></span>
-<span><span class="co"># Selección de variables. truco para concatenar todos los modelos posibles en una fórmula</span></span>
-<span><span class="va">listcombo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">nvars</span>,<span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/combn.html">combn</a></span><span class="op">(</span><span class="va">nvars</span>, <span class="va">x</span>, simplify<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>,recursive<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">predterms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">listcombo</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">vars</span><span class="op">[</span><span class="va">x</span><span class="op">]</span>,collapse<span class="op">=</span><span class="st">"+"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Truco para concatenar todos los modelos posibles en una fórmula (de Faraway)</span></span>
+<span><span class="va">listcombo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">nvars</span>,</span>
+<span>                           <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/combn.html">combn</a></span><span class="op">(</span><span class="va">nvars</span>, <span class="va">x</span>, simplify<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                    recursive<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">predterms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">listcombo</span>, </span>
+<span>                    <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">vars</span><span class="op">[</span><span class="va">x</span><span class="op">]</span>,collapse<span class="op">=</span><span class="st">"+"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">nmodels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">listcombo</span><span class="op">)</span></span>
-<span><span class="va">coefm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="cn">NA</span>,<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">listcombo</span><span class="op">)</span>,<span class="fl">4</span>,dimnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">predterms</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"AIC"</span>,<span class="st">"DIC"</span>,<span class="st">"WAIC"</span>,<span class="st">"MLIK"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">coefm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="cn">NA</span>,<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">listcombo</span><span class="op">)</span>,<span class="fl">4</span>,</span>
+<span>                dimnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">predterms</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"AIC"</span>,<span class="st">"DIC"</span>,<span class="st">"WAIC"</span>,<span class="st">"MLIK"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Ajuste de todos los modelos posibles</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">nmodels</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="va">formula</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html">as.formula</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"SO2 ~ "</span>,<span class="va">predterms</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="co"># modelo frecuentista</span></span>
@@ -616,7 +680,7 @@ Figura 2.1: Relaciones entre variables en la base de datos usair(brinla).
 <span>  <span class="va">coefm</span><span class="op">[</span><span class="va">i</span>,<span class="fl">4</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="va">result</span><span class="op">$</span><span class="va">mlik</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>Ya solo resta comparar los resultados, respecto de cada uno de los criterios, para seleccionar con qué variables nos quedamos, y por lo tanto con qué modelo de predicción. Basta con encontrar el modelo que proporciona el mínimo valor en cada uno de los criterios.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gana.aic</span> <span class="op">=</span> <span class="va">predterms</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.min</a></span><span class="op">(</span><span class="va">coefm</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">gana.dic</span> <span class="op">=</span> <span class="va">predterms</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.min</a></span><span class="op">(</span><span class="va">coefm</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">gana.waic</span> <span class="op">=</span> <span class="va">predterms</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.min</a></span><span class="op">(</span><span class="va">coefm</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></span>
@@ -633,37 +697,37 @@ Figura 2.1: Relaciones entre variables en la base de datos usair(brinla).
 <span><span class="co">#&gt; [1] "manuf"</span></span></code></pre></div>
 <p>Concluimos pues que, tanto el criterio AIC en el modelo de regresión frecuentista, como los criterios DIC y WAIC en el modelo de regresión bayesiano, proporcionan el mejor ajuste. Este mejor modelo incluye como predictores las variables ‘negtemp+manuf+pop+wind+precip’. Reajustamos el modelo con estas variables para derivar las inferencias y predicciones.</p>
 <p>Las inferencias sobre los efectos fijos y la precisión de los datos se muestran a continuación.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">formula</span><span class="op">=</span><span class="va">SO2</span> <span class="op">~</span> <span class="va">negtemp</span><span class="op">+</span><span class="va">manuf</span><span class="op">+</span><span class="va">pop</span><span class="op">+</span><span class="va">wind</span><span class="op">+</span><span class="va">precip</span></span>
 <span><span class="va">fit</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>, family<span class="op">=</span><span class="st">"gaussian"</span>, data<span class="op">=</span><span class="va">usair</span>, control.compute<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>dic<span class="op">=</span><span class="cn">TRUE</span>, waic<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span></span>
 <span><span class="co">#&gt;                     mean          sd   0.025quant</span></span>
-<span><span class="co">#&gt; (Intercept) 100.01631659 30.14417250 40.570672146</span></span>
-<span><span class="co">#&gt; negtemp       1.12027639  0.41435479  0.303202856</span></span>
-<span><span class="co">#&gt; manuf         0.06489622  0.01549282  0.034348862</span></span>
-<span><span class="co">#&gt; pop          -0.03934759  0.01488629 -0.068700565</span></span>
-<span><span class="co">#&gt; wind         -3.07261904  1.75688301 -6.535929438</span></span>
-<span><span class="co">#&gt; precip        0.41922412  0.21550852 -0.005722621</span></span>
-<span><span class="co">#&gt;                 0.5quant    0.975quant mode          kld</span></span>
-<span><span class="co">#&gt; (Intercept) 100.01978443 159.442089693   NA 1.153268e-08</span></span>
-<span><span class="co">#&gt; negtemp       1.12030180   1.937204271   NA 1.156014e-08</span></span>
-<span><span class="co">#&gt; manuf         0.06489600   0.095444842   NA 1.156921e-08</span></span>
-<span><span class="co">#&gt; pop          -0.03934726  -0.009996451   NA 1.156854e-08</span></span>
-<span><span class="co">#&gt; wind         -3.07287012   0.392129476   NA 1.150727e-08</span></span>
-<span><span class="co">#&gt; precip        0.41923032   0.844135322   NA 1.156767e-08</span></span>
+<span><span class="co">#&gt; (Intercept) 100.01677846 30.13563869 40.589282894</span></span>
+<span><span class="co">#&gt; negtemp       1.12028465  0.41423702  0.303460654</span></span>
+<span><span class="co">#&gt; manuf         0.06489614  0.01548840  0.034358173</span></span>
+<span><span class="co">#&gt; pop          -0.03934752  0.01488205 -0.068691497</span></span>
+<span><span class="co">#&gt; wind         -3.07262663  1.75638513 -6.534887903</span></span>
+<span><span class="co">#&gt; precip        0.41922601  0.21544658 -0.005589202</span></span>
+<span><span class="co">#&gt;                 0.5quant   0.975quant mode          kld</span></span>
+<span><span class="co">#&gt; (Intercept) 100.02024423 159.42444437   NA 1.155716e-08</span></span>
+<span><span class="co">#&gt; negtemp       1.12031034   1.93696154   NA 1.158576e-08</span></span>
+<span><span class="co">#&gt; manuf         0.06489592   0.09543539   NA 1.159676e-08</span></span>
+<span><span class="co">#&gt; pop          -0.03934720  -0.01000540   NA 1.159610e-08</span></span>
+<span><span class="co">#&gt; wind         -3.07287556   0.39105837   NA 1.153171e-08</span></span>
+<span><span class="co">#&gt; precip        0.41923218   0.84400589   NA 1.159504e-08</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">summary.hyperpar</span></span>
 <span><span class="co">#&gt;                                                mean</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.005065835</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.005065999</span></span>
 <span><span class="co">#&gt;                                                  sd</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.001179158</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.001178934</span></span>
 <span><span class="co">#&gt;                                          0.025quant</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.003034982</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.003036399</span></span>
 <span><span class="co">#&gt;                                            0.5quant</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.004974583</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.004974662</span></span>
 <span><span class="co">#&gt;                                          0.975quant mode</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.007616386   NA</span></span></code></pre></div>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.007615825   NA</span></span></code></pre></div>
 <p>Y en la Figura <a href="inlabasics.html#fig:regmul02">2.2</a> se muestran las distribuciones posteriores de todos los efectos latentes (efectos fijos) en el modelo: interceptación y coeficientes de los regresores.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nfixed</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">names.fixed</span><span class="op">)</span></span>
 <span><span class="va">g</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">nfixed</span><span class="op">)</span><span class="op">{</span></span>
@@ -682,8 +746,13 @@ Figura 2.1: Relaciones entre variables en la base de datos usair(brinla).
 Figura 2.2: Distribuciones posteriores de los efectos latentes.
 </p>
 </div>
-<p>Por último, si queremos predecir nuevas observaciones con la <strong>distribución predictiva a posteriori</strong>, y ciertos valores de las variables explicativas, utilizamos el argumento <code>control.predictor</code>en la función <code>inla</code>, especificando en una lista los valores a predecir. Veamos cómo hacerlo con <code>inla</code>, ajustando un modelo sobre un <code>data.frame</code> combinado, en el que añadimos tantas filas como predicciones queremos conseguir, con los valores deseados para los predictores (y valores faltantes en la respuesta), y especificamos los valores a predecir en un vector indicador, a través del argumento <code>control.predictor(list(link=vector.indicador))</code>. Las predicciones se obtienen después, con el resumen de los datos ajustados <code>fitted.values</code>. Recordemos que para poder mostrar las distribuciones predictivas, hemos de añadir en <code>inla</code> el argumento <code>control.compute=list(return.marginals.predictor=TRUE)</code>.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+</div>
+<div id="predicción" class="section level3" number="2.9.2">
+<h3>
+<span class="header-section-number">2.9.2</span> Predicción<a class="anchor" aria-label="anchor" href="#predicci%C3%B3n"><i class="fas fa-link"></i></a>
+</h3>
+<p>Por último, si queremos predecir nuevas observaciones con la <strong>distribución predictiva a posteriori</strong>, y ciertos valores de las variables explicativas, utilizamos el argumento <code>control.predictor</code> en la función <code>inla</code>, especificando en una lista los valores a predecir. Veamos cómo hacerlo con <code>inla</code>, ajustando un modelo sobre un <code>data.frame</code> combinado, en el que añadimos tantas filas como predicciones queremos conseguir, con los valores deseados para los predictores (y valores faltantes en la respuesta), y especificamos los valores a predecir en un vector indicador, a través del argumento <code>control.predictor(list(link=vector.indicador))</code>. Las predicciones se obtienen después, con el resumen de los datos ajustados <code>fitted.values</code>. Recordemos que para poder mostrar las distribuciones predictivas, hemos de añadir en <code>inla</code> el argumento <code>control.compute=list(return.marginals.predictor=TRUE)</code>.</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Predicción con INLA</span></span>
 <span><span class="co">## valores de los predictores en los que predecir: 3 escenarios</span></span>
 <span><span class="va">formula</span><span class="op">=</span><span class="va">SO2</span> <span class="op">~</span> <span class="va">negtemp</span><span class="op">+</span><span class="va">manuf</span><span class="op">+</span><span class="va">pop</span><span class="op">+</span><span class="va">wind</span><span class="op">+</span><span class="va">precip</span></span>
@@ -706,15 +775,15 @@ Figura 2.2: Distribuciones posteriores de los efectos latentes.
 <span><span class="co">## y describimos los valores ajustados para los tres escenarios añadidos</span></span>
 <span><span class="va">fit.pred</span><span class="op">$</span><span class="va">summary.fitted.values</span><span class="op">[</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">usair</span><span class="op">)</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">usair.combinado</span><span class="op">)</span>,<span class="op">]</span></span>
 <span><span class="co">#&gt;                         mean       sd 0.025quant 0.5quant</span></span>
-<span><span class="co">#&gt; fitted.Predictor.42 31.62379 8.208791   15.43833 31.62454</span></span>
-<span><span class="co">#&gt; fitted.Predictor.43 26.42294 5.476998   15.62417 26.42330</span></span>
-<span><span class="co">#&gt; fitted.Predictor.44 53.16284 7.095481   39.17274 53.16339</span></span>
+<span><span class="co">#&gt; fitted.Predictor.42 31.62389 8.205855   15.44450 31.62465</span></span>
+<span><span class="co">#&gt; fitted.Predictor.43 26.42299 5.475042   15.62826 26.42335</span></span>
+<span><span class="co">#&gt; fitted.Predictor.44 53.16295 7.092933   39.17812 53.16351</span></span>
 <span><span class="co">#&gt;                     0.975quant mode</span></span>
-<span><span class="co">#&gt; fitted.Predictor.42   47.80469   NA</span></span>
-<span><span class="co">#&gt; fitted.Predictor.43   37.21949   NA</span></span>
-<span><span class="co">#&gt; fitted.Predictor.44   67.14958   NA</span></span></code></pre></div>
-<p>Así graficamos en la Figura <a href="inlabasics.html#fig:regmul03">2.3</a> la distribución predictiva del nivel de SO2 para una combinación dada de valores de las variables predictivas, negtem=-50, manuf=150, pop=200, wind=6 y precip=10.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt; fitted.Predictor.42   47.79871   NA</span></span>
+<span><span class="co">#&gt; fitted.Predictor.43   37.21549   NA</span></span>
+<span><span class="co">#&gt; fitted.Predictor.44   67.14442   NA</span></span></code></pre></div>
+<p>Así graficamos en la Figura <a href="inlabasics.html#fig:regmul03">2.3</a> la distribución predictiva del nivel de SO2 para una combinación dada de valores de las variables predictivas, específicamente la que aparece en el escenario 1 propuesto, o lo que es lo mismo, en el registro 42 de la base de datos completada con las nuevas predicciones: negtem=-50, manuf=150, pop=200, wind=6 y precip=10.</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pred</span><span class="op">=</span><span class="va">fit.pred</span><span class="op">$</span><span class="va">marginals.fitted.values</span><span class="op">[[</span><span class="fl">42</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">pred</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -728,6 +797,7 @@ Figura 2.2: Distribuciones posteriores de los efectos latentes.
 <img src="01-regresion_files/figure-html/regmul03-1.png" alt="Distribución predictiva a posteriori de SO2 para una configuración dada de los predictores." width="672"><p class="caption">
 Figura 2.3: Distribución predictiva a posteriori de SO2 para una configuración dada de los predictores.
 </p>
+</div>
 </div>
 </div>
 <div id="conclusiones" class="section level2" number="2.10">
@@ -748,12 +818,17 @@ Figura 2.3: Distribución predictiva a posteriori de SO2 para una configuración
 <li><a class="nav-link" href="#introducci%C3%B3n"><span class="header-section-number">2.1</span> Introducción</a></li>
 <li><a class="nav-link" href="#variables-y-relaciones"><span class="header-section-number">2.2</span> Variables y relaciones</a></li>
 <li><a class="nav-link" href="#verosimilitud"><span class="header-section-number">2.3</span> Verosimilitud</a></li>
-<li><a class="nav-link" href="#par%C3%A1metros-e-hiperpar%C3%A1metros"><span class="header-section-number">2.4</span> Parámetros e hiperparámetros</a></li>
+<li><a class="nav-link" href="#hiperpar%C3%A1metros"><span class="header-section-number">2.4</span> Hiperparámetros</a></li>
 <li><a class="nav-link" href="#efectos-fijos"><span class="header-section-number">2.5</span> Efectos fijos</a></li>
 <li><a class="nav-link" href="#resultados"><span class="header-section-number">2.6</span> Resultados</a></li>
 <li><a class="nav-link" href="#distribuciones-posteriores"><span class="header-section-number">2.7</span> Distribuciones posteriores</a></li>
 <li><a class="nav-link" href="#simulaci%C3%B3n-de-la-posterior"><span class="header-section-number">2.8</span> Simulación de la posterior</a></li>
-<li><a class="nav-link" href="#regresi%C3%B3n-lineal-m%C3%BAltiple-con-inla"><span class="header-section-number">2.9</span> Regresión lineal múltiple con INLA</a></li>
+<li>
+<a class="nav-link" href="#regresi%C3%B3n-lineal-m%C3%BAltiple-con-inla"><span class="header-section-number">2.9</span> Regresión lineal múltiple con INLA</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#selecci%C3%B3n-de-variables"><span class="header-section-number">2.9.1</span> Selección de variables</a></li>
+<li><a class="nav-link" href="#predicci%C3%B3n"><span class="header-section-number">2.9.2</span> Predicción</a></li>
+</ul>
+</li>
 <li><a class="nav-link" href="#conclusiones"><span class="header-section-number">2.10</span> Conclusiones</a></li>
 </ul>
 

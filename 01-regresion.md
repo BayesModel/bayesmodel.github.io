@@ -6,29 +6,11 @@
 
 Una vez presentados los fundamentos de INLA vamos a utilizarlo para trabajar progresivamente desde los modelos más sencillos a los más sofisticados. Empezamos aquí con el modelo de regresión lineal simple, para continuar generalizando con el de regresión lineal múltiple.
 
-Vamos a empezar a trabajar con INLA modelizando y ajustando un problema
-sencillo de regresión lineal simple. La base de datos Davis (en la librería `carData`) contiene 200 registros de 5 variables relacionadas con un estudio sobre habituación de hombres y mujeres a la realización de ejercicio físico de forma regular. Las variables que se registraron son sexo, peso y altura (reales y reportados). Vamos a indagar la relación entre el peso real y el reportado a través de un análisis de regresión lineal simple.
+Partimos de la base de datos Davis (en la librería `carData`), que contiene 200 registros de 5 variables relacionadas con un estudio sobre habituación de hombres y mujeres a la realización de ejercicio físico de forma regular. Las variables que se registraron son sexo, peso y altura (reales y reportados). Vamos a indagar la relación entre el peso real (`weight`) y el reportado (`repwt`) a través de un análisis de regresión lineal simple.
 
 
 ```r
-library("carData")
-summary(Davis)
-#>  sex         weight          height          repwt       
-#>  F:112   Min.   : 39.0   Min.   : 57.0   Min.   : 41.00  
-#>  M: 88   1st Qu.: 55.0   1st Qu.:164.0   1st Qu.: 55.00  
-#>          Median : 63.0   Median :169.5   Median : 63.00  
-#>          Mean   : 65.8   Mean   :170.0   Mean   : 65.62  
-#>          3rd Qu.: 74.0   3rd Qu.:177.2   3rd Qu.: 73.50  
-#>          Max.   :166.0   Max.   :197.0   Max.   :124.00  
-#>                                          NA's   :17      
-#>      repht      
-#>  Min.   :148.0  
-#>  1st Qu.:160.5  
-#>  Median :168.0  
-#>  Mean   :168.5  
-#>  3rd Qu.:175.0  
-#>  Max.   :200.0  
-#>  NA's   :17
+data(Davis,package="carData")
 plot(weight ~ repwt, data=Davis)
 ```
 
@@ -44,8 +26,7 @@ davis=Davis %>%
 
 ## Variables y relaciones
 
-Entendemos como variable respuesta $y=weight$, de tipo numérico
-(continua), y como variable explicativa o covariable, `repwt`, que pretendemos relacionar con un modelo de regresión lineal. 
+Entendemos como variable respuesta `y=weight`, de tipo numérico (continua), y como variable explicativa o covariable, `x=repwt`, también numérica. 
 
 La especificación de respuesta $y$ y predictores $x_1,x_2,...$, en INLA se registra en una fórmula del tipo:
 
@@ -56,7 +37,7 @@ formula= y ~ 1 + x_1 + x_2 +...
 
 en la que podemos prescindir del $1$ que identifica la interceptación, pues el ajuste, por defecto, siempre se resolverá con su estimación, salvo que en su lugar se escriba un '-1'.
 
-En nuestro problema tendríamos pues,
+En nuestro problema tendríamos pues:
 
 
 ```r
@@ -70,32 +51,23 @@ que es lo mismo, la verosimilitud.
 
 En principio es razonable asumir normalidad en la respuesta, además de independencia entre todas las observaciones. Así, el modelo propuesto para la respuesta es:
 
-$$(y_i|\theta,\beta,\sigma^2) \sim N(\theta+\beta x_i,\sigma^2), i=1,...,n$$ 
+$$(y_i|\mu_i,\sigma^2) \sim N(\mu_i,\sigma^2), i=1,...,n$$ 
 
-donde $y=weight$ y $x=repwt$, e $i=1,...,n$ es un subíndice que identifica a cada uno de los registros disponibles en el banco de datos. $\theta$ es la interceptación de la recta de regresión y $\beta$ el coeficiente que explica la relación lineal entre $s$ e $y$. Veamos cómo especificar este modelo con INLA.
+donde `y=weight` y `x=repwt`, e $i=1,...,n$ es un subíndice que identifica a cada uno de los registros disponibles en el banco de datos. La media esperada contiene la relación lineal entre covariable y respuesta, $\mu_i=\theta+\beta x_i$, donde $\theta$ es la interceptación de la recta de regresión y $\beta$ el coeficiente que explica la relación lineal entre $x$ e $y$. El vector $(\theta,\beta)$ identifica los **efectos latentes**, en cuya inferencia posterior estamos interesados, y que están involucrados directamente en la media o predictor lineal. El modelo, o lo que es lo mismo, la verosimilitud, depende también de un parámetro de dispersión $\sigma^2$ sobre el que también querremos inferir. 
 
+Veamos cómo especificar este modelo con INLA. La función `names(inla.models())` proporciona un listado de todos los
+tipos de modelos posibles, tanto para los datos (`likelihood`), para los efectos latentes (`latent`), los parámetros
+(`prior`), y otras opciones que de momento no nos interesan. El listado completo de todas las distribuciones disponibles para cada uno de los tipos de modelos lo obtenemos con el comando `inla.list.models()`. En particular, si ejecutamos `names(inla.models()$likelihood)`,  obtenemos todas las distribuciones disponibles para modelizar los datos. 
 
-En INLA el vector $(\theta,\beta)$ identifica los **efectos latentes**, en cuya inferencia posterior estamos interesados. El modelo, o lo que es lo mismo, la verosimilitud, depende también de un parámetro de dispersión $\sigma^2$ sobre el que también querremos inferir. 
-
-
-La función `name(inla.models())` proporciona un listado de todos los
-tipos de modelos posibles para los datos (*likelihood*), parámetros
-(*prior*), hiperparámetros (*latent*), ... Es más, el listado completo
-de todas las distribuciones disponibles para cada uno de los tipos de
-modelos lo obtenemos con el comando `inla.list.models()`
-
-En particular, si ejecutamos `names(inla.models()$likelihood)` obtenemos
-todas las distribuciones disponibles para modelizar los datos. La
-distribución `gaussian` identifica la distribución normal que buscamos para resolver nuestro problema. Para obtener información sobre cómo está parametrizada y cuáles son los
-hiperparámetros por defecto, basta consultar la documentación *Gaussian* con el comando:
+La distribución `gaussian` identifica la distribución normal que hemos planteado en nuestro modelo de regresión lineal. Para obtener información sobre cómo está parametrizada y cuáles son las priors por defecto, basta consultar la documentación *gaussian* con el comando:
 
 
 ```r
-# documentación (parametrización y valores por defecto)
+# documentación (parametrización y priors) del modelo normal
 inla.doc("gaussian")
 ```
 
-Para ajustar un modelo sencillo en INLA hay que echar mano de la función `inla`, en la que introducimos en primer lugar la `formula`, con la relación entre las variables, a continuación el modelo, en el argumento `family`, y después el banco de datos sobre el que trabajamos. Si no especificamos el argumento `family`, la función `inla`interpreta por defecto la opción `gaussian`, esto es, normalidad para los datos, de modo que podríamos excluir dicha especificación cuando modelizamos datos normales.
+Para ajustar un modelo sencillo en INLA hay que echar mano de la función `inla`, en la que introducimos en primer lugar la `formula`, con la relación entre las variables, a continuación el modelo, en el argumento `family`, y después el banco de datos sobre el que trabajamos. Si no especificamos el argumento `family`, la función `inla` interpreta por defecto la opción `gaussian`, esto es, normalidad para los datos, de modo que podríamos excluir dicha especificación cuando modelizamos datos normales.
 
 
 ```r
@@ -105,7 +77,8 @@ fit=inla(formula,family="gaussian", data)
 fit=inla(formula, data)
 ```
 
-Adelantamos pues un paso más en nuestro problema, añadiendo la verosimilitud normal y la base de datos. Haciendo acopio de lo que hemos visto antes, bastaría con ejecutar:
+Adelantamos pues un paso más en nuestro problema, añadiendo la verosimilitud normal y la base de datos. 
+
 
 ```r
 # ajuste del modelo
@@ -114,16 +87,9 @@ fit=inla(formula,family="gaussian",data=davis)
 ```
 
 
-## Parámetros e hiperparámetros
+## Hiperparámetros
 
-Por defecto INLA asume unas distribuciones difusas sobre los efectos latentes $\theta,\beta$ y la varianza $\sigma^2$. Veamos cuáles son esas distribuciones, y cómo modificarlas si tenemos información previa.
-
-Pensando en el significado de los parámetros (reconocidos como *hyperpar* o hiperparámetros) que aparecen en la verosimilitud, es lógico asumir, ante ausencia de información:
-
-- para los efectos latentes $\theta,\beta$ distribuciones normales independientes difusas y centradas en el cero 
-- para la varianza $\sigma^2$ es habitual asumir una gamma inversa, también difusa (con media y varianza grandes) si no tenemos información previa.
-
-Vamos en primer lugar con el parámetro $\sigma^2$ en la verosimilitud. 
+INLA identifica como hiperparámetros todos aquellos parámetros en el modelo que no se corresponden con efectos latentes, esto es, relacionados con el predictor o respuesta esperada. En nuestro modelo, el único hiperparámetro es la varianza $\sigma^2$, sobre la que es preciso especificar una distribución a priori. Para la varianza $\sigma^2$ es habitual asumir una gamma inversa difusa, con media y varianza grandes.
 
 En INLA, en lugar de asignar distribuciones a priori sobre las
 varianzas, se hace sobre el logaritmo de las precisiones, para facilitar
@@ -141,15 +107,14 @@ Para modificar la distribución a priori de un parámetro podemos utilizar cualq
 Para definir una prior para los parámetros o hiperparámetros en INLA hay
 que definir los siguientes argumentos:
 
--   prior, el nombre de la distribución a priori (alguna de las opciones de `names(inla.models()$prior)`)
+-   prior, el nombre de la distribución a priori (para hiperparámetros, alguna de las opciones en `names(inla.models()$prior)`)
 -   param, los valores de los parámetros de la prior
 -   initial, el valor inicial para el hiperparámetro
 -   fixed, variable booleana para decir si el hiperparámetro es fijo o aleatorio.
 
 La modificación la haremos con el argumento `control.family=list(hyper=list(...))` en la función `inla`, al que le proporcionaremos una lista con el nombre de los parámetros (el *short name* con el que los identifica INLA en la documentación), que apunta a una lista con la distribución (*prior*) y los parámetros (*param*) a utilizar.
 
-En nuestro problema, si tenemos información previa sobre la precisión del modelo,
-podemos modificarla con la sintaxis:
+En nuestro problema, si tenemos información previa sobre la precisión del modelo, reconocida como `prec` (short name), y queremos especificar una a priori $Ga(1,0.001)$ para la precisión, habremos de utilizar la siguiente sintaxis:
 
 
 ```r
@@ -161,7 +126,7 @@ fit2=inla(formula,family="gaussian",data=davis,
 Si nos conformamos con la previa por defecto de INLA, el modelo que estamos asumiendo en nuestro problema de regresión lineal simple será:
 
 \begin{eqnarray*}
-(y_i|\theta,\beta,\sigma^2) &\sim & N(\theta+\beta x_i,\sigma^2), i=1,...,n \\
+(y_i|\mu_i,\sigma^2) &\sim & N(\mu_i,\sigma^2), i=1,...,n \\
 \tau=1/\sigma^2 & \sim & Ga(1,0.00005)
 \end{eqnarray*}
 
@@ -169,21 +134,20 @@ Si nos conformamos con la previa por defecto de INLA, el modelo que estamos asum
 ## Efectos fijos
 
 Una variable explicativa entra en el modelo como **efecto fijo** cuando
-se piensa que afecta a todas las observaciones del mismo modo (de un
-modo lineal), y que su efecto es de interés primario en el estudio. 
+se piensa que afecta a todas las observaciones del mismo modo, y que su efecto es de interés primario en el estudio. 
 
-En un modelo de regresión lineal todos los efectos latentes,  interceptación y coeficientes de covariables, son efectos fijos. Por defecto en INLA y ante ausencia de información, las priors para los efectos fijos,  esto es, ($\theta,\beta$ en nuestro caso), son gausianas centradas en cero y con varianzas grandes. Así la interceptación $\beta$ tiene una prior gausiana con media y precisión igual a cero (una distribución plana objetiva, que no integra 1), y los coeficientes $\beta$ también tienen una prior gausiana con media cero y precisión igual a 0.001. Estos valores por defecto se pueden consultar con el comando `inla.set.control.fixed.default()`, que da la siguiente información:
+En un modelo de regresión lineal todos los efectos latentes en el predictor lineal,  interceptación y coeficientes de covariables, son efectos fijos. Ante ausencia de información, las priors para los efectos fijos,  esto es, ($\theta,\beta$) en nuestro caso, se asumen normales centradas en cero y con varianzas grandes. En INLA la interceptación $\beta$ tiene por defecto una prior gausiana con media y precisión igual a cero (una distribución plana objetiva, que no integra 1), y los coeficientes $\beta$ también tienen una prior gausiana con media cero y precisión igual a 0.001. Estos valores por defecto se pueden consultar con el comando `inla.set.control.fixed.default()`, que da la siguiente información:
 
 - *mean=0* y *mean.intercept=0* son las medias de la distribución normal para los coeficientes $\beta$ y la interceptación $\theta$ respectivamente
 - *prec=0.001* y *prec.intercept=0* son las precisiones respectivas de las normales para $\beta$ y $\theta$.
 
-Con todo, los parámetros de las priors sobre los efectos fijos se pueden modificar a través del argumento `control.fixed=list(...)` en la función `inla`, utilizando siempre los nombres que atribuye INLA a los diferentes parámetros e hiperparámetros (*short name*).
+Con todo, los parámetros de las priors sobre los efectos fijos se pueden modificar a través del argumento `control.fixed=list(...)` en la función `inla`, utilizando siempre los nombres que atribuye INLA a los diferentes parámetros e hiperparámetros (*short name*). Por ejemplo, si queremos modificar la precisión de los efectos fijos para hacerla igual a 0.001 (esto es, varianza 1000), utilizamos la siguiente sintaxis:
 
 
 ```r
 formula = weight ~ 1+ repwt
 fit=inla(formula,family="gaussian",data=davis,
-         control.fixed=list(prec=0.0001,prec.intercept=0.01))
+         control.fixed=list(prec=0.001,prec.intercept=0.001))
 ```
 
 Volvemos sobre nuestro ejemplo, y asumiendo las a priori por defecto de INLA tendremos:
@@ -197,9 +161,6 @@ Volvemos sobre nuestro ejemplo, y asumiendo las a priori por defecto de INLA ten
 
 ## Resultados
 
-Para controlar qué resultados ha de mostrar INLA tras realizar un ajuste, hemos de especificar los ajustes del argumento `control.results` de la función `inla`.
-
-
 Para mostrar una descriptiva de los resultados del ajuste obtenido con `fit=inla(...)`,
 utilizamos la sintaxis siguiente:
 
@@ -211,7 +172,6 @@ utilizamos la sintaxis siguiente:
     los parámetros e hiperparámetros
 -   `fit$summary.fitted.values` resume  la inferencia posterior sobre los valores ajustados
 -   `fit$mlik` da la estimación de la log-verosimilitud marginal, útil para evaluar y comparar modelos.
-  
   
 Veamos los resultados para nuestro problema de regresión.
 
@@ -246,7 +206,7 @@ summary(fit)
 #>    silent, inla.mode = inla.mode, safe = FALSE, debug = 
 #>    debug, ", " .parent.frame = .parent.frame)") 
 #> Time used:
-#>     Pre = 2.28, Running = 0.149, Post = 0.0182, Total = 2.45 
+#>     Pre = 2.49, Running = 0.197, Post = 0.0206, Total = 2.71 
 #> Fixed effects:
 #>              mean    sd 0.025quant 0.5quant 0.975quant mode
 #> (Intercept) 2.734 0.814      1.135    2.734      4.333   NA
@@ -269,8 +229,8 @@ summary(fit)
 #> (Posterior marginals needs also 'control.compute=list(return.marginals.predictor=TRUE)')
 fit$mlik
 #>                                            [,1]
-#> log marginal-likelihood (integration) -426.7382
-#> log marginal-likelihood (Gaussian)    -426.7390
+#> log marginal-likelihood (integration) -426.7370
+#> log marginal-likelihood (Gaussian)    -426.7431
 ```
 
 Obtenemos pues la salida con un descriptivo de la distribución posterior para los efectos fijos interceptación, $\theta$, y el coeficiente del regresor `repwt`, $\beta$, con la media, desviación típica y cuantiles con los que podemos evaluar la región creíble al 95%.
@@ -287,25 +247,60 @@ names(fit$marginals.hyperpar)
 #> [1] "Precision for the Gaussian observations"
 ```
 
-Y para describir la marginal posterior sobre cada uno de los datos ajustados:
+Y podemos pedir descriptivos específicos de las distribuciones de los efectos fijos y de los hiperparámetros.
+
+```r
+# descriptivos efectos fijos
+fit$summary.fixed
+#>                  mean         sd 0.025quant  0.5quant
+#> (Intercept) 2.7338100 0.81436916  1.1349336 2.7338099
+#> repwt       0.9583742 0.01213639  0.9345464 0.9583742
+#>             0.975quant mode          kld
+#> (Intercept)  4.3326867   NA 6.157129e-10
+#> repwt        0.9822019   NA 6.156456e-10
+# descriptivos varianza
+fit$summary.hyperpar
+#>                                              mean
+#> Precision for the Gaussian observations 0.1990574
+#>                                                 sd
+#> Precision for the Gaussian observations 0.02085195
+#>                                         0.025quant
+#> Precision for the Gaussian observations  0.1609475
+#>                                          0.5quant
+#> Precision for the Gaussian observations 0.1983308
+#>                                         0.975quant mode
+#> Precision for the Gaussian observations  0.2417535   NA
+# medias de los efectos fijos
+fit$summary.fixed$mean
+#> [1] 2.7338100 0.9583742
+# descriptivos primer efecto fijo
+fit$summary.fixed[1,]
+#>                mean        sd 0.025quant 0.5quant
+#> (Intercept) 2.73381 0.8143692   1.134934  2.73381
+#>             0.975quant mode          kld
+#> (Intercept)   4.332687   NA 6.157129e-10
+```
+
+
+Para describir la marginal posterior sobre cada uno de los datos ajustados:
 
 
 ```r
 head(fit$summary.fitted.values)
 #>                          mean        sd 0.025quant 0.5quant
-#> fitted.Predictor.001 76.52862 0.2162761   76.10404 76.52862
-#> fitted.Predictor.002 51.61089 0.2441565   51.13158 51.61089
-#> fitted.Predictor.003 54.48602 0.2190132   54.05606 54.48602
-#> fitted.Predictor.004 69.82000 0.1750405   69.47637 69.82000
-#> fitted.Predictor.005 59.27789 0.1856066   58.91351 59.27789
-#> fitted.Predictor.006 75.57025 0.2087733   75.16040 75.57025
+#> fitted.Predictor.001 76.52862 0.2162656   76.10406 76.52862
+#> fitted.Predictor.002 51.61089 0.2441447   51.13160 51.61089
+#> fitted.Predictor.003 54.48602 0.2190026   54.05608 54.48602
+#> fitted.Predictor.004 69.82000 0.1750320   69.47639 69.82000
+#> fitted.Predictor.005 59.27789 0.1855976   58.91353 59.27789
+#> fitted.Predictor.006 75.57025 0.2087633   75.16042 75.57025
 #>                      0.975quant mode
-#> fitted.Predictor.001   76.95320   NA
-#> fitted.Predictor.002   52.09021   NA
-#> fitted.Predictor.003   54.91597   NA
-#> fitted.Predictor.004   70.16363   NA
-#> fitted.Predictor.005   59.64226   NA
-#> fitted.Predictor.006   75.98010   NA
+#> fitted.Predictor.001   76.95318   NA
+#> fitted.Predictor.002   52.09019   NA
+#> fitted.Predictor.003   54.91595   NA
+#> fitted.Predictor.004   70.16362   NA
+#> fitted.Predictor.005   59.64224   NA
+#> fitted.Predictor.006   75.98008   NA
 ```
 
 Si queremos hacer un **análisis de sensibilidad** sobre las distribuciones a priori, reajustamos el modelo con otras priors y comparamos los resultados.
@@ -316,41 +311,39 @@ Si queremos hacer un **análisis de sensibilidad** sobre las distribuciones a pr
 formula = weight ~ 1+ repwt
 fit2=inla(formula,family="gaussian",data=davis,
          control.fixed = list(mean.intercept = 100, 
-                                 prec.intercept = 10^(-2),
-                                 mean = 0, 
-                                 prec = 1), 
+                                 prec.intercept = 0.001,
+                                 prec = 0.001), 
             control.family = list(hyper = list(
               prec = list(prior="loggamma", param =c(1,0.001)))))
 fit2$summary.fixed
-#>                  mean        sd 0.025quant  0.5quant
-#> (Intercept) 3.3858739 0.8157332  1.7941364 3.3824182
-#> repwt       0.9488572 0.0121567  0.9248469 0.9489076
+#>                  mean         sd 0.025quant  0.5quant
+#> (Intercept) 2.7982891 0.81420209  1.2007150 2.7979452
+#> repwt       0.9574337 0.01213406  0.9335963 0.9574387
 #>             0.975quant mode          kld
-#> (Intercept)  4.9971991   NA 2.199394e-09
-#> repwt        0.9725815   NA 2.135450e-09
+#> (Intercept)  4.3978131   NA 6.343246e-10
+#> repwt        0.9812426   NA 6.334147e-10
 fit2$summary.hyperpar
 #>                                              mean
-#> Precision for the Gaussian observations 0.1984163
+#> Precision for the Gaussian observations 0.1990437
 #>                                                 sd
-#> Precision for the Gaussian observations 0.02086535
+#> Precision for the Gaussian observations 0.02084693
 #>                                         0.025quant
-#> Precision for the Gaussian observations  0.1602447
+#> Precision for the Gaussian observations  0.1609006
 #>                                          0.5quant
-#> Precision for the Gaussian observations 0.1977119
+#> Precision for the Gaussian observations 0.1983148
 #>                                         0.975quant mode
-#> Precision for the Gaussian observations  0.2410562   NA
+#> Precision for the Gaussian observations  0.2417396   NA
 ```
 
 ## Distribuciones posteriores
 
-Para obtener la distribución marginal de los valores ajustados y predichos necesitamos incorporar  a la función `inla` el argumento `control.compute=list(return.marginals.predictor=TRUE)`.
+Para obtener la distribución marginal de los valores ajustados y predichos  necesitamos incorporar a la función `inla` el argumento `control.compute=list(return.marginals.predictor=TRUE)`.
  
 Tras conseguir un ajuste con `inla`, podemos acceder a todas las distribuciones marginales posteriores y predictivas a través de:
 
 -   `fit$marginals.fixed` da las distribuciones posteriores marginales de los efectos fijos
--   `fit$marginals.fixed$x` da la distribución del efecto fijo `x` (`x` el nombre del efecto), y también se puede seleccionar con su ordinal en el conjunto de efectos fijos
-`fit$marginals.fixed[[i]]`
--     `fit.marginals.hyperpar` da las distribuciones posteriores marginales de los parámetros e hiperparámetros
+-   `fit$marginals.fixed$xx` da la distribución del efecto fijo `xx`, y también se puede seleccionar con su ordinal en el conjunto de efectos fijos `fit$marginals.fixed[[i]]`
+-   `fit.marginals.hyperpar` da las distribuciones posteriores marginales de los parámetros e hiperparámetros
 -   `fit$marginals.fitted.values` da las distribuciones posteriores marginales para los valores ajustados 
 
 Con estas distribuciones, reconocidas como `marginal`, podemos hacer cálculos y gráficos de interés a través de estas funciones que operan sobre las distribuciones y que podemos consultar con `?inla.marginal`:
@@ -414,34 +407,50 @@ library(gridExtra)
 grid.arrange(g[[1]],g[[2]],g[[3]],g[[4]],ncol=2)
 ```
 
-![](01-regresion_files/figure-latex/unnamed-chunk-14-1.pdf)<!-- --> 
+![](01-regresion_files/figure-latex/unnamed-chunk-15-1.pdf)<!-- --> 
+
+Si queremos la distribución posterior de alguna de las medias $\mu_i=\theta+ \beta x_i$, necesitamos añadir el argumento `control.compute=list(return.marginals.predictor=TRUE)` en `inla`. Así podremos representar, por ejemplo, la distribución posterior sobre el peso esperado para el individuo que aparece en el registro 1 de la base de datos, $\mu_1=\theta+\beta x_1$:
+
+
+```r
+fit=inla(formula,family="gaussian",data=davis,
+         control.compute=list(return.marginals.predictor=TRUE))
+ggplot(as.data.frame(fit$marginals.fitted.values[[1]]),aes(x=x,y=y))+
+  geom_line()+
+  labs(x=expression(mu[1]),y="D.Posterior")
+```
+
+![](01-regresion_files/figure-latex/unnamed-chunk-16-1.pdf)<!-- --> 
 
 ## Simulación de la posterior
 
-Cuando queremos inferir sobre funciones de los efectos latentes e hiperparámetros que no proporciona por defecto `INLA`, podemos recurrir a simular de las distribuciones posteriores de los efectos involucrados, y con ellas evaluar la función que nos interesa para conseguir una muestra de su distribución posterior.
+Cuando queremos inferir sobre funciones de los efectos latentes e hiperparámetros que no proporciona `INLA` por defecto , podemos recurrir a simular de las distribuciones posteriores de los efectos involucrados, y con ellas evaluar la función que nos interesa, para conseguir una muestra de su distribución posterior.
+
 Para ello es preciso que al ajustar el modelo con `inla` hayamos incluido el argumento `control.compute=list(config=TRUE)`.
 
-Para obtener simulaciones utilizamos las funciones:
+Para obtener simulaciones de las correspondientes distribuciones posteriores, utilizamos las funciones:
 
-- `inla.posterior.sample(n, fit,selection)`, para simular los efectos latentes, donde $n$ es el número de simulaciones pretendido, `fit` es el ajuste obtenido con `inla` y `selection` es una lista con el nombre de las componentes a simular.  
+- `inla.posterior.sample(n, fit,selection)`, para simular los efectos latentes, donde $n$ es el número de simulaciones pretendido, `fit` es el ajuste obtenido con `inla` y `selection` es una lista con el nombre de las componentes (efectos latentes) a simular.  
 - `inla.hyperpar.sample(n,fit,improve.marginals=TRUE)` para simular de parámetros e hiperparámetros.
 
 Para describir las distribuciones de los nuevos parámetros que queremos evaluar con dichas simulaciones, utilizaremos:
 
-- `inla.posterior.sample()` para funciones sobre los efectos fijos
-- `inla.hyperpar.sample()` para funciones sobre los hiperparámetros
+- `inla.posterior.eval()` para funciones sobre los efectos fijos
+- `inla.hyperpar.eval()` para funciones sobre los hiperparámetros
 
 
-Imaginemos que queremos obtener la distribución posterior de $(\theta+\beta)$. Hemos de simular pues, de las distribuciones posteriores de $\theta$ y de $\beta$, para luego sumar las simulaciones y obtener una muestra posterior de $\theta+\beta$.
+Imaginemos que queremos obtener la distribución posterior de $(\theta+\beta \cdot 50)$, que correspondería con el peso real de un sujeto que ha declarado un peso de 50kg. Hemos de simular pues, de las distribuciones posteriores de $\theta$ y de $\beta$, para luego aplicar la función correspondiente sobre las simulaciones y obtener una muestra posterior de $\theta+\beta\cdot 50$.
 
 
 ```r
+# reajustamos para poder simular de las posterioris
 fit <- inla(formula, data = davis,
   control.compute = list(config = TRUE))
+# simulamos especificando los parámetros en los que tenemos interés
 sims = inla.posterior.sample(100, fit, selection = list("(Intercept)"=1,repwt = 1))
 ```
 
-Esto nos devuelve una lista de la dimensión del número de simulaciones, y en cada uno de los elementos tenemos: los valores simulados de los hiperparámetros (`hyper`), de los efectos latentes (`latent`)
+Esto nos devuelve una lista de la dimensión del número de simulaciones (cada simulación en un elemento de la lista), y en cada uno de los elementos tenemos los valores simulados de los hiperparámetros (`hyper`), de los efectos latentes (`latent`)
 
 
 ```r
@@ -451,11 +460,11 @@ names(sims[[1]])
 #> [1] "hyperpar" "latent"   "logdens"
 sims[[1]]$hyperpar
 #> Precision for the Gaussian observations 
-#>                               0.2529966
+#>                               0.2517365
 sims[[1]]$latent
 #>                sample:1
-#> (Intercept):1 3.3962970
-#> repwt:1       0.9478115
+#> (Intercept):1 2.5038202
+#> repwt:1       0.9630921
 ```
 
 y la log-densidad de la posterior en esos valores (`logdens`)
@@ -464,31 +473,76 @@ y la log-densidad de la posterior en esos valores (`logdens`)
 ```r
  sims[[1]]$logdens
 #> $hyperpar
-#> [1] -0.002859002
+#> [1] 0.1079804
 #> 
 #> $latent
-#> [1] 1004.171
+#> [1] 993.9625
 #> 
 #> $joint
-#> [1] 1004.168
+#> [1] 994.0705
 ```
 
-Ahora con la función `inla.posterior.sample.eval`, dado que nuestra función depende de efectos fijos (latentes), $\theta+\beta$, evaluamos dicha suma, aproximamos los descriptivos de la posterior, y la graficamos con un histograma:
+Ahora con la función `inla.posterior.sample.eval`, dado que nuestra función depende de efectos fijos (latentes), $(\theta,\beta)$, evaluamos la operación pretendida, y con descriptivos gráficos y numéricos de las simulaciones, podemos aproximar los descriptivos de la distribución posterior.
 
 
 ```r
-theta_beta=inla.posterior.sample.eval(function(...) {(Intercept)+repwt},sims)
-theta_beta=as.vector(theta_beta)
-summary(theta_beta)
-#>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#>   1.904   3.191   3.589   3.634   4.189   5.894
-ggplot(data.frame(tb=theta_beta),aes(x=tb))+
+peso_real=inla.posterior.sample.eval(function(...) {(Intercept)+repwt*50},sims)
+peso_real
+#>        sample:1 sample:2 sample:3 sample:4 sample:5
+#> fun[1] 50.65842 50.58075 50.64918 50.20839 50.67175
+#>        sample:6 sample:7 sample:8 sample:9 sample:10
+#> fun[1] 50.56408 50.63603 50.11601 50.46008  51.08639
+#>        sample:11 sample:12 sample:13 sample:14 sample:15
+#> fun[1]  50.79122  50.65576  50.63967   50.9934  50.45007
+#>        sample:16 sample:17 sample:18 sample:19 sample:20
+#> fun[1]  51.24836   50.5503  50.49204  50.51038  50.11942
+#>        sample:21 sample:22 sample:23 sample:24 sample:25
+#> fun[1]  50.55336  50.32953  50.45273  50.62972  50.55605
+#>        sample:26 sample:27 sample:28 sample:29 sample:30
+#> fun[1]  50.41357  50.75442  50.50197  51.09965   50.7484
+#>        sample:31 sample:32 sample:33 sample:34 sample:35
+#> fun[1]   50.7411  50.28577  50.83395  50.66163  50.37517
+#>        sample:36 sample:37 sample:38 sample:39 sample:40
+#> fun[1]  50.68842  50.48703  50.47567   50.3645  50.44133
+#>        sample:41 sample:42 sample:43 sample:44 sample:45
+#> fun[1]  50.79228   51.1613  50.89716  50.38151  50.54456
+#>        sample:46 sample:47 sample:48 sample:49 sample:50
+#> fun[1]  50.16665  50.92274  50.68733  50.76735  50.48266
+#>        sample:51 sample:52 sample:53 sample:54 sample:55
+#> fun[1]  50.63976  51.21255  50.73079    50.884  50.50346
+#>        sample:56 sample:57 sample:58 sample:59 sample:60
+#> fun[1]  50.68054  50.10453  50.74378  50.78972  50.31444
+#>        sample:61 sample:62 sample:63 sample:64 sample:65
+#> fun[1]  50.81328  50.46918  50.64346  50.34485  50.38082
+#>        sample:66 sample:67 sample:68 sample:69 sample:70
+#> fun[1]  50.67484  50.54736  50.97352  50.91062  50.24561
+#>        sample:71 sample:72 sample:73 sample:74 sample:75
+#> fun[1]  50.49975  50.70497  50.49511  50.68184  50.80129
+#>        sample:76 sample:77 sample:78 sample:79 sample:80
+#> fun[1]   50.2638  50.56922   50.7968  50.45427  50.41959
+#>        sample:81 sample:82 sample:83 sample:84 sample:85
+#> fun[1]  50.40079  50.87488  51.11285  50.66625  50.74241
+#>        sample:86 sample:87 sample:88 sample:89 sample:90
+#> fun[1]   50.3114  50.67057  50.45532  49.98069  51.00787
+#>        sample:91 sample:92 sample:93 sample:94 sample:95
+#> fun[1]  50.95158  50.67495   50.5987  50.35237  50.83293
+#>        sample:96 sample:97 sample:98 sample:99 sample:100
+#> fun[1]  50.68666  51.36961  50.51677   50.3267   50.91761
+pred=data.frame(peso=as.vector(peso_real))
+summary(pred)
+#>       peso      
+#>  Min.   :49.98  
+#>  1st Qu.:50.45  
+#>  Median :50.64  
+#>  Mean   :50.62  
+#>  3rd Qu.:50.77  
+#>  Max.   :51.37
+ggplot(pred,aes(x=peso))+
   geom_histogram(stat="density")
 #> Warning: Ignoring unknown parameters: binwidth, bins, pad
 ```
 
-![](01-regresion_files/figure-latex/unnamed-chunk-18-1.pdf)<!-- --> 
-
+![](01-regresion_files/figure-latex/unnamed-chunk-20-1.pdf)<!-- --> 
 
 ## Regresión lineal múltiple con INLA
 
@@ -500,10 +554,8 @@ Si tenemos $n$ observaciones
 $$ (y_i|\mu_i,\sigma^2) \sim N(\mu_i,\sigma^2), \ \ i=1,...n$$
 donde $\mu_i$ representa la media y $\sigma^2$ la varianza de los datos.
 $$E(y_i|\mu_i,\sigma^2)=\mu_i, \ Var(y_i|\mu_i,\sigma^2)=\sigma^2$$
-Si tenemos varios regresores $x_1,x_2,...,x_J$, la media $\mu_i$ se relaciona linealmente con un predictor lineal $\eta_i$ que se construye a partir de una combinación lineal de los predictores:
-$$\eta_i=\theta+ \sum_{j=1}^J \beta_j x_{ij}$$
-En el modelo de regresión la media de los datos $\mu$ coincide con el predictor lineal $\eta$, $\mu_i=\eta_i, i=1,...,n$. 
-
+Si tenemos varios regresores $x_1,x_2,...,x_J$, la media $\mu_i$ coincide con el predictor lineal $\eta_i$ que se construye a partir de una combinación lineal de los predictores:
+$$\mu_i=\eta_i=\theta+ \sum_{j=1}^J \beta_j x_{ij}$$
 Nos queda a continuación especificar las distribuciones a priori sobre el vector de efectos latentes, en nuestro caso efectos fijos, $(\theta,\beta_1,...,\beta_J)$, y sobre el parámetro de dispersión o hiperparámetro $\sigma^2$. 
 
 Cuando no tenemos información previa especificamos distribuciones difusas (vagas) sobre los parámetros. En INLA por defecto tendremos:
@@ -513,14 +565,14 @@ Cuando no tenemos información previa especificamos distribuciones difusas (vaga
 \beta_j &\sim& N(0,\sigma_{\beta}^2) \\
 log(\tau=1/\sigma^2) &\sim& Log-Ga(1,0.00005)
 \end{eqnarray*}
-con $\sigma_{theta}^2=\infty$ y $\sigma_{\beta}=1000$.
+con $\sigma_{\theta}^2=\infty$ y $\sigma_{\beta}^2=1000$.
 
 Ejemplificamos el análisis de regresión lineal múltiple sobre la base de datos `usair`, en la librería `brinla`. Esta BD contiene datos recopilados para investigar los factores determinantes de la polución, utilizando el nivel de SO2 como variable dependiente y las restantes como variables explicativas potenciales. Las relaciones entre las variables que incluye se muestra en la Figura \@ref(fig:regmul01) a continuación.
 
 
 ```r
 data(usair, package = "brinla")
-library(GGally)
+library(GGally) # contiene la función de graficado 'ggpairs'
 pairs.chart <- ggpairs(usair, lower = list(continuous = "cor"), 
                        upper = list(continuous = "points", combo = "dot"))
 ggplot2::theme(axis.text = element_text(size = 6)) 
@@ -548,11 +600,15 @@ pairs.chart
 
 Apreciamos ya en el gráfico una correlación positiva muy alta entre las variables `pop` y `manuf`, y relevante para `negtemp` y `days` y también para `precip` y `days`, lo que posteriormente condicionará la selección de variables. 
 
+### Selección de variables
+
 Cuando trabajamos con más de una variable predictora en regresión lineal (realmente en cualquier modelo) surge un problema adicional, que es la **selección de variables**, o selección del mejor modelo de predicción. Esto se resuelve en INLA utilizando diversos criterios de selección entre los que destacamos:
   
-- la verosimilitud marginal (valor de la log-verosimilitud): `mlik`; al cambiarle el signo tendremos $-loglikelihood$
+- la verosimilitud marginal (valor de la log-verosimilitud): `mlik`; al cambiarle el signo tendremos *-(log-likelihood)*
 - el criterio de información de la deviance (DIC): `dic`
-- el criterio de información bayesiana ampliado (WAIC): `waic`.
+- el criterio de información bayesiana ampliado (WAIC): `waic`
+- la transformada integral predictiva (PIT): `cpo`
+
 
 El procedimiento a utilizar para la selección del modelo (de variables) es el siguiente:
 
@@ -562,21 +618,22 @@ El procedimiento a utilizar para la selección del modelo (de variables) es el s
 
 Siempre se prefieren modelos con los valores más bajos para estos criterios y se descartan los que proporcionan valores más altos. Cuando no es el mismo modelo el que proporciona el valor mínimo en estos criterios, habremos de optar por alguno de ellos.
 
-Por defecto, al ajustar un modelo con `inla`, nos devuelve la log-verosimilitud (accesible con `fit$mlik` si el ajuste se guardó en el objeto `fit`). Para obtener las otras medidas de selección, hemos de incluir como argumento de la función `inla`, la opción `control.compute = list(dic = TRUE, waic = TRUE))`. Los valores por defecto de `control.compute` los podemos consultar ejecutando el comando `inla.set.control.compute.default()`. 
+Por defecto, al ajustar un modelo con `inla`, nos devuelve la log-verosimilitud marginal (accesible con `fit$mlik` si el ajuste se guardó en el objeto `fit`). Para obtener las otras medidas de selección, hemos de incluir como argumento de la función `inla`, la opción `control.compute = list(dic = TRUE, waic = TRUE))`. Los valores por defecto de `control.compute` los podemos consultar ejecutando el comando `inla.set.control.compute.default()`. 
 
 Vayamos pues con el ajuste del modelo de regresión con todas las variables. Recordemos que si no especificamos el argumento `family`, interpreta por defecto la opción `gaussian`, esto es, normalidad para los datos. Así ajustamos el modelo y obtenemos las siguientes inferencias sobre los efectos fijos.
 
 
 ```r
 formula <-  SO2 ~ negtemp + manuf + wind + precip + days
-fit= inla(formula, data = usair, control.compute = list(dic = TRUE, waic = TRUE))
+fit= inla(formula, data = usair, 
+          control.compute = list(dic = TRUE, waic = TRUE))
 #summary(fit)
 round(fit$summary.fixed,3)
 #>                mean     sd 0.025quant 0.5quant 0.975quant
-#> (Intercept) 135.489 49.819     37.243  135.497    233.693
-#> negtemp       1.769  0.634      0.519    1.769      3.018
+#> (Intercept) 135.493 49.834     37.217  135.500    233.731
+#> negtemp       1.769  0.634      0.519    1.769      3.019
 #> manuf         0.026  0.005      0.017    0.026      0.035
-#> wind         -3.723  1.933     -7.533   -3.723      0.089
+#> wind         -3.723  1.934     -7.534   -3.723      0.090
 #> precip        0.625  0.387     -0.138    0.625      1.388
 #> days         -0.057  0.174     -0.400   -0.057      0.287
 #>             mode kld
@@ -595,13 +652,13 @@ La inferencia posterior sobre la desviación típica de los datos, $\sigma$, la 
 sigma.post= inla.tmarginal(function(tau) tau^(-1/2),
                            fit$marginals.hyperpar[[1]])
 inla.zmarginal(sigma.post)
-#> Mean            15.6693 
-#> Stdev           1.85351 
-#> Quantile  0.025 12.529 
-#> Quantile  0.25  14.3463 
-#> Quantile  0.5   15.4917 
-#> Quantile  0.75  16.7971 
-#> Quantile  0.975 19.8108
+#> Mean            15.6695 
+#> Stdev           1.85395 
+#> Quantile  0.025 12.5309 
+#> Quantile  0.25  14.3458 
+#> Quantile  0.5   15.4905 
+#> Quantile  0.75  16.7973 
+#> Quantile  0.975 19.8127
 ```
 
 Para seleccionar las variables relevantes seguimos el procedimiento descrito anteriormente. Añadimos también el ajuste del modelo de regresión frecuentista, para el que calculamos como criterio de bondad de ajuste el AIC.
@@ -611,11 +668,18 @@ Para seleccionar las variables relevantes seguimos el procedimiento descrito ant
 # variables en la bd
 vars=names(usair)[-1] # variables predictoras (excluye v.dpte)
 nvars=length(vars) # nº variables predictoras
-# Selección de variables. truco para concatenar todos los modelos posibles en una fórmula
-listcombo <- unlist(sapply(1:nvars,function(x) combn(nvars, x, simplify=FALSE)),recursive=FALSE)
-predterms <- lapply(listcombo, function(x) paste(vars[x],collapse="+"))
+
+# Truco para concatenar todos los modelos posibles en una fórmula (de Faraway)
+listcombo <- unlist(sapply(1:nvars,
+                           function(x) combn(nvars, x, simplify=FALSE)),
+                    recursive=FALSE)
+predterms <- lapply(listcombo, 
+                    function(x) paste(vars[x],collapse="+"))
 nmodels <- length(listcombo)
-coefm <- matrix(NA,length(listcombo),4,dimnames=list(predterms,c("AIC","DIC","WAIC","MLIK")))
+coefm <- matrix(NA,length(listcombo),4,
+                dimnames=list(predterms,c("AIC","DIC","WAIC","MLIK")))
+
+# Ajuste de todos los modelos posibles
 for(i in 1:nmodels){
   formula <- as.formula(paste("SO2 ~ ",predterms[[i]]))
   # modelo frecuentista
@@ -659,30 +723,30 @@ formula=SO2 ~ negtemp+manuf+pop+wind+precip
 fit=inla(formula, family="gaussian", data=usair, control.compute=list(dic=TRUE, waic=TRUE))
 fit$summary.fixed
 #>                     mean          sd   0.025quant
-#> (Intercept) 100.01673289 30.12655571 40.608355911
-#> negtemp       1.12028477  0.41411238  0.303722933
-#> manuf         0.06489590  0.01548371  0.034367786
-#> pop          -0.03934728  0.01487753 -0.068681760
-#> wind         -3.07262538  1.75585598 -6.533777269
-#> precip        0.41922600  0.21538178 -0.005453104
-#>                 0.5quant   0.975quant mode          kld
-#> (Intercept) 100.02018859 159.40535311   NA 1.159531e-08
-#> negtemp       1.12031040   1.93669995   NA 1.162580e-08
-#> manuf         0.06489568   0.09542530   NA 1.163772e-08
-#> pop          -0.03934696  -0.01001463   NA 1.163695e-08
-#> wind         -3.07287377   0.38994581   NA 1.156846e-08
-#> precip        0.41923221   0.84386954   NA 1.163583e-08
+#> (Intercept) 100.01558231 30.15187996 40.553005348
+#> negtemp       1.12026712  0.41446127  0.302960609
+#> manuf         0.06489645  0.01549690  0.034340464
+#> pop          -0.03934781  0.01489021 -0.068709283
+#> wind         -3.07259381  1.75733736 -6.536853138
+#> precip        0.41922424  0.21556489 -0.005843984
+#>                 0.5quant    0.975quant mode          kld
+#> (Intercept) 100.01921181 159.457366849   NA 1.150056e-08
+#> negtemp       1.12029445   1.937417097   NA 1.152678e-08
+#> manuf         0.06489619   0.095453911   NA 1.153833e-08
+#> pop          -0.03934745  -0.009988387   NA 1.153780e-08
+#> wind         -3.07285255   0.393147878   NA 1.147774e-08
+#> precip        0.41923079   0.844254924   NA 1.153586e-08
 fit$summary.hyperpar
 #>                                                mean
-#> Precision for the Gaussian observations 0.005065928
-#>                                                  sd
-#> Precision for the Gaussian observations 0.001178311
+#> Precision for the Gaussian observations 0.005065773
+#>                                                 sd
+#> Precision for the Gaussian observations 0.00117928
 #>                                          0.025quant
-#> Precision for the Gaussian observations 0.003037481
+#> Precision for the Gaussian observations 0.003033799
 #>                                            0.5quant
-#> Precision for the Gaussian observations 0.004975296
+#> Precision for the Gaussian observations 0.004974749
 #>                                          0.975quant mode
-#> Precision for the Gaussian observations 0.007616987   NA
+#> Precision for the Gaussian observations 0.007618076   NA
 ```
 
 Y en la Figura \@ref(fig:regmul02) se muestran las distribuciones posteriores de todos los efectos latentes (efectos fijos) en el modelo: interceptación y coeficientes de los regresores.
@@ -705,7 +769,9 @@ grid.arrange(g[[1]],g[[2]],g[[3]],g[[4]],g[[5]],g[[6]],ncol=2)
 
 ![(\#fig:regmul02)Distribuciones posteriores de los efectos latentes.](01-regresion_files/figure-latex/regmul02-1.pdf) 
 
-Por último, si queremos predecir nuevas observaciones con la **distribución predictiva a posteriori**, y ciertos valores de las variables explicativas, utilizamos el argumento `control.predictor`en la función `inla`, especificando en una lista los valores a predecir. Veamos cómo hacerlo con `inla`, ajustando un modelo sobre un `data.frame` combinado, en el que añadimos tantas filas como predicciones queremos conseguir, con los valores deseados para los predictores (y valores faltantes en la respuesta), y especificamos los valores a predecir en un vector indicador, a través del argumento `control.predictor(list(link=vector.indicador))`. Las predicciones se obtienen después, con el resumen de los datos ajustados `fitted.values`. Recordemos que para poder mostrar las distribuciones predictivas, hemos de añadir en `inla` el argumento `control.compute=list(return.marginals.predictor=TRUE)`. 
+### Predicción
+
+Por último, si queremos predecir nuevas observaciones con la **distribución predictiva a posteriori**, y ciertos valores de las variables explicativas, utilizamos el argumento `control.predictor` en la función `inla`, especificando en una lista los valores a predecir. Veamos cómo hacerlo con `inla`, ajustando un modelo sobre un `data.frame` combinado, en el que añadimos tantas filas como predicciones queremos conseguir, con los valores deseados para los predictores (y valores faltantes en la respuesta), y especificamos los valores a predecir en un vector indicador, a través del argumento `control.predictor(list(link=vector.indicador))`. Las predicciones se obtienen después, con el resumen de los datos ajustados `fitted.values`. Recordemos que para poder mostrar las distribuciones predictivas, hemos de añadir en `inla` el argumento `control.compute=list(return.marginals.predictor=TRUE)`. 
 
 
 ```r
@@ -731,16 +797,16 @@ fit.pred <- inla(formula, data = usair.combinado,
 ## y describimos los valores ajustados para los tres escenarios añadidos
 fit.pred$summary.fitted.values[(nrow(usair)+1):nrow(usair.combinado),]
 #>                         mean       sd 0.025quant 0.5quant
-#> fitted.Predictor.42 31.62381 8.203919   15.44842 31.62458
-#> fitted.Predictor.43 26.42298 5.473753   15.63095 26.42334
-#> fitted.Predictor.44 53.16292 7.091252   39.18154 53.16349
+#> fitted.Predictor.42 31.62391 8.204996   15.44634 31.62467
+#> fitted.Predictor.43 26.42296 5.474464   15.62947 26.42331
+#> fitted.Predictor.44 53.16299 7.092208   39.17968 53.16354
 #>                     0.975quant mode
-#> fitted.Predictor.42   47.79458   NA
-#> fitted.Predictor.43   37.21281   NA
-#> fitted.Predictor.44   67.14084   NA
+#> fitted.Predictor.42   47.79693   NA
+#> fitted.Predictor.43   37.21426   NA
+#> fitted.Predictor.44   67.14292   NA
 ```
 
-Así graficamos en la Figura \@ref(fig:regmul03) la distribución predictiva del nivel de SO2 para una combinación dada de valores de las variables predictivas, negtem=-50, manuf=150, pop=200, wind=6 y precip=10.
+Así graficamos en la Figura \@ref(fig:regmul03) la distribución predictiva del nivel de SO2 para una combinación dada de valores de las variables predictivas, específicamente la que aparece en el escenario 1 propuesto, o lo que es lo mismo, en el registro 42 de la base de datos completada con las nuevas predicciones: negtem=-50, manuf=150, pop=200, wind=6 y precip=10.
 
 
 ```r

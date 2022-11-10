@@ -52,30 +52,30 @@ fit=inla(formula,family="gaussian",data=coagulation,
          control.compute=list(return.marginals.predictor=TRUE))
 fijos=round(fit$summary.fixed,3);fijos
 #>               mean    sd 0.025quant 0.5quant 0.975quant
-#> (Intercept) 61.016 1.172     58.700   61.016     63.337
-#> dietB        4.979 1.513      1.983    4.980      7.970
-#> dietC        6.977 1.513      3.980    6.978      9.968
-#> dietD       -0.016 1.435     -2.859   -0.016      2.822
+#> (Intercept) 61.016 1.172     58.699   61.016     63.338
+#> dietB        4.979 1.513      1.982    4.980      7.971
+#> dietC        6.977 1.513      3.980    6.978      9.969
+#> dietD       -0.016 1.436     -2.859   -0.016      2.822
 #>             mode kld
 #> (Intercept)   NA   0
 #> dietB         NA   0
 #> dietC         NA   0
 #> dietD         NA   0
 tau=round(fit$summary.hyperpar,3);tau
-#>                                          mean    sd
-#> Precision for the Gaussian observations 0.197 0.059
+#>                                          mean   sd
+#> Precision for the Gaussian observations 0.197 0.06
 #>                                         0.025quant 0.5quant
-#> Precision for the Gaussian observations      0.099    0.191
+#> Precision for the Gaussian observations      0.099     0.19
 #>                                         0.975quant mode
-#> Precision for the Gaussian observations      0.328   NA
+#> Precision for the Gaussian observations      0.323   NA
 medias=round(fit$summary.linear.predictor,4)
 ```
 Atendiendo a los descriptivos de la distribución posterior para los efectos fijos, concluimos:
 
-- El tiempo esperado de coagulación para los animales que han seguido la dieta A es de 61.016(58.7,63.337).
-- Los animales que han seguido la dieta B tienen un tiempo de coagulación esperado  superior en 4.979 unidades a los de la dieta A, y dicha diferencia es *significativamente distinta de cero* en el contexto bayesiano, dado que su HPD no incluye al cero, (1.983,7.97). 
-- Una conclusión similar se deriva para la dieta C, que da un tiempo de coagulación esperado  superior en 6.977 unidades a los de la dieta A, y un HPD (3.98,9.968).
-- Las diferencias en los tiempos de coagulación de seguir una dieta D frente a la dieta A no son relevantes. De hecho, la diferencia entre ellos es de -0.016 y el intervalo HPD contiene al cero, (-2.859,2.822).
+- El tiempo esperado de coagulación para los animales que han seguido la dieta A es de 61.016(58.699,63.338).
+- Los animales que han seguido la dieta B tienen un tiempo de coagulación esperado  superior en 4.979 unidades a los de la dieta A, y dicha diferencia es *significativamente distinta de cero* en el contexto bayesiano, dado que su RC no incluye al cero, (1.982,7.971). 
+- Una conclusión similar se deriva para la dieta C, que da un tiempo de coagulación esperado  superior en 6.977 unidades a los de la dieta A, y una RC (3.98,9.969).
+- Las diferencias en los tiempos de coagulación de seguir una dieta D frente a la dieta A no son relevantes. De hecho, la diferencia entre ellos es de -0.016 y el intervalo RC contiene al cero, (-2.859,2.822).
 
 
 Pintamos a continuación en la Figura \@ref(fig:anova01) la distribución posterior de las medias $\mu_i$ (o predictores lineales) para cada una de las dietas.
@@ -90,11 +90,11 @@ index=which(coagulation$diet==dietas[i])[1]
 post=fit$marginals.fitted.values[[index]]
 # media
 e=fit$summary.fitted.values[index,1]
-hpd.low=fit$summary.fitted.values[index,3]
-hpd.up=fit$summary.fitted.values[index,5]
+rc.low=fit$summary.fitted.values[index,3]
+rc.up=fit$summary.fitted.values[index,5]
 pred=rbind(pred,data.frame(dieta=dietas[i],
                            post,e=e,
-                           hpd.low=hpd.low,hpd.up=hpd.up))
+                           rc.low=rc.low,rc.up=rc.up))
 }
 
 ggplot(pred, aes(x = x, y =y)) + 
@@ -110,14 +110,14 @@ ggplot(pred, aes(x = x, y =y)) +
 ggplot(pred, aes(x = x, y =y)) + 
   geom_line(aes(color=dieta))+
   geom_vline(aes(xintercept=e,color=dieta),linetype="dashed")+
-  geom_vline(aes(xintercept=hpd.low,color=dieta),linetype="dotted")+
-  geom_vline(aes(xintercept=hpd.up,color=dieta),linetype="dotted")+
+  geom_vline(aes(xintercept=rc.low,color=dieta),linetype="dotted")+
+  geom_vline(aes(xintercept=rc.up,color=dieta),linetype="dotted")+
   facet_wrap(vars(dieta))+
   labs(x=expression(paste("Tiempo medio de coagulación:",mu)),
-       y="D.Posterior",title="D.Posterior, medias y HPD95%")
+       y="D.Posterior",title="D.Posterior, medias y RC95%")
 ```
 
-![(\#fig:anova02)Distribuciones posteriores, medias y HPD](02-anova_files/figure-latex/anova02-1.pdf) 
+![(\#fig:anova02)Distribuciones posteriores, medias y RC](02-anova_files/figure-latex/anova02-1.pdf) 
 
 Como ya hacíamos en regresión, podemos inferir sobre la desviación típica de los datos, $\sigma$, transformando la distribución para la precisión $\tau$.
 
@@ -145,7 +145,7 @@ sigma.e=round(inla.emarginal(function(tau) tau^(-1/2),
 # HPD95%
 sigma.hpd=round(inla.hpdmarginal(0.95,sigma.post),3)
 paste("E(sigma.post)=",sigma.e,"HPD95%=(",sigma.hpd[1],",",sigma.hpd[2],")")
-#> [1] "E(sigma.post)= 2.3348 HPD95%=( 1.681 , 3.07 )"
+#> [1] "E(sigma.post)= 2.3364 HPD95%=( 1.688 , 3.063 )"
 ```
 
 ## Anova de varias vías
@@ -192,56 +192,56 @@ fit=inla(formula,data=butterfat,
          control.compute=list(dic = TRUE, waic = TRUE))
 fit$summary.fixed
 #>                                        mean        sd
-#> (Intercept)                      3.96605050 0.1314190
-#> BreedCanadian                    0.52193553 0.1858570
-#> BreedGuernsey                    0.93293190 0.1858570
-#> BreedHolstein-Fresian           -0.30304829 0.1858570
-#> BreedJersey                      1.16693161 0.1858570
-#> AgeMature                        0.18793906 0.1858496
-#> BreedCanadian:AgeMature         -0.28692013 0.2628363
-#> BreedGuernsey:AgeMature         -0.08591997 0.2628363
-#> BreedHolstein-Fresian:AgeMature -0.17493825 0.2628363
-#> BreedJersey:AgeMature            0.13107657 0.2628363
+#> (Intercept)                      3.96605050 0.1314192
+#> BreedCanadian                    0.52193553 0.1858572
+#> BreedGuernsey                    0.93293190 0.1858572
+#> BreedHolstein-Fresian           -0.30304828 0.1858572
+#> BreedJersey                      1.16693161 0.1858572
+#> AgeMature                        0.18793906 0.1858499
+#> BreedCanadian:AgeMature         -0.28692013 0.2628366
+#> BreedGuernsey:AgeMature         -0.08591997 0.2628366
+#> BreedHolstein-Fresian:AgeMature -0.17493825 0.2628366
+#> BreedJersey:AgeMature            0.13107657 0.2628366
 #>                                 0.025quant    0.5quant
-#> (Intercept)                      3.7077535  3.96604997
-#> BreedCanadian                    0.1566395  0.52193621
-#> BreedGuernsey                    0.5676358  0.93293262
-#> BreedHolstein-Fresian           -0.6683438 -0.30304778
-#> BreedJersey                      0.8016355  1.16693233
-#> AgeMature                       -0.1773422  0.18793970
-#> BreedCanadian:AgeMature         -0.8035112 -0.28692097
-#> BreedGuernsey:AgeMature         -0.6025111 -0.08592082
-#> BreedHolstein-Fresian:AgeMature -0.6915299 -0.17493890
-#> BreedJersey:AgeMature           -0.3855146  0.13107576
+#> (Intercept)                      3.7077532  3.96604996
+#> BreedCanadian                    0.1566390  0.52193621
+#> BreedGuernsey                    0.5676353  0.93293262
+#> BreedHolstein-Fresian           -0.6683443 -0.30304778
+#> BreedJersey                      0.8016349  1.16693233
+#> AgeMature                       -0.1773428  0.18793970
+#> BreedCanadian:AgeMature         -0.8035120 -0.28692097
+#> BreedGuernsey:AgeMature         -0.6025118 -0.08592082
+#> BreedHolstein-Fresian:AgeMature -0.6915307 -0.17493890
+#> BreedJersey:AgeMature           -0.3855154  0.13107576
 #>                                 0.975quant mode
-#> (Intercept)                     4.22435048   NA
-#> BreedCanadian                   0.88722767   NA
-#> BreedGuernsey                   1.29822393   NA
-#> BreedHolstein-Fresian           0.06224434   NA
-#> BreedJersey                     1.53222363   NA
-#> AgeMature                       0.55321668   NA
-#> BreedCanadian:AgeMature         0.22967575   NA
-#> BreedGuernsey:AgeMature         0.43067591   NA
-#> BreedHolstein-Fresian:AgeMature 0.34165709   NA
-#> BreedJersey:AgeMature           0.64767235   NA
+#> (Intercept)                     4.22435086   NA
+#> BreedCanadian                   0.88722821   NA
+#> BreedGuernsey                   1.29822447   NA
+#> BreedHolstein-Fresian           0.06224488   NA
+#> BreedJersey                     1.53222417   NA
+#> AgeMature                       0.55321722   NA
+#> BreedCanadian:AgeMature         0.22967652   NA
+#> BreedGuernsey:AgeMature         0.43067668   NA
+#> BreedHolstein-Fresian:AgeMature 0.34165785   NA
+#> BreedJersey:AgeMature           0.64767312   NA
 #>                                          kld
-#> (Intercept)                     2.743497e-09
-#> BreedCanadian                   2.743718e-09
-#> BreedGuernsey                   2.743719e-09
-#> BreedHolstein-Fresian           2.743719e-09
-#> BreedJersey                     2.743722e-09
-#> AgeMature                       2.742881e-09
-#> BreedCanadian:AgeMature         2.743300e-09
-#> BreedGuernsey:AgeMature         2.743300e-09
-#> BreedHolstein-Fresian:AgeMature 2.743300e-09
-#> BreedJersey:AgeMature           2.743300e-09
+#> (Intercept)                     2.743746e-09
+#> BreedCanadian                   2.744034e-09
+#> BreedGuernsey                   2.744037e-09
+#> BreedHolstein-Fresian           2.744034e-09
+#> BreedJersey                     2.744034e-09
+#> AgeMature                       2.743197e-09
+#> BreedCanadian:AgeMature         2.743616e-09
+#> BreedGuernsey:AgeMature         2.743616e-09
+#> BreedHolstein-Fresian:AgeMature 2.743615e-09
+#> BreedJersey:AgeMature           2.743616e-09
 fit$dic$dic
-#> [1] 120.4861
+#> [1] 120.4859
 fit$waic$waic
 #> [1] 121.7376
 ```
 
-Observamos en la inferencia posterior para los efectos fijos, que todas las HPD asociadas a los efectos de interacción contienen al cero, lo que descarta la relevancia de la interacción a la hora de predecir la respuesta. Reajustamos pues el modelo eliminando la interacción, y comprobamos que efectivamente al eliminarla conseguimos reducir los valores del DIC y WAIC que usamos habitualmente para la selección de variables.
+Observamos en la inferencia posterior para los efectos fijos, que todas las RC asociadas a los efectos de interacción contienen al cero, lo que descarta la relevancia de la interacción a la hora de predecir la respuesta. Reajustamos pues el modelo eliminando la interacción, y comprobamos que efectivamente al eliminarla conseguimos reducir los valores del DIC y WAIC que usamos habitualmente para la selección de variables.
 
 
 ```r
@@ -252,33 +252,33 @@ fit=inla(formula,data=butterfat,
                               dic = TRUE, waic = TRUE))
 fit$summary.fixed
 #>                             mean         sd  0.025quant
-#> (Intercept)            4.0077184 0.10124856  3.80873708
-#> BreedCanadian          0.3784787 0.13071131  0.12159372
-#> BreedGuernsey          0.8899744 0.13071131  0.63308923
-#> BreedHolstein-Fresian -0.3905147 0.13071131 -0.64739952
-#> BreedJersey            1.2324714 0.13071131  0.97558622
-#> AgeMature              0.1045993 0.08267006 -0.05787063
+#> (Intercept)            4.0077184 0.10124739  3.80873948
+#> BreedCanadian          0.3784787 0.13070979  0.12159682
+#> BreedGuernsey          0.8899744 0.13070979  0.63309233
+#> BreedHolstein-Fresian -0.3905147 0.13070979 -0.64739642
+#> BreedJersey            1.2324714 0.13070979  0.97558932
+#> AgeMature              0.1045993 0.08266911 -0.05786866
 #>                         0.5quant 0.975quant mode
-#> (Intercept)            4.0077182  4.2067007   NA
-#> BreedCanadian          0.3784790  0.6353625   NA
-#> BreedGuernsey          0.8899746  1.1468580   NA
-#> BreedHolstein-Fresian -0.3905145 -0.1336307   NA
-#> BreedJersey            1.2324717  1.4893550   NA
-#> AgeMature              0.1045993  0.2670692   NA
+#> (Intercept)            4.0077182  4.2066983   NA
+#> BreedCanadian          0.3784790  0.6353594   NA
+#> BreedGuernsey          0.8899746  1.1468549   NA
+#> BreedHolstein-Fresian -0.3905145 -0.1336338   NA
+#> BreedJersey            1.2324717  1.4893519   NA
+#> AgeMature              0.1045993  0.2670672   NA
 #>                                kld
-#> (Intercept)           2.524753e-09
-#> BreedCanadian         2.524906e-09
-#> BreedGuernsey         2.524905e-09
-#> BreedHolstein-Fresian 2.524905e-09
-#> BreedJersey           2.524907e-09
-#> AgeMature             2.525137e-09
+#> (Intercept)           2.522906e-09
+#> BreedCanadian         2.522904e-09
+#> BreedGuernsey         2.522904e-09
+#> BreedHolstein-Fresian 2.522904e-09
+#> BreedJersey           2.522905e-09
+#> AgeMature             2.523136e-09
 fit$waic$waic
 #> [1] 116.3439
 fit$dic$dic
-#> [1] 115.3808
+#> [1] 115.3833
 ```
 
-Observamos ya a partir del modelo ajustado, que el efecto de la edad no es relevante (su HPD incluye al cero), pero sin embargo sí que hay diferencias debido a las razas.
+Observamos ya a partir del modelo ajustado, que el efecto de la edad no es relevante (su RC incluye al cero), pero sin embargo sí que hay diferencias debido a las razas.
 
 Reajustamos de nuevo el modelo, excluyendo la variable `Age`, y verificamos la reducción (ligera) del DIC/WAIC, lo cual justifica usar este modelo para la predicción.
 
@@ -291,27 +291,27 @@ fit=inla(formula,data=butterfat,
                               dic = TRUE, waic = TRUE))
 fit$summary.fixed
 #>                             mean         sd 0.025quant
-#> (Intercept)            4.0600181 0.09271798  3.8778057
-#> BreedCanadian          0.3784786 0.13112331  0.1207894
-#> BreedGuernsey          0.8899742 0.13112331  0.6322849
-#> BreedHolstein-Fresian -0.3905148 0.13112331 -0.6482038
-#> BreedJersey            1.2324713 0.13112331  0.9747819
+#> (Intercept)            4.0600181 0.09271803  3.8778056
+#> BreedCanadian          0.3784786 0.13112338  0.1207893
+#> BreedGuernsey          0.8899742 0.13112338  0.6322848
+#> BreedHolstein-Fresian -0.3905148 0.13112338 -0.6482039
+#> BreedJersey            1.2324713 0.13112338  0.9747818
 #>                         0.5quant 0.975quant mode
-#> (Intercept)            4.0600180  4.2422316   NA
-#> BreedCanadian          0.3784788  0.6361665   NA
-#> BreedGuernsey          0.8899745  1.1476620   NA
-#> BreedHolstein-Fresian -0.3905146 -0.1328267   NA
-#> BreedJersey            1.2324715  1.4901590   NA
+#> (Intercept)            4.0600180  4.2422317   NA
+#> BreedCanadian          0.3784788  0.6361667   NA
+#> BreedGuernsey          0.8899745  1.1476622   NA
+#> BreedHolstein-Fresian -0.3905146 -0.1328265   NA
+#> BreedJersey            1.2324715  1.4901591   NA
 #>                                kld
-#> (Intercept)           2.473638e-09
-#> BreedCanadian         2.473451e-09
-#> BreedGuernsey         2.473450e-09
-#> BreedHolstein-Fresian 2.473452e-09
-#> BreedJersey           2.473450e-09
+#> (Intercept)           2.473326e-09
+#> BreedCanadian         2.473578e-09
+#> BreedGuernsey         2.473580e-09
+#> BreedHolstein-Fresian 2.473581e-09
+#> BreedJersey           2.473586e-09
 fit$waic$waic
 #> [1] 115.9279
 fit$dic$dic
-#> [1] 115.0074
+#> [1] 115.0073
 ```
 
 Procederíamos igual que en el modelo de Anova de una vía para la representación de las distribuciones posteriores sobre las medias o predictores lineales en cada una de las razas. Igualmente representaremos la distribución posterior del parámetro de dispersión de los datos $\sigma$.
@@ -354,10 +354,10 @@ formula = Height ~ 1+(Father+Mother)*Gender
 fit = inla(formula,family = "gaussian",data=datos)
 round(fit$summary.fixed,3)
 #>                  mean    sd 0.025quant 0.5quant 0.975quant
-#> (Intercept)    16.652 3.887      9.028   16.652     24.276
+#> (Intercept)    16.652 3.887      9.027   16.652     24.277
 #> Father          0.400 0.039      0.324    0.400      0.477
 #> Mother          0.307 0.045      0.218    0.307      0.396
-#> GenderM         2.707 5.427     -7.939    2.707     13.353
+#> GenderM         2.707 5.428     -7.940    2.707     13.354
 #> Father:GenderM  0.012 0.058     -0.103    0.012      0.126
 #> Mother:GenderM  0.027 0.062     -0.096    0.027      0.149
 #>                mode kld
@@ -369,7 +369,7 @@ round(fit$summary.fixed,3)
 #> Mother:GenderM   NA   0
 ```
 
-Observamos que ninguna de las interacciones tienen un efecto a considerar (su HPD posterior incluye al cero), de modo que las descartamos y reajustamos el modelo sin ellas. 
+Observamos que ninguna de las interacciones tienen un efecto a considerar (su RC posterior incluye al cero), de modo que las descartamos y reajustamos el modelo sin ellas. 
 
 $$\eta_{ij}=\mu_{ij}=\beta_0+ \beta_1  x_{1j} + \beta_2 x_{2j} + \alpha_M;\ \  j =1,...,n_i; i=M,F.$$
 
@@ -422,7 +422,7 @@ Con estas distribuciones podemos calcular cualquier probabilidad, como por ejemp
 
 ```r
 1-inla.pmarginal(5,fit$marginals.fixed$"GenderM")
-#> [1] 0.9414335
+#> [1] 0.9414253
 ```
 
 
@@ -516,7 +516,7 @@ fit<-inla(formula,family="gaussian",data=datos,
                    mean.intercept=0, prec.intercept=0.0001))
 round(fit$summary.fixed,3)
 #>               mean    sd 0.025quant 0.5quant 0.975quant
-#> (Intercept) 15.335 2.745      9.950   15.335     20.721
+#> (Intercept) 15.335 2.746      9.950   15.335     20.721
 #> Father       0.406 0.029      0.349    0.406      0.463
 #> Mother       0.322 0.031      0.260    0.322      0.383
 #> GenderM      5.225 0.144      4.942    5.225      5.507
@@ -568,7 +568,7 @@ round(fit_n$summary.hyperpar,3)
 #>                                         0.025quant 0.5quant
 #> Precision for the Gaussian observations      0.197    0.216
 #>                                         0.975quant mode
-#> Precision for the Gaussian observations      0.236   NA
+#> Precision for the Gaussian observations      0.237   NA
 ```
 
 Cuando tenemos información previa disponible sobre la variación de los datos, será generalmente más intuitivo expresarla en términos de la desviación estándar $\sigma$. Bastará con conseguir la equivalencia en la escala de $log(\tau)$ para incluirla en el modelo. Por ejemplo, si sabemos que la desviación típica está entre 2 y 14, $\sigma \sim Unif(2,14)$, podemos calcular una prior para la log-precisión del siguiente modo:
@@ -721,26 +721,26 @@ Cuando queremos mostrar los resultados a posteriori sobre los efectos aleatorios
 ```r
 fit$summary.random
 #> $grower
-#>   ID          mean        sd 0.025quant      0.5quant
-#> 1  1  0.0002379452 0.1459427 -0.2952243  0.0001780454
-#> 2  2 -0.0016656074 0.1459539 -0.2994264 -0.0012462836
-#> 3  3  0.0014276681 0.1459509 -0.2926452  0.0010682538
-#>   0.975quant mode          kld
-#> 1  0.2962660   NA 0.0009147346
-#> 2  0.2921338   NA 0.0009165959
-#> 3  0.2988960   NA 0.0009160917
+#>   ID         mean        sd 0.025quant      0.5quant
+#> 1  1  0.001124296 0.3123730 -0.6277719  0.0007846578
+#> 2  2 -0.007870355 0.3125391 -0.6501150 -0.0054917312
+#> 3  3  0.006745986 0.3124941 -0.6144342  0.0047074046
+#>   0.975quant mode         kld
+#> 1  0.6332411   NA 0.005461284
+#> 2  0.6118237   NA 0.005546489
+#> 3  0.6472539   NA 0.005523385
 #> 
 #> $box
 #>   ID          mean          sd  0.025quant      0.5quant
-#> 1  1  7.694887e-06 0.007444646 -0.01520293  6.283925e-06
-#> 2  2 -4.411749e-06 0.007444645 -0.01522150 -3.602795e-06
-#> 3  3 -1.949387e-06 0.007444644 -0.01521772 -1.591938e-06
-#> 4  4 -1.333790e-06 0.007444644 -0.01521678 -1.089219e-06
-#>   0.975quant mode          kld
-#> 1 0.01522654   NA 7.575157e-06
-#> 2 0.01520797   NA 7.575102e-06
-#> 3 0.01521174   NA 7.575081e-06
-#> 4 0.01521269   NA 7.575078e-06
+#> 1  1  1.374593e-05 0.009727845 -0.02017281  8.547402e-06
+#> 2  2 -7.880991e-06 0.009727831 -0.02024105 -4.900493e-06
+#> 3  3 -3.482281e-06 0.009727825 -0.02022714 -2.165326e-06
+#> 4  4 -2.382596e-06 0.009727824 -0.02022367 -1.481536e-06
+#>   0.975quant mode         kld
+#> 1 0.02025961   NA 0.007102160
+#> 2 0.02019128   NA 0.007101821
+#> 3 0.02020515   NA 0.007101687
+#> 4 0.02020862   NA 0.007101670
 ```
 
 Más que la inferencia sobre los efectos aleatorios, es importante la que se hace sobre las varianzas asociadas:
@@ -749,25 +749,25 @@ Más que la inferencia sobre los efectos aleatorios, es importante la que se hac
 ```r
 fit$summary.hyperpar
 #>                                                 mean
-#> Precision for the Gaussian observations 3.795527e-03
-#> Precision for grower                    4.097957e+01
-#> Precision for box                       3.780452e+04
+#> Precision for the Gaussian observations 3.828545e-03
+#> Precision for grower                    6.179722e+00
+#> Precision for box                       1.367274e+04
 #>                                                   sd
-#> Precision for the Gaussian observations 1.155852e-03
-#> Precision for grower                    3.336285e+01
-#> Precision for box                       3.286517e+04
+#> Precision for the Gaussian observations 8.985225e-04
+#> Precision for grower                    1.022156e+01
+#> Precision for box                       1.850542e+04
 #>                                           0.025quant
-#> Precision for the Gaussian observations 2.285597e-03
-#> Precision for grower                    8.041527e+00
-#> Precision for box                       5.042615e+03
+#> Precision for the Gaussian observations   0.00228274
+#> Precision for grower                      0.43679582
+#> Precision for box                       464.61510653
 #>                                             0.5quant
-#> Precision for the Gaussian observations 3.599700e-03
-#> Precision for grower                    3.173808e+01
-#> Precision for box                       2.869716e+04
+#> Precision for the Gaussian observations 3.758731e-03
+#> Precision for grower                    3.248940e+00
+#> Precision for box                       7.718570e+03
 #>                                           0.975quant mode
-#> Precision for the Gaussian observations 6.411284e-03   NA
-#> Precision for grower                    1.295334e+02   NA
-#> Precision for box                       1.246725e+05   NA
+#> Precision for the Gaussian observations 5.795107e-03   NA
+#> Precision for grower                    3.039273e+01   NA
+#> Precision for box                       6.225968e+04   NA
 ```
 
 
@@ -809,13 +809,13 @@ cG= sigma2[,2]/apply(sigma2,1,sum)
 # contribución a la varianza de grower
 cB= sigma2[,3]/apply(sigma2,1,sum)
 cat(paste("Contribución media de grower a la varianza:",round(mean(cG)*100,6),"por 100","\n"))
-#> Contribución media de grower a la varianza: 0.015119 por 100
+#> Contribución media de grower a la varianza: 0.204738 por 100
 cat(paste("Contribución media de box a la varianza:",round(mean(cB)*100,6),"por 100"))
-#> Contribución media de box a la varianza: 2e-05 por 100
+#> Contribución media de box a la varianza: 0.000133 por 100
 ```
 
 
-Ante estos resultados, y dados los valores del DIC (307.4422254) y del WAIC (307.4026031), se justifica la opción de prescindir de los efectos `grower` y `box` como efectos aleatorios y ajustar el modelo con un único efecto fijo global. 
+Ante estos resultados, y dados los valores del DIC (306.8543543) y del WAIC (306.8314523), se justifica la opción de prescindir de los efectos `grower` y `box` como efectos aleatorios y ajustar el modelo con un único efecto fijo global. 
 
 
 ```r
@@ -824,23 +824,23 @@ fit = inla(formula, family="gaussian",data=broccoli,
            control.compute = list(dic=TRUE,waic=TRUE))  
 fit$summary.fixed
 #>                 mean       sd 0.025quant 0.5quant
-#> (Intercept) 358.1667 2.767211   352.7085 358.1667
+#> (Intercept) 358.1667 2.783774    352.677 358.1667
 #>             0.975quant mode          kld
-#> (Intercept)   363.6248   NA 1.154639e-08
+#> (Intercept)   363.6563   NA 1.195781e-08
 fit$summary.hyperpar
 #>                                                mean
-#> Precision for the Gaussian observations 0.003769768
-#>                                                  sd
-#> Precision for the Gaussian observations 0.000870361
+#> Precision for the Gaussian observations 0.003777121
+#>                                                   sd
+#> Precision for the Gaussian observations 0.0009002525
 #>                                          0.025quant
-#> Precision for the Gaussian observations 0.002267555
+#> Precision for the Gaussian observations 0.002269511
 #>                                            0.5quant
-#> Precision for the Gaussian observations 0.003708066
-#>                                         0.975quant mode
-#> Precision for the Gaussian observations 0.00567986   NA
+#> Precision for the Gaussian observations 0.003673311
+#>                                          0.975quant mode
+#> Precision for the Gaussian observations 0.005594091   NA
 ```
 
-Vemos que la variación en los indicadores DIC (308.0379279) y WAIC (307.9977229) es despreciable para este nuevo modelo.
+Vemos que la variación en los indicadores DIC (308.0361367) y WAIC (307.7841758) es despreciable para este nuevo modelo.
 
 Inferimos a continuación con las posteriores para la media global y la varianza de los datos.
 
@@ -924,25 +924,25 @@ fit0=inla(formula0,family="gaussian",data=curran_dat)
 fit=fit0
 fit$summary.fixed
 #>                 mean         sd 0.025quant 0.5quant
-#> (Intercept) 4.114053 0.05109333   4.013247 4.114248
+#> (Intercept) 4.114053 0.05109322   4.013248 4.114248
 #>             0.975quant mode          kld
-#> (Intercept)   4.213755   NA 1.444965e-09
+#> (Intercept)   4.213756   NA 1.439528e-09
 fit$summary.hyperpar
 #>                                              mean
-#> Precision for the Gaussian observations 0.4182478
-#> Precision for id                        3.7358638
+#> Precision for the Gaussian observations 0.4182531
+#> Precision for id                        3.7333141
 #>                                                 sd
-#> Precision for the Gaussian observations 0.01920487
-#> Precision for id                        1.07837331
+#> Precision for the Gaussian observations 0.01925964
+#> Precision for id                        1.07680891
 #>                                         0.025quant
-#> Precision for the Gaussian observations  0.3810757
-#> Precision for id                         2.1879063
+#> Precision for the Gaussian observations   0.380976
+#> Precision for id                          2.186847
 #>                                          0.5quant
-#> Precision for the Gaussian observations 0.4180502
-#> Precision for id                        3.5445084
+#> Precision for the Gaussian observations 0.4180548
+#> Precision for id                        3.5423980
 #>                                         0.975quant mode
-#> Precision for the Gaussian observations  0.4567294   NA
-#> Precision for id                         6.3775858   NA
+#> Precision for the Gaussian observations  0.4568445   NA
+#> Precision for id                         6.3703454   NA
 
 nfixed=length(names(fit$marginals.fixed))
 nhyp=length(names(fit$marginals.hyperpar))
@@ -981,20 +981,20 @@ fit00=inla(formula00,family="gaussian",data=curran_dat)
 #>   Use this model with extra care!!! Further warnings are disabled.
 fit00$summary.hyperpar
 #>                                              mean
-#> Precision for the Gaussian observations 0.4182667
-#> Precision for ID                        3.7334775
+#> Precision for the Gaussian observations 0.4182787
+#> Precision for ID                        3.7310094
 #>                                                 sd
-#> Precision for the Gaussian observations 0.01922916
-#> Precision for ID                        1.07751884
+#> Precision for the Gaussian observations 0.01927928
+#> Precision for ID                        1.07627487
 #>                                         0.025quant
-#> Precision for the Gaussian observations  0.3810556
-#> Precision for ID                         2.1873134
+#> Precision for the Gaussian observations  0.3809662
+#> Precision for ID                         2.1865708
 #>                                          0.5quant
-#> Precision for the Gaussian observations 0.4180658
-#> Precision for ID                        3.5420475
+#> Precision for the Gaussian observations 0.4180794
+#> Precision for ID                        3.5397597
 #>                                         0.975quant mode
-#> Precision for the Gaussian observations  0.4568046   NA
-#> Precision for ID                         6.3732645   NA
+#> Precision for the Gaussian observations  0.4569116   NA
+#> Precision for ID                         6.3674437   NA
 ```
 La diferencia entre ajustar los efectos aleatorios con "iid" o con "z" es que con la primera opción tendremos tantos efectos aleatorios como están definidos en el modelo. Sin embargo, la modelización con "z" producirá tantos efectos aleatorios como datos, con una única precisión/varianza asociada. Generalmente ambos modelos producen unas medias posterioris de los efectos aleatorios bastante parecidas, como se muestra en la Figura \@ref(fig:curranm0b). 
 
@@ -1047,26 +1047,26 @@ fit1=inla(formula1,family="gaussian",data=curran_dat)
 fit=fit1
 fit$summary.fixed
 #>                 mean        sd 0.025quant 0.5quant
-#> (Intercept) 4.353435 0.8916212   2.479255 4.353371
+#> (Intercept) 4.353502 0.9347573   2.445599  4.35344
 #>             0.975quant mode          kld
-#> (Intercept)   6.227981   NA 0.0002807914
+#> (Intercept)   6.261582   NA 1.925123e-07
 fit$summary.hyperpar
-#>                                             mean        sd
-#> Precision for the Gaussian observations 2.459591 0.1147371
-#> Precision for id                        1.268120 0.1053563
-#> Precision for occasion                  0.472258 0.3817069
+#>                                              mean        sd
+#> Precision for the Gaussian observations 2.4595816 0.1147969
+#> Precision for id                        1.2680382 0.1054138
+#> Precision for occasion                  0.6518517 0.3932607
 #>                                         0.025quant
-#> Precision for the Gaussian observations 2.23992828
-#> Precision for id                        1.07270388
-#> Precision for occasion                  0.05714281
+#> Precision for the Gaussian observations  2.2400186
+#> Precision for id                         1.0727288
+#> Precision for occasion                   0.1662228
 #>                                          0.5quant
-#> Precision for the Gaussian observations 2.4574665
-#> Precision for id                        1.2639889
-#> Precision for occasion                  0.3705624
+#> Precision for the Gaussian observations 2.4573716
+#> Precision for id                        1.2638254
+#> Precision for occasion                  0.5355275
 #>                                         0.975quant mode
-#> Precision for the Gaussian observations   2.691906   NA
-#> Precision for id                          1.487520   NA
-#> Precision for occasion                    1.470858   NA
+#> Precision for the Gaussian observations   2.692226   NA
+#> Precision for id                          1.487742   NA
+#> Precision for occasion                    1.542846   NA
 
 nfixed=length(names(fit$marginals.fixed))
 nhyp=length(names(fit$marginals.hyperpar))
@@ -1128,21 +1128,21 @@ fit2=inla(formula2,family="gaussian",data=curran_dat)
 fit=fit2
 fit$summary.fixed
 #>                 mean         sd 0.025quant 0.5quant
-#> (Intercept) 2.703744 0.05265828   2.600420 2.703750
-#> time        1.101341 0.01758963   1.066827 1.101345
+#> (Intercept) 2.703744 0.05265821   2.600420 2.703750
+#> time        1.101341 0.01758964   1.066827 1.101345
 #>             0.975quant mode          kld
-#> (Intercept)   2.807035   NA 1.209164e-11
-#> time          1.135834   NA 5.382543e-12
+#> (Intercept)   2.807034   NA 1.185144e-11
+#> time          1.135834   NA 5.920792e-12
 fit$summary.hyperpar
 #>                                             mean        sd
-#> Precision for the Gaussian observations 2.174408 0.1013695
-#> Precision for id                        1.285598 0.1091245
+#> Precision for the Gaussian observations 2.174385 0.1013921
+#> Precision for id                        1.285629 0.1091214
 #>                                         0.025quant 0.5quant
-#> Precision for the Gaussian observations    1.98044 2.172491
-#> Precision for id                           1.08331 1.281288
+#> Precision for the Gaussian observations   1.980394 2.172459
+#> Precision for id                          1.083282 1.281345
 #>                                         0.975quant mode
-#> Precision for the Gaussian observations   2.379757   NA
-#> Precision for id                          1.512956   NA
+#> Precision for the Gaussian observations    2.37980   NA
+#> Precision for id                           1.51292   NA
 
 nfixed=length(names(fit$marginals.fixed))
 nhyp=length(names(fit$marginals.hyperpar))
@@ -1231,20 +1231,20 @@ round(fit$summary.fixed,4)
 #> (Intercept)   NA   0
 round(fit$summary.hyperpar,4)
 #>                                             mean       sd
-#> Precision for the Gaussian observations 142.0221  39.6763
-#> Precision for Lab                       349.8954 651.1187
-#> Precision for IDt                       206.0454 210.4950
-#> Precision for IDts                      366.9424 335.2817
+#> Precision for the Gaussian observations 142.0220  39.6763
+#> Precision for Lab                       349.9019 651.1400
+#> Precision for IDt                       206.0492 210.5004
+#> Precision for IDts                      366.9419 335.2800
 #>                                         0.025quant 0.5quant
-#> Precision for the Gaussian observations    77.8352 137.4883
-#> Precision for Lab                          22.4903 170.1977
-#> Precision for IDt                          26.6549 144.1449
-#> Precision for IDts                         59.8948 270.7282
+#> Precision for the Gaussian observations    77.8351 137.4882
+#> Precision for Lab                          22.4904 170.1993
+#> Precision for IDt                          26.6553 144.1470
+#> Precision for IDts                         59.8947 270.7283
 #>                                         0.975quant mode
-#> Precision for the Gaussian observations   232.9086   NA
-#> Precision for Lab                        1808.5494   NA
-#> Precision for IDt                         762.2102   NA
-#> Precision for IDts                       1256.5564   NA
+#> Precision for the Gaussian observations   232.9087   NA
+#> Precision for Lab                        1808.5923   NA
+#> Precision for IDt                         762.2278   NA
+#> Precision for IDts                       1256.5513   NA
 ```
 
 Alternativamente podríamos crear una variable índice a partir de las matrices de efectos aleatorios, para utilizarlas con `model="iid"` para describir los efectos aleatorios:
@@ -1268,20 +1268,20 @@ round(fit$summary.fixed,4)
 #> (Intercept)   NA   0
 round(fit$summary.hyperpar,4)
 #>                                             mean       sd
-#> Precision for the Gaussian observations 141.9196  39.6191
-#> Precision for Lab                       349.8770 651.1265
-#> Precision for labtech                   206.0090 210.4454
-#> Precision for labtechsamp               366.9486 335.2893
+#> Precision for the Gaussian observations 141.9190  39.6194
+#> Precision for Lab                       349.8686 651.1108
+#> Precision for labtech                   206.0225 210.4674
+#> Precision for labtechsamp               366.9555 335.2942
 #>                                         0.025quant 0.5quant
-#> Precision for the Gaussian observations    77.8101 137.3974
-#> Precision for Lab                          22.4868 170.1811
-#> Precision for labtech                      26.6560 144.1238
-#> Precision for labtechsamp                  59.8965 270.7320
+#> Precision for the Gaussian observations    77.8093 137.3967
+#> Precision for Lab                          22.4872 170.1774
+#> Precision for labtech                      26.6554 144.1303
+#> Precision for labtechsamp                  59.8970 270.7376
 #>                                         0.975quant mode
-#> Precision for the Gaussian observations   232.6616   NA
-#> Precision for Lab                        1808.5095   NA
-#> Precision for labtech                     762.0428   NA
-#> Precision for labtechsamp                1256.5818   NA
+#> Precision for the Gaussian observations   232.6618   NA
+#> Precision for Lab                        1808.4622   NA
+#> Precision for labtech                     762.1131   NA
+#> Precision for labtechsamp                1256.6017   NA
 ```
 
 El hecho de que las estimaciones de la precisión sean tan altas podría indicar que estos parámetros están identificados de modo pobre en el modelo y pueden requerir del uso de priors menos vagas.
@@ -1344,15 +1344,15 @@ round(fit$summary.fixed,4)
 #>             mode kld
 #> (Intercept)   NA   0
 round(fit$summary.hyperpar,4)
-#>                                             mean       sd
-#> Precision for the Gaussian observations 1170.450  130.797
-#> Precision for Subject                   3732.793 1271.144
+#>                                             mean        sd
+#> Precision for the Gaussian observations 1170.450  130.7975
+#> Precision for Subject                   3732.742 1271.1273
 #>                                         0.025quant 0.5quant
-#> Precision for the Gaussian observations   930.7815 1164.475
-#> Precision for Subject                    1757.5942 3563.443
+#> Precision for the Gaussian observations   930.7812 1164.476
+#> Precision for Subject                    1757.5763 3563.389
 #>                                         0.975quant mode
-#> Precision for the Gaussian observations   1445.479   NA
-#> Precision for Subject                     6704.911   NA
+#> Precision for the Gaussian observations   1445.481   NA
+#> Precision for Subject                     6704.834   NA
 ```
 
 En la Figura \@ref(fig:sleep2) mostramos los datos y también los valores ajustados para las rectas, en términos de las interceptaciones y pendientes medias de las correspondientes distribuciones posteriores, además de la banda de estimación que construimos con los correspondientes percentiles de las posterioris.
@@ -1361,20 +1361,20 @@ En la Figura \@ref(fig:sleep2) mostramos los datos y también los valores ajusta
 ```r
 sleepstudy.pred = sleepstudy %>%
   mutate(fitted=fit$summary.fitted.values$mean,
-         hpd.low=fit$summary.fitted.values$"0.025quant",
-         hpd.up=fit$summary.fitted.values$"0.975quant") 
+         rc.low=fit$summary.fitted.values$"0.025quant",
+         rc.up=fit$summary.fitted.values$"0.975quant") 
 
 ggplot(sleepstudy.pred,aes(x=Days,y=Reaction))+
   geom_point(size=0.5)+
   geom_line(aes(y=fitted),color="blue")+
-  geom_line(aes(y= hpd.low),color="skyblue")+
-  geom_line(aes(y=hpd.up),color="skyblue")+
+  geom_line(aes(y= rc.low),color="skyblue")+
+  geom_line(aes(y=rc.up),color="skyblue")+
   facet_wrap(vars(Subject),ncol=6)+
   theme(axis.text.x = element_text(size=5),
         axis.text.y = element_text(size=5))
 ```
 
-![](02-anova_files/figure-latex/unnamed-chunk-31-1.pdf)<!-- --> 
+![(\#fig:sleep2)Estimaciones posteriores de los predictores lineales: medias y RC.](02-anova_files/figure-latex/sleep2-1.pdf) 
 
 
 
