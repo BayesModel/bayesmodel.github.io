@@ -133,18 +133,18 @@ formula = psoe ~ psoe_simp + psoe_past+ f(ccaa,model="iid",hyper=prec.prior)
 fit=inla(formula,family="binomial",data=datos,control.predictor = list(link = 1))
 fit$summary.fixed
 #>                  mean        sd 0.025quant  0.5quant
-#> (Intercept) -3.590447 0.1896687  -3.998615 -3.578183
-#> psoe_simp    3.085747 0.1865755   2.723861  3.084316
-#> psoe_past    2.352309 0.1856886   1.989667  2.351767
+#> (Intercept) -3.590590 0.1897367  -3.998981 -3.578298
+#> psoe_simp    3.085809 0.1865736   2.723938  3.084374
+#> psoe_past    2.352356 0.1856830   1.989733  2.351810
 #>             0.975quant mode          kld
-#> (Intercept)  -3.251297   NA 5.841852e-07
-#> psoe_simp     3.455757   NA 3.432362e-07
-#> psoe_past     2.718030   NA 9.432015e-07
+#> (Intercept)  -3.251373   NA 5.805144e-07
+#> psoe_simp     3.455829   NA 3.434689e-07
+#> psoe_past     2.718075   NA 9.427374e-07
 fit$summary.hyperpar
 #>                        mean       sd 0.025quant 0.5quant
-#> Precision for ccaa 70.80725 250.7334   1.978155 10.72828
+#> Precision for ccaa 70.84503 250.9457   1.978299 10.68808
 #>                    0.975quant mode
-#> Precision for ccaa    588.604   NA
+#> Precision for ccaa    589.353   NA
 ```
 
 Las distribuciones posteriores de los exponenciales de los efectos aleatorios se muestran en la Figura \@ref(fig:eleccion2), identificadas en verde las de efectos positivos en la media posterior del predictor lineal (log-odds $>1$), y en rojo las de efectos negativos, e interpretables como más y menos favorables a votar por el PSOE.
@@ -381,7 +381,7 @@ summary(fit)
 #>    silent, inla.mode = inla.mode, safe = FALSE, debug = 
 #>    debug, ", " .parent.frame = .parent.frame)") 
 #> Time used:
-#>     Pre = 2.18, Running = 0.158, Post = 0.00694, Total = 2.35 
+#>     Pre = 2.26, Running = 0.166, Post = 0.00711, Total = 2.43 
 #> Fixed effects:
 #>              mean    sd 0.025quant 0.5quant 0.975quant mode
 #> (Intercept) 2.282 0.071      2.139    2.283       2.42   NA

@@ -56,15 +56,14 @@ Nested Laplace Approximation (INLA), que es un método para aproximar las
 inferencias bayesianas a través de la aproximación de Laplace.
 
 Aunque la metodología INLA se ha desarrollado sobre modelos que se
-pueden expresar como campos aleatorios markovianos gausianos (\*Gaussian
-Markov random fields, GMRF), es viable para una gran familia de modelos
+pueden expresar como campos aleatorios markovianos gausianos (*Gaussian
+Markov random fields, GMRF*), es viable para una gran familia de modelos
 habituales en la práctica estadística.
 
 Disponemos de referencias múltiples y documentación de esta librería en
 la web [r-inla.org](https://www.r-inla.org), y en particular en el
 manual de referencia de Gómez-Rubio (2021) titulado [Bayesian inference
-with
-INLA](https://becarioprecario.bitbucket.io/inla-gitbook/index.html),
+with INLA](https://becarioprecario.bitbucket.io/inla-gitbook/index.html),
 también publicado por [Chapman & Hall-CRC
 Press](https://www.routledge.com/Bayesian-inference-with-INLA/Gomez-Rubio/p/book/9781138039872).
 
