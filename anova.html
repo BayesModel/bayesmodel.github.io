@@ -110,7 +110,7 @@ donde <span class="math inline">\(\alpha_i=\mu_i-\mu_1\)</span> y <span class="m
 <span><span class="co">#&gt;               mean    sd 0.025quant 0.5quant 0.975quant</span></span>
 <span><span class="co">#&gt; (Intercept) 61.016 1.172     58.700   61.016     63.337</span></span>
 <span><span class="co">#&gt; dietB        4.979 1.513      1.983    4.980      7.970</span></span>
-<span><span class="co">#&gt; dietC        6.977 1.513      3.981    6.978      9.968</span></span>
+<span><span class="co">#&gt; dietC        6.977 1.513      3.980    6.978      9.968</span></span>
 <span><span class="co">#&gt; dietD       -0.016 1.435     -2.859   -0.016      2.822</span></span>
 <span><span class="co">#&gt;             mode kld</span></span>
 <span><span class="co">#&gt; (Intercept)   NA   0</span></span>
@@ -129,7 +129,7 @@ donde <span class="math inline">\(\alpha_i=\mu_i-\mu_1\)</span> y <span class="m
 <ul>
 <li>El tiempo esperado de coagulación para los animales que han seguido la dieta A es de 61.016(58.7,63.337).</li>
 <li>Los animales que han seguido la dieta B tienen un tiempo de coagulación esperado superior en 4.979 unidades a los de la dieta A, y dicha diferencia es <em>significativamente distinta de cero</em> en el contexto bayesiano, dado que su RC no incluye al cero, (1.983,7.97).</li>
-<li>Una conclusión similar se deriva para la dieta C, que da un tiempo de coagulación esperado superior en 6.977 unidades a los de la dieta A, y una RC (3.981,9.968).</li>
+<li>Una conclusión similar se deriva para la dieta C, que da un tiempo de coagulación esperado superior en 6.977 unidades a los de la dieta A, y una RC (3.98,9.968).</li>
 <li>Las diferencias en los tiempos de coagulación de seguir una dieta D frente a la dieta A no son relevantes. De hecho, la diferencia entre ellos es de -0.016 y el intervalo RC contiene al cero, (-2.859,2.822).</li>
 </ul>
 <p>Pintamos a continuación en la Figura <a href="anova.html#fig:anova01">3.1</a> la distribución posterior de los tiempos esperados de coagulación <span class="math inline">\(\mu_i\)</span> (o predictores lineales) para cada una de las dietas. En la Figura <a href="anova.html#fig:anova02">3.2</a> se añaden las medias posteriores y las regiones creíbles.</p>
@@ -227,7 +227,7 @@ Figura 3.3: Distribución posterior, media y RC, de la desviación típica de lo
 <span><span class="co"># HPD95%</span></span>
 <span><span class="va">sigma.hpd</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.hpdmarginal</a></span><span class="op">(</span><span class="fl">0.95</span>,<span class="va">sigma.post</span><span class="op">)</span>,<span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"E(sigma.post)="</span>,<span class="va">sigma.e</span>,<span class="st">"HPD95%=("</span>,<span class="va">sigma.hpd</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,<span class="st">","</span>,<span class="va">sigma.hpd</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,<span class="st">")"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "E(sigma.post)= 2.3379 HPD95%=( 1.687 , 3.069 )"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "E(sigma.post)= 2.3379 HPD95%=( 1.687 , 3.068 )"</span></span></code></pre></div>
 <p>Si queremos inferir sobre la diferencia entre cualesquiera de los efectos podemos recurrir a simular la distribución posterior de las diferencias. Por ejemplo, supongamos que queremos comparar la dieta B con la dieta D. Simulamos entonces de las distribuciones posteriores de <span class="math inline">\(\mu_B\)</span> y de <span class="math inline">\(\mu_D\)</span>, y obtenemos la diferencia <span class="math inline">\(\mu_B-\mu_D\)</span>.</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sims</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/posterior.sample.html">inla.posterior.sample</a></span><span class="op">(</span><span class="fl">1000</span>,<span class="va">fit</span>,selection<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>dietB<span class="op">=</span><span class="fl">1</span>,dietD<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
@@ -314,7 +314,7 @@ donde en nuestro ejemplo, <span class="math inline">\(\alpha_i\)</span> es el ef
 <span><span class="co">#&gt; BreedHolstein-Fresian:AgeMature   0</span></span>
 <span><span class="co">#&gt; BreedJersey:AgeMature             0</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">dic</span><span class="op">$</span><span class="va">dic</span></span>
-<span><span class="co">#&gt; [1] 120.4908</span></span>
+<span><span class="co">#&gt; [1] 120.4904</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">waic</span><span class="op">$</span><span class="va">waic</span></span>
 <span><span class="co">#&gt; [1] 121.7376</span></span></code></pre></div>
 <p>Observamos en la inferencia posterior para los efectos fijos, que todas las RC asociadas a los efectos de interacción contienen al cero, lo que descarta la relevancia de la interacción a la hora de predecir la respuesta. Reajustamos pues el modelo eliminando la interacción, y comprobamos que efectivamente al eliminarla conseguimos reducir los valores del DIC y WAIC que usamos habitualmente para la selección de variables.</p>
@@ -325,13 +325,13 @@ donde en nuestro ejemplo, <span class="math inline">\(\alpha_i\)</span> es el ef
 <span>         control.compute<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>return.marginals.predictor<span class="op">=</span><span class="cn">TRUE</span>,</span>
 <span>                              dic <span class="op">=</span> <span class="cn">TRUE</span>, waic <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span></span>
-<span><span class="co">#&gt;                             mean        sd  0.025quant</span></span>
-<span><span class="co">#&gt; (Intercept)            4.0077184 0.1012486  3.80873698</span></span>
-<span><span class="co">#&gt; BreedCanadian          0.3784787 0.1307114  0.12159359</span></span>
-<span><span class="co">#&gt; BreedGuernsey          0.8899744 0.1307114  0.63308909</span></span>
-<span><span class="co">#&gt; BreedHolstein-Fresian -0.3905147 0.1307114 -0.64739965</span></span>
-<span><span class="co">#&gt; BreedJersey            1.2324714 0.1307114  0.97558608</span></span>
-<span><span class="co">#&gt; AgeMature              0.1045993 0.0826701 -0.05787071</span></span>
+<span><span class="co">#&gt;                             mean         sd  0.025quant</span></span>
+<span><span class="co">#&gt; (Intercept)            4.0077184 0.10124861  3.80873697</span></span>
+<span><span class="co">#&gt; BreedCanadian          0.3784787 0.13071138  0.12159358</span></span>
+<span><span class="co">#&gt; BreedGuernsey          0.8899744 0.13071138  0.63308909</span></span>
+<span><span class="co">#&gt; BreedHolstein-Fresian -0.3905147 0.13071138 -0.64739966</span></span>
+<span><span class="co">#&gt; BreedJersey            1.2324714 0.13071138  0.97558607</span></span>
+<span><span class="co">#&gt; AgeMature              0.1045993 0.08267011 -0.05787071</span></span>
 <span><span class="co">#&gt;                         0.5quant 0.975quant mode</span></span>
 <span><span class="co">#&gt; (Intercept)            4.0077182  4.2067009   NA</span></span>
 <span><span class="co">#&gt; BreedCanadian          0.3784790  0.6353627   NA</span></span>
@@ -340,16 +340,16 @@ donde en nuestro ejemplo, <span class="math inline">\(\alpha_i\)</span> es el ef
 <span><span class="co">#&gt; BreedJersey            1.2324717  1.4893552   NA</span></span>
 <span><span class="co">#&gt; AgeMature              0.1045993  0.2670692   NA</span></span>
 <span><span class="co">#&gt;                                kld</span></span>
-<span><span class="co">#&gt; (Intercept)           2.524838e-09</span></span>
-<span><span class="co">#&gt; BreedCanadian         2.524992e-09</span></span>
-<span><span class="co">#&gt; BreedGuernsey         2.524991e-09</span></span>
-<span><span class="co">#&gt; BreedHolstein-Fresian 2.524993e-09</span></span>
-<span><span class="co">#&gt; BreedJersey           2.524995e-09</span></span>
-<span><span class="co">#&gt; AgeMature             2.525225e-09</span></span>
+<span><span class="co">#&gt; (Intercept)           2.525011e-09</span></span>
+<span><span class="co">#&gt; BreedCanadian         2.524983e-09</span></span>
+<span><span class="co">#&gt; BreedGuernsey         2.524982e-09</span></span>
+<span><span class="co">#&gt; BreedHolstein-Fresian 2.524983e-09</span></span>
+<span><span class="co">#&gt; BreedJersey           2.524982e-09</span></span>
+<span><span class="co">#&gt; AgeMature             2.525215e-09</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">waic</span><span class="op">$</span><span class="va">waic</span></span>
 <span><span class="co">#&gt; [1] 116.3439</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">dic</span><span class="op">$</span><span class="va">dic</span></span>
-<span><span class="co">#&gt; [1] 115.3808</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 115.3807</span></span></code></pre></div>
 <p>Observamos ya a partir del modelo ajustado, que el efecto de la edad no es relevante (su RC incluye al cero), pero sin embargo sí que hay diferencias debido a las razas.</p>
 <p>Reajustamos de nuevo el modelo, excluyendo la variable <code>Age</code>, y verificamos la reducción (ligera) del DIC/WAIC, lo cual justifica usar este modelo para la predicción.</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
@@ -360,23 +360,23 @@ donde en nuestro ejemplo, <span class="math inline">\(\alpha_i\)</span> es el ef
 <span>                              dic <span class="op">=</span> <span class="cn">TRUE</span>, waic <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span></span>
 <span><span class="co">#&gt;                             mean         sd 0.025quant</span></span>
-<span><span class="co">#&gt; (Intercept)            4.0600181 0.09271794  3.8778058</span></span>
-<span><span class="co">#&gt; BreedCanadian          0.3784786 0.13112326  0.1207896</span></span>
-<span><span class="co">#&gt; BreedGuernsey          0.8899742 0.13112326  0.6322850</span></span>
-<span><span class="co">#&gt; BreedHolstein-Fresian -0.3905148 0.13112325 -0.6482036</span></span>
-<span><span class="co">#&gt; BreedJersey            1.2324713 0.13112325  0.9747820</span></span>
+<span><span class="co">#&gt; (Intercept)            4.0600181 0.09271793  3.8778058</span></span>
+<span><span class="co">#&gt; BreedCanadian          0.3784786 0.13112324  0.1207896</span></span>
+<span><span class="co">#&gt; BreedGuernsey          0.8899742 0.13112324  0.6322851</span></span>
+<span><span class="co">#&gt; BreedHolstein-Fresian -0.3905148 0.13112324 -0.6482036</span></span>
+<span><span class="co">#&gt; BreedJersey            1.2324713 0.13112324  0.9747820</span></span>
 <span><span class="co">#&gt;                         0.5quant 0.975quant mode</span></span>
 <span><span class="co">#&gt; (Intercept)            4.0600180  4.2422315   NA</span></span>
 <span><span class="co">#&gt; BreedCanadian          0.3784788  0.6361664   NA</span></span>
 <span><span class="co">#&gt; BreedGuernsey          0.8899745  1.1476619   NA</span></span>
 <span><span class="co">#&gt; BreedHolstein-Fresian -0.3905146 -0.1328268   NA</span></span>
-<span><span class="co">#&gt; BreedJersey            1.2324715  1.4901589   NA</span></span>
+<span><span class="co">#&gt; BreedJersey            1.2324715  1.4901588   NA</span></span>
 <span><span class="co">#&gt;                                kld</span></span>
-<span><span class="co">#&gt; (Intercept)           2.473124e-09</span></span>
-<span><span class="co">#&gt; BreedCanadian         2.473456e-09</span></span>
-<span><span class="co">#&gt; BreedGuernsey         2.473452e-09</span></span>
-<span><span class="co">#&gt; BreedHolstein-Fresian 2.473456e-09</span></span>
-<span><span class="co">#&gt; BreedJersey           2.473465e-09</span></span>
+<span><span class="co">#&gt; (Intercept)           2.473538e-09</span></span>
+<span><span class="co">#&gt; BreedCanadian         2.473377e-09</span></span>
+<span><span class="co">#&gt; BreedGuernsey         2.473377e-09</span></span>
+<span><span class="co">#&gt; BreedHolstein-Fresian 2.473377e-09</span></span>
+<span><span class="co">#&gt; BreedJersey           2.473378e-09</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">waic</span><span class="op">$</span><span class="va">waic</span></span>
 <span><span class="co">#&gt; [1] 115.9279</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">dic</span><span class="op">$</span><span class="va">dic</span></span>
@@ -426,7 +426,7 @@ donde <span class="math inline">\(\alpha_M\)</span> es el efecto diferencial glo
 <span><span class="co">#&gt; (Intercept)    16.652 3.887      9.028   16.652     24.277</span></span>
 <span><span class="co">#&gt; Father          0.400 0.039      0.324    0.400      0.477</span></span>
 <span><span class="co">#&gt; Mother          0.307 0.045      0.218    0.307      0.396</span></span>
-<span><span class="co">#&gt; GenderM         2.707 5.428     -7.940    2.707     13.353</span></span>
+<span><span class="co">#&gt; GenderM         2.707 5.428     -7.940    2.707     13.354</span></span>
 <span><span class="co">#&gt; Father:GenderM  0.012 0.058     -0.103    0.012      0.126</span></span>
 <span><span class="co">#&gt; Mother:GenderM  0.027 0.062     -0.096    0.027      0.149</span></span>
 <span><span class="co">#&gt;                mode kld</span></span>
@@ -479,7 +479,7 @@ Figura 3.5: Distribución posterior de los efectos fijos
 <p>Con estas distribuciones podemos calcular cualquier probabilidad, como por ejemplo,la probabilidad de que la estatura de un hombre supere en 5 unidades a la de una mujer, independientemente de cómo sean sus padres:</p>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fl">1</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.pmarginal</a></span><span class="op">(</span><span class="fl">5</span>,<span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">$</span><span class="st">"GenderM"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.941441</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.9414307</span></span></code></pre></div>
 <p>Podemos acceder a las distribuciones posteriores de la estatura esperada de un sujeto concreto y posicionar las estaturas de sus padres, que se muestran en la Figura <a href="anova.html#fig:galton2">3.6</a></p>
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># la predicción del predictor lineal para cada sujeto es:</span></span>
@@ -735,48 +735,48 @@ aleatorios</li>
 <code class="sourceCode R"><span><span class="va">fit</span><span class="op">$</span><span class="va">summary.random</span></span>
 <span><span class="co">#&gt; $grower</span></span>
 <span><span class="co">#&gt;   ID          mean         sd  0.025quant      0.5quant</span></span>
-<span><span class="co">#&gt; 1  1  1.211056e-06 0.01013074 -0.02164550  7.561431e-07</span></span>
-<span><span class="co">#&gt; 2  2 -8.477366e-06 0.01013075 -0.02166903 -5.293020e-06</span></span>
-<span><span class="co">#&gt; 3  3  7.266297e-06 0.01013075 -0.02163080  4.536870e-06</span></span>
+<span><span class="co">#&gt; 1  1  9.096542e-06 0.02793205 -0.05595163  7.870834e-06</span></span>
+<span><span class="co">#&gt; 2  2 -6.367379e-05 0.02793209 -0.05606054 -5.509407e-05</span></span>
+<span><span class="co">#&gt; 3  3  5.457785e-05 0.02793208 -0.05588368  4.722365e-05</span></span>
 <span><span class="co">#&gt;   0.975quant mode          kld</span></span>
-<span><span class="co">#&gt; 1 0.02165138   NA 0.0005185585</span></span>
-<span><span class="co">#&gt; 2 0.02162786   NA 0.0005185649</span></span>
-<span><span class="co">#&gt; 3 0.02166609   NA 0.0005185632</span></span>
+<span><span class="co">#&gt; 1 0.05597884   NA 1.674757e-05</span></span>
+<span><span class="co">#&gt; 2 0.05587010   NA 1.674823e-05</span></span>
+<span><span class="co">#&gt; 3 0.05604691   NA 1.674805e-05</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $box</span></span>
-<span><span class="co">#&gt;   ID          mean         sd  0.025quant      0.5quant</span></span>
-<span><span class="co">#&gt; 1  1  1.641540e-05 0.01070651 -0.02250782  1.117687e-05</span></span>
-<span><span class="co">#&gt; 2  2 -9.411518e-06 0.01070650 -0.02256632 -6.408082e-06</span></span>
-<span><span class="co">#&gt; 3  3 -4.158569e-06 0.01070650 -0.02255441 -2.831476e-06</span></span>
-<span><span class="co">#&gt; 4  4 -2.845321e-06 0.01070650 -0.02255143 -1.937325e-06</span></span>
+<span><span class="co">#&gt;   ID          mean          sd  0.025quant      0.5quant</span></span>
+<span><span class="co">#&gt; 1  1  1.138072e-05 0.008890466 -0.01808404  9.619632e-06</span></span>
+<span><span class="co">#&gt; 2  2 -6.524950e-06 0.008890464 -0.01811078 -5.515260e-06</span></span>
+<span><span class="co">#&gt; 3  3 -2.883114e-06 0.008890463 -0.01810534 -2.436972e-06</span></span>
+<span><span class="co">#&gt; 4  4 -1.972664e-06 0.008890463 -0.01810398 -1.667410e-06</span></span>
 <span><span class="co">#&gt;   0.975quant mode          kld</span></span>
-<span><span class="co">#&gt; 1 0.02258222   NA 0.0003087894</span></span>
-<span><span class="co">#&gt; 2 0.02252367   NA 0.0003087846</span></span>
-<span><span class="co">#&gt; 3 0.02253556   NA 0.0003087828</span></span>
-<span><span class="co">#&gt; 4 0.02253854   NA 0.0003087825</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 0.01811803   NA 2.174084e-06</span></span>
+<span><span class="co">#&gt; 2 0.01809129   NA 2.174057e-06</span></span>
+<span><span class="co">#&gt; 3 0.01809673   NA 2.174046e-06</span></span>
+<span><span class="co">#&gt; 4 0.01809808   NA 2.174044e-06</span></span></code></pre></div>
 <p>Sin embargo, lo relevante en un modelo de efectos aleatorios es la inferencia sobre las varianzas asociadas a los datos, pero también la variabilidad extra que añaden los efectos aleatorios:</p>
 <div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span><span class="op">$</span><span class="va">summary.hyperpar</span></span>
 <span><span class="co">#&gt;                                                 mean</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 3.785567e-03</span></span>
-<span><span class="co">#&gt; Precision for grower                    2.057909e+04</span></span>
-<span><span class="co">#&gt; Precision for box                       1.077942e+04</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 3.880071e-03</span></span>
+<span><span class="co">#&gt; Precision for grower                    1.113933e+03</span></span>
+<span><span class="co">#&gt; Precision for box                       1.435711e+04</span></span>
 <span><span class="co">#&gt;                                                   sd</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 9.284402e-04</span></span>
-<span><span class="co">#&gt; Precision for grower                    2.385207e+04</span></span>
-<span><span class="co">#&gt; Precision for box                       9.053131e+03</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 9.877536e-04</span></span>
+<span><span class="co">#&gt; Precision for grower                    6.275007e+02</span></span>
+<span><span class="co">#&gt; Precision for box                       8.534134e+03</span></span>
 <span><span class="co">#&gt;                                           0.025quant</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 2.269086e-03</span></span>
-<span><span class="co">#&gt; Precision for grower                    1.555770e+03</span></span>
-<span><span class="co">#&gt; Precision for box                       1.563535e+03</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 2.169159e-03</span></span>
+<span><span class="co">#&gt; Precision for grower                    3.049372e+02</span></span>
+<span><span class="co">#&gt; Precision for box                       3.978036e+03</span></span>
 <span><span class="co">#&gt;                                             0.5quant</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 3.683165e-03</span></span>
-<span><span class="co">#&gt; Precision for grower                    1.335962e+04</span></span>
-<span><span class="co">#&gt; Precision for box                       8.311531e+03</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 3.812413e-03</span></span>
+<span><span class="co">#&gt; Precision for grower                    9.830810e+02</span></span>
+<span><span class="co">#&gt; Precision for box                       1.240075e+04</span></span>
 <span><span class="co">#&gt;                                           0.975quant mode</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 5.898253e-03   NA</span></span>
-<span><span class="co">#&gt; Precision for grower                    8.307220e+04   NA</span></span>
-<span><span class="co">#&gt; Precision for box                       3.464237e+04   NA</span></span></code></pre></div>
+<span><span class="co">#&gt; Precision for the Gaussian observations 6.011825e-03   NA</span></span>
+<span><span class="co">#&gt; Precision for grower                    2.692477e+03   NA</span></span>
+<span><span class="co">#&gt; Precision for box                       3.628878e+04   NA</span></span></code></pre></div>
 <p>Vemos que tanto la precisión asociada al efecto aleatorio caja (<code>box</code>), como al efecto cultivador, <code>grower</code>, son muy grandes, lo que implica varianzas muy pequeñas que posiblemente nos permitiría prescindir de dichos efectos aleatorios para ajustar un mejor modelo.Cuando transformamos a escala de desviaciones estándar, tenemos la distribución posterior para los tres tipos de error, representados en la Figura <a href="anova.html#fig:brocoli2">3.9</a>.</p>
 <div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nombres</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"sigma"</span>,<span class="st">"grower"</span>,<span class="st">"box"</span><span class="op">)</span></span>
@@ -813,31 +813,31 @@ Figura 3.9: Distribución posterior de la desviación típica para las tres fuen
 <span><span class="co"># contribución a la varianza de grower</span></span>
 <span><span class="va">cB</span><span class="op">=</span> <span class="va">sigma2</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">sigma2</span>,<span class="fl">1</span>,<span class="va">sum</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Contribución media de grower a la varianza:"</span>,<span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">cG</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span>,<span class="fl">6</span><span class="op">)</span>,<span class="st">"por 100"</span>,<span class="st">"\n"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Contribución media de grower a la varianza: 5.5e-05 por 100</span></span>
+<span><span class="co">#&gt; Contribución media de grower a la varianza: 0.000482 por 100</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Contribución media de box a la varianza:"</span>,<span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">cB</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span>,<span class="fl">6</span><span class="op">)</span>,<span class="st">"por 100"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Contribución media de box a la varianza: 6.4e-05 por 100</span></span></code></pre></div>
-<p>Ante estos resultados, y dados los valores del DIC (307.5630029) y del WAIC (307.3911168), se justifica la opción de prescindir de los efectos <code>grower</code> y <code>box</code> como efectos aleatorios y ajustar el modelo con un único efecto fijo global.</p>
+<span><span class="co">#&gt; Contribución media de box a la varianza: 3.6e-05 por 100</span></span></code></pre></div>
+<p>Ante estos resultados, y dados los valores del DIC (307.4845778) y del WAIC (307.481652), se justifica la opción de prescindir de los efectos <code>grower</code> y <code>box</code> como efectos aleatorios y ajustar el modelo con un único efecto fijo global.</p>
 <div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">formula</span> <span class="op">=</span> <span class="va">wt</span> <span class="op">~</span> <span class="fl">1</span></span>
 <span><span class="va">fit</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>, family<span class="op">=</span><span class="st">"gaussian"</span>,data<span class="op">=</span><span class="va">broccoli</span>,</span>
 <span>           control.compute <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>dic<span class="op">=</span><span class="cn">TRUE</span>,waic<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>  </span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span></span>
 <span><span class="co">#&gt;                 mean       sd 0.025quant 0.5quant</span></span>
-<span><span class="co">#&gt; (Intercept) 358.1667 2.777169   352.6917 358.1667</span></span>
+<span><span class="co">#&gt; (Intercept) 358.1667 2.795072   352.6545 358.1667</span></span>
 <span><span class="co">#&gt;             0.975quant mode          kld</span></span>
-<span><span class="co">#&gt; (Intercept)   363.6416   NA 1.040038e-08</span></span>
+<span><span class="co">#&gt; (Intercept)   363.6788   NA 9.559656e-09</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">summary.hyperpar</span></span>
 <span><span class="co">#&gt;                                                mean</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.003804874</span></span>
-<span><span class="co">#&gt;                                                   sd</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.0008696277</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.003770212</span></span>
+<span><span class="co">#&gt;                                                  sd</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.005531403</span></span>
 <span><span class="co">#&gt;                                          0.025quant</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.002262468</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.002317796</span></span>
 <span><span class="co">#&gt;                                            0.5quant</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.003752066</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.003715808</span></span>
 <span><span class="co">#&gt;                                          0.975quant mode</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.005605054   NA</span></span></code></pre></div>
-<p>Vemos que la variación en los indicadores DIC (308.0418249) y WAIC (307.7948985) es despreciable para este nuevo modelo.</p>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.005639954   NA</span></span></code></pre></div>
+<p>Vemos que la variación en los indicadores DIC (307.9711126) y WAIC (307.7753825) es despreciable para este nuevo modelo.</p>
 <p>Inferimos a continuación con las distribuciones posteriores para la media global y la varianza de los datos.</p>
 <div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">theta.post</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
@@ -916,21 +916,21 @@ con
 <span>          control.family<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>hyper<span class="op">=</span><span class="va">prec.prior</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span></span>
 <span><span class="co">#&gt;                 mean         sd 0.025quant 0.5quant</span></span>
-<span><span class="co">#&gt; (Intercept) 2.703751 0.05266775   2.600408 2.703757</span></span>
-<span><span class="co">#&gt; occasion    1.101333 0.01760834   1.066782 1.101336</span></span>
+<span><span class="co">#&gt; (Intercept) 2.703751 0.05266777   2.600408 2.703757</span></span>
+<span><span class="co">#&gt; occasion    1.101333 0.01760836   1.066782 1.101336</span></span>
 <span><span class="co">#&gt;             0.975quant mode          kld</span></span>
-<span><span class="co">#&gt; (Intercept)   2.807060   NA 1.200724e-11</span></span>
-<span><span class="co">#&gt; occasion      1.135862   NA 5.908225e-12</span></span>
+<span><span class="co">#&gt; (Intercept)   2.807060   NA 1.200723e-11</span></span>
+<span><span class="co">#&gt; occasion      1.135862   NA 5.550139e-12</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">summary.hyperpar</span></span>
 <span><span class="co">#&gt;                                             mean        sd</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 2.169695 0.1012583</span></span>
-<span><span class="co">#&gt; Precision for id                        1.286152 0.1092226</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 2.169663 0.1012705</span></span>
+<span><span class="co">#&gt; Precision for id                        1.286161 0.1092173</span></span>
 <span><span class="co">#&gt;                                         0.025quant 0.5quant</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations   1.975940 2.167780</span></span>
-<span><span class="co">#&gt; Precision for id                          1.083696 1.281834</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations   1.975935 2.167727</span></span>
+<span><span class="co">#&gt; Precision for id                          1.083695 1.281851</span></span>
 <span><span class="co">#&gt;                                         0.975quant mode</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations   2.374819   NA</span></span>
-<span><span class="co">#&gt; Precision for id                          1.513726   NA</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations   2.374862   NA</span></span>
+<span><span class="co">#&gt; Precision for id                          1.513708   NA</span></span>
 <span></span>
 <span><span class="co"># Agrupamos todas las distribuciones posteriores</span></span>
 <span><span class="va">nfixed</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">)</span><span class="op">)</span></span>
@@ -944,7 +944,7 @@ con
 <span><span class="kw">for</span><span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">nhyp</span><span class="op">)</span><span class="op">{</span></span>
 <span>    <span class="va">res</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">res</span>,<span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">tau</span><span class="op">)</span> <span class="va">tau</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,<span class="va">fit</span><span class="op">$</span><span class="va">marginals.hyperpar</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>                         id<span class="op">=</span><span class="fu">str_sub</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.hyperpar</span><span class="op">)</span><span class="op">[</span><span class="va">j</span><span class="op">]</span>, start <span class="op">=</span><span class="fl">15</span>, end <span class="op">=</span> <span class="op">-</span><span class="fl">1L</span><span class="op">)</span>,</span>
+<span>                         id<span class="op">=</span><span class="fu">str_sub</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.hyperpar</span><span class="op">)</span><span class="op">[</span><span class="va">j</span><span class="op">]</span>, start <span class="op">=</span><span class="fl">15</span><span class="op">)</span>,</span>
 <span>                          tipo<span class="op">=</span><span class="st">"sigma"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">res</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
@@ -1029,49 +1029,49 @@ y_{ij}|\mu_{ij},\sigma^2 &amp;\sim&amp; N(\mu,\sigma^2), i=1,...,18; j=1, ...,10
 <span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.hyperpar</span>,<span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                                             mean       sd</span></span>
 <span><span class="co">#&gt; Precision for the Gaussian observations 1566.713  182.872</span></span>
-<span><span class="co">#&gt; Precision for Subject                   1314.754  571.888</span></span>
-<span><span class="co">#&gt; Precision for DayR                      6067.460 2128.985</span></span>
+<span><span class="co">#&gt; Precision for Subject                   1314.754  571.890</span></span>
+<span><span class="co">#&gt; Precision for DayR                      6067.456 2128.983</span></span>
 <span><span class="co">#&gt;                                         0.025quant 0.5quant</span></span>
 <span><span class="co">#&gt; Precision for the Gaussian observations   1231.362 1558.539</span></span>
-<span><span class="co">#&gt; Precision for Subject                      520.885 1209.119</span></span>
-<span><span class="co">#&gt; Precision for DayR                        2819.872 5762.948</span></span>
+<span><span class="co">#&gt; Precision for Subject                      520.887 1209.118</span></span>
+<span><span class="co">#&gt; Precision for DayR                        2819.868 5762.945</span></span>
 <span><span class="co">#&gt;                                         0.975quant mode</span></span>
 <span><span class="co">#&gt; Precision for the Gaussian observations   1950.856   NA</span></span>
-<span><span class="co">#&gt; Precision for Subject                     2728.327   NA</span></span>
-<span><span class="co">#&gt; Precision for DayR                       11105.470   NA</span></span></code></pre></div>
+<span><span class="co">#&gt; Precision for Subject                     2728.336   NA</span></span>
+<span><span class="co">#&gt; Precision for DayR                       11105.460   NA</span></span></code></pre></div>
 <p>Y los efectos aleatorios:</p>
 <div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.random</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Subject" "DayR"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.random</span><span class="op">$</span><span class="va">Subject</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    ID         mean         sd   0.025quant     0.5quant</span></span>
-<span><span class="co">#&gt; 1 308 -0.003768863 0.01446453 -0.032285973 -0.003748480</span></span>
-<span><span class="co">#&gt; 2 309 -0.037614936 0.01485944 -0.067445624 -0.037392762</span></span>
-<span><span class="co">#&gt; 3 310 -0.038204837 0.01487070 -0.068061128 -0.037981136</span></span>
-<span><span class="co">#&gt; 4 330  0.028705969 0.01469940  0.000284353  0.028533712</span></span>
-<span><span class="co">#&gt; 5 331  0.025993624 0.01465098 -0.002375306  0.025835635</span></span>
-<span><span class="co">#&gt; 6 332  0.009899236 0.01447474 -0.018401018  0.009836394</span></span>
+<span><span class="co">#&gt; 1 308 -0.003768866 0.01446454 -0.032286000 -0.003748482</span></span>
+<span><span class="co">#&gt; 2 309 -0.037614969 0.01485945 -0.067445674 -0.037392796</span></span>
+<span><span class="co">#&gt; 3 310 -0.038204871 0.01487071 -0.068061179 -0.037981171</span></span>
+<span><span class="co">#&gt; 4 330  0.028705993 0.01469941  0.000284356  0.028533736</span></span>
+<span><span class="co">#&gt; 5 331  0.025993646 0.01465100 -0.002375305  0.025835658</span></span>
+<span><span class="co">#&gt; 6 332  0.009899245 0.01447475 -0.018401032  0.009836402</span></span>
 <span><span class="co">#&gt;     0.975quant mode          kld</span></span>
-<span><span class="co">#&gt; 1  0.024632705   NA 5.824737e-09</span></span>
-<span><span class="co">#&gt; 2 -0.009029218   NA 2.027864e-08</span></span>
-<span><span class="co">#&gt; 3 -0.009601946   NA 2.046400e-08</span></span>
-<span><span class="co">#&gt; 4  0.058095477   NA 1.427017e-08</span></span>
-<span><span class="co">#&gt; 5  0.055251144   NA 1.290463e-08</span></span>
-<span><span class="co">#&gt; 6  0.038554295   NA 6.836886e-09</span></span>
+<span><span class="co">#&gt; 1  0.024632724   NA 5.824750e-09</span></span>
+<span><span class="co">#&gt; 2 -0.009029231   NA 2.027844e-08</span></span>
+<span><span class="co">#&gt; 3 -0.009601958   NA 2.046382e-08</span></span>
+<span><span class="co">#&gt; 4  0.058095524   NA 1.427013e-08</span></span>
+<span><span class="co">#&gt; 5  0.055251188   NA 1.290460e-08</span></span>
+<span><span class="co">#&gt; 6  0.038554326   NA 6.836890e-09</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.random</span><span class="op">$</span><span class="va">DayR</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   ID         mean          sd   0.025quant     0.5quant</span></span>
-<span><span class="co">#&gt; 1  1 6.924207e-06 0.001501481 -0.002937713 6.924410e-06</span></span>
-<span><span class="co">#&gt; 2  2 1.056644e-02 0.004274276  0.002188709 1.055373e-02</span></span>
-<span><span class="co">#&gt; 3  3 2.106572e-02 0.008121902  0.005144074 2.103765e-02</span></span>
-<span><span class="co">#&gt; 4  4 3.184263e-02 0.012056268  0.008205546 3.180029e-02</span></span>
-<span><span class="co">#&gt; 5  5 4.249502e-02 0.016013232  0.011099078 4.243830e-02</span></span>
-<span><span class="co">#&gt; 6  6 5.322668e-02 0.019979616  0.014052981 5.315582e-02</span></span>
+<span><span class="co">#&gt; 1  1 6.924216e-06 0.001501481 -0.002937713 6.924420e-06</span></span>
+<span><span class="co">#&gt; 2  2 1.056644e-02 0.004274275  0.002188710 1.055373e-02</span></span>
+<span><span class="co">#&gt; 3  3 2.106572e-02 0.008121902  0.005144076 2.103765e-02</span></span>
+<span><span class="co">#&gt; 4  4 3.184263e-02 0.012056268  0.008205548 3.180030e-02</span></span>
+<span><span class="co">#&gt; 5  5 4.249502e-02 0.016013231  0.011099081 4.243830e-02</span></span>
+<span><span class="co">#&gt; 6  6 5.322668e-02 0.019979614  0.014052985 5.315583e-02</span></span>
 <span><span class="co">#&gt;   0.975quant mode          kld</span></span>
-<span><span class="co">#&gt; 1 0.00295156   NA 5.527427e-11</span></span>
-<span><span class="co">#&gt; 2 0.01901744   NA 7.952153e-09</span></span>
+<span><span class="co">#&gt; 1 0.00295156   NA 5.527465e-11</span></span>
+<span><span class="co">#&gt; 2 0.01901744   NA 7.952162e-09</span></span>
 <span><span class="co">#&gt; 3 0.03714923   NA 1.020988e-08</span></span>
 <span><span class="co">#&gt; 4 0.05572394   NA 1.066188e-08</span></span>
-<span><span class="co">#&gt; 5 0.07421817   NA 1.083088e-08</span></span>
+<span><span class="co">#&gt; 5 0.07421818   NA 1.083088e-08</span></span>
 <span><span class="co">#&gt; 6 0.09280920   NA 1.090792e-08</span></span></code></pre></div>
 <p>En la Figura <a href="anova.html#fig:sleep2">3.13</a> mostramos los datos y también los valores ajustados para las rectas, en términos de las interceptaciones y pendientes medias de las correspondientes distribuciones posteriores, además de la banda de estimación que construimos con los correspondientes percentiles de las posterioris.</p>
 <div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
@@ -1101,7 +1101,7 @@ Figura 3.13: Estimaciones posteriores de los predictores lineales: medias y RC.
 <span><span class="kw">for</span><span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">nhyp</span><span class="op">)</span><span class="op">{</span></span>
 <span>    <span class="va">res</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">res</span>,<span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">tau</span><span class="op">)</span> <span class="va">tau</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,<span class="va">fit</span><span class="op">$</span><span class="va">marginals.hyperpar</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>                         id<span class="op">=</span><span class="fu">str_sub</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.hyperpar</span><span class="op">)</span><span class="op">[</span><span class="va">j</span><span class="op">]</span>, start <span class="op">=</span><span class="fl">15</span>, end <span class="op">=</span> <span class="op">-</span><span class="fl">1L</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>                         id<span class="op">=</span><span class="fu">str_sub</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.hyperpar</span><span class="op">)</span><span class="op">[</span><span class="va">j</span><span class="op">]</span>, start <span class="op">=</span><span class="fl">15</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">res</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">id</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
@@ -1169,27 +1169,27 @@ y asumiendo en un segundo nivel del modelo las distribuciones a priori:
 <span><span class="co"># inferencias de interés</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.hyperpar</span>,<span class="fl">4</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                                             mean       sd</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 142.0217  39.6765</span></span>
-<span><span class="co">#&gt; Precision for Lab                       349.8967 651.1286</span></span>
-<span><span class="co">#&gt; Precision for IDt                       206.0550 210.5094</span></span>
-<span><span class="co">#&gt; Precision for IDts                      366.9453 335.2835</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 142.0215  39.6766</span></span>
+<span><span class="co">#&gt; Precision for Lab                       349.8790 651.0672</span></span>
+<span><span class="co">#&gt; Precision for IDt                       206.0618 210.5219</span></span>
+<span><span class="co">#&gt; Precision for IDts                      366.9472 335.2848</span></span>
 <span><span class="co">#&gt;                                         0.025quant 0.5quant</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations    77.8347 137.4879</span></span>
-<span><span class="co">#&gt; Precision for Lab                          22.4907 170.1973</span></span>
-<span><span class="co">#&gt; Precision for IDt                          26.6549 144.1500</span></span>
-<span><span class="co">#&gt; Precision for IDts                         59.8949 270.7306</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations    77.8344 137.4876</span></span>
+<span><span class="co">#&gt; Precision for Lab                          22.4911 170.1940</span></span>
+<span><span class="co">#&gt; Precision for IDt                          26.6539 144.1529</span></span>
+<span><span class="co">#&gt; Precision for IDts                         59.8950 270.7323</span></span>
 <span><span class="co">#&gt;                                         0.975quant mode</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations   232.9088   NA</span></span>
-<span><span class="co">#&gt; Precision for Lab                        1808.5616   NA</span></span>
-<span><span class="co">#&gt; Precision for IDt                         762.2570   NA</span></span>
-<span><span class="co">#&gt; Precision for IDts                       1256.5640   NA</span></span></code></pre></div>
+<span><span class="co">#&gt; Precision for the Gaussian observations   232.9090   NA</span></span>
+<span><span class="co">#&gt; Precision for Lab                        1808.4349   NA</span></span>
+<span><span class="co">#&gt; Precision for IDt                         762.2964   NA</span></span>
+<span><span class="co">#&gt; Precision for IDts                       1256.5694   NA</span></span></code></pre></div>
 <div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nhyp</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.hyperpar</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">res</span><span class="op">=</span><span class="cn">NULL</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">nhyp</span><span class="op">)</span><span class="op">{</span></span>
 <span>    <span class="va">res</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">res</span>,<span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">tau</span><span class="op">)</span> <span class="va">tau</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,<span class="va">fit</span><span class="op">$</span><span class="va">marginals.hyperpar</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>                         id<span class="op">=</span><span class="fu">str_sub</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.hyperpar</span><span class="op">)</span><span class="op">[</span><span class="va">j</span><span class="op">]</span>, start <span class="op">=</span><span class="fl">15</span>, end <span class="op">=</span> <span class="op">-</span><span class="fl">1L</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>                         id<span class="op">=</span><span class="fu">str_sub</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.hyperpar</span><span class="op">)</span><span class="op">[</span><span class="va">j</span><span class="op">]</span>, start <span class="op">=</span><span class="fl">15</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">res</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">id</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
@@ -1222,20 +1222,20 @@ Figura 3.16: Distribución posterior del error de los datos y el error aleatorio
 <span><span class="co">#&gt; (Intercept)   NA   0</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.hyperpar</span>,<span class="fl">4</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                                             mean       sd</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 141.9190  39.6194</span></span>
-<span><span class="co">#&gt; Precision for Lab                       349.8849 651.1700</span></span>
-<span><span class="co">#&gt; Precision for labtech                   206.0192 210.4591</span></span>
-<span><span class="co">#&gt; Precision for labtechsamp               366.9561 335.2954</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 141.9198  39.6190</span></span>
+<span><span class="co">#&gt; Precision for Lab                       349.8796 651.1331</span></span>
+<span><span class="co">#&gt; Precision for labtech                   206.0037 210.4361</span></span>
+<span><span class="co">#&gt; Precision for labtechsamp               366.9468 335.2890</span></span>
 <span><span class="co">#&gt;                                         0.025quant 0.5quant</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations    77.8093 137.3967</span></span>
-<span><span class="co">#&gt; Precision for Lab                          22.4871 170.1803</span></span>
-<span><span class="co">#&gt; Precision for labtech                      26.6561 144.1298</span></span>
-<span><span class="co">#&gt; Precision for labtechsamp                  59.8966 270.7378</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations    77.8104 137.3976</span></span>
+<span><span class="co">#&gt; Precision for Lab                          22.4866 170.1820</span></span>
+<span><span class="co">#&gt; Precision for labtech                      26.6563 144.1215</span></span>
+<span><span class="co">#&gt; Precision for labtechsamp                  59.8959 270.7301</span></span>
 <span><span class="co">#&gt;                                         0.975quant mode</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations   232.6620   NA</span></span>
-<span><span class="co">#&gt; Precision for Lab                        1808.5810   NA</span></span>
-<span><span class="co">#&gt; Precision for labtech                     762.0889   NA</span></span>
-<span><span class="co">#&gt; Precision for labtechsamp                1256.6054   NA</span></span></code></pre></div>
+<span><span class="co">#&gt; Precision for the Gaussian observations   232.6613   NA</span></span>
+<span><span class="co">#&gt; Precision for Lab                        1808.5270   NA</span></span>
+<span><span class="co">#&gt; Precision for labtech                     762.0140   NA</span></span>
+<span><span class="co">#&gt; Precision for labtechsamp                1256.5794   NA</span></span></code></pre></div>
 <p>En la Figura <a href="anova.html#fig:eggs3">3.17</a> se muestra la distribución posterior del error de los datos y de los errores aleatorios.</p>
 <div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nhyp</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.hyperpar</span><span class="op">)</span><span class="op">)</span></span>
@@ -1243,7 +1243,7 @@ Figura 3.16: Distribución posterior del error de los datos y el error aleatorio
 <span><span class="kw">for</span><span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">nhyp</span><span class="op">)</span><span class="op">{</span></span>
 <span>    <span class="va">res</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">res</span>,<span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">tau</span><span class="op">)</span> <span class="va">tau</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,<span class="va">fit</span><span class="op">$</span><span class="va">marginals.hyperpar</span><span class="op">[[</span><span class="va">j</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>                         id<span class="op">=</span><span class="fu">str_sub</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.hyperpar</span><span class="op">)</span><span class="op">[</span><span class="va">j</span><span class="op">]</span>, start <span class="op">=</span><span class="fl">15</span>, end <span class="op">=</span> <span class="op">-</span><span class="fl">1L</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>                         id<span class="op">=</span><span class="fu">str_sub</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.hyperpar</span><span class="op">)</span><span class="op">[</span><span class="va">j</span><span class="op">]</span>, start <span class="op">=</span><span class="fl">15</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">res</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">id</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>

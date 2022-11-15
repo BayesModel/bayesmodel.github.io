@@ -167,18 +167,18 @@ Es decir, el coeficiente <span class="math inline">\(\beta_1\)</span> representa
 <span><span class="va">fit</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>,family<span class="op">=</span><span class="st">"binomial"</span>,data<span class="op">=</span><span class="va">datos</span>,control.predictor <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>link <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span></span>
 <span><span class="co">#&gt;                  mean        sd 0.025quant  0.5quant</span></span>
-<span><span class="co">#&gt; (Intercept) -3.590590 0.1897367  -3.998981 -3.578298</span></span>
-<span><span class="co">#&gt; psoe_simp    3.085809 0.1865736   2.723938  3.084374</span></span>
-<span><span class="co">#&gt; psoe_past    2.352356 0.1856830   1.989733  2.351810</span></span>
+<span><span class="co">#&gt; (Intercept) -3.590590 0.1897365  -3.998981 -3.578298</span></span>
+<span><span class="co">#&gt; psoe_simp    3.085809 0.1865735   2.723938  3.084374</span></span>
+<span><span class="co">#&gt; psoe_past    2.352356 0.1856828   1.989733  2.351810</span></span>
 <span><span class="co">#&gt;             0.975quant mode          kld</span></span>
-<span><span class="co">#&gt; (Intercept)  -3.251373   NA 5.805144e-07</span></span>
-<span><span class="co">#&gt; psoe_simp     3.455829   NA 3.434689e-07</span></span>
-<span><span class="co">#&gt; psoe_past     2.718075   NA 9.427374e-07</span></span>
+<span><span class="co">#&gt; (Intercept)  -3.251374   NA 5.805021e-07</span></span>
+<span><span class="co">#&gt; psoe_simp     3.455828   NA 3.434752e-07</span></span>
+<span><span class="co">#&gt; psoe_past     2.718075   NA 9.427354e-07</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">summary.hyperpar</span></span>
 <span><span class="co">#&gt;                        mean       sd 0.025quant 0.5quant</span></span>
-<span><span class="co">#&gt; Precision for ccaa 70.84503 250.9457   1.978299 10.68808</span></span>
+<span><span class="co">#&gt; Precision for ccaa 70.84177 250.9039   1.978297 10.68804</span></span>
 <span><span class="co">#&gt;                    0.975quant mode</span></span>
-<span><span class="co">#&gt; Precision for ccaa    589.353   NA</span></span></code></pre></div>
+<span><span class="co">#&gt; Precision for ccaa   589.3841   NA</span></span></code></pre></div>
 <p>Las distribuciones posteriores de los exponenciales de los efectos aleatorios se muestran en la Figura <a href="glm.html#fig:eleccion2">4.1</a>, identificadas en verde las de efectos positivos en la media posterior del predictor lineal (log-odds <span class="math inline">\(&gt;1\)</span>), y en rojo las de efectos negativos, e interpretables como más y menos favorables a votar por el PSOE.</p>
 <div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">random</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.random</span><span class="op">)</span></span>
@@ -386,7 +386,7 @@ donde <span class="math inline">\(\eta_i=log(\rho_i)\)</span> es el predictor li
 <span><span class="co">#&gt;    silent, inla.mode = inla.mode, safe = FALSE, debug = </span></span>
 <span><span class="co">#&gt;    debug, ", " .parent.frame = .parent.frame)") </span></span>
 <span><span class="co">#&gt; Time used:</span></span>
-<span><span class="co">#&gt;     Pre = 2.17, Running = 0.16, Post = 0.00689, Total = 2.34 </span></span>
+<span><span class="co">#&gt;     Pre = 2.17, Running = 0.159, Post = 0.00689, Total = 2.33 </span></span>
 <span><span class="co">#&gt; Fixed effects:</span></span>
 <span><span class="co">#&gt;              mean    sd 0.025quant 0.5quant 0.975quant mode</span></span>
 <span><span class="co">#&gt; (Intercept) 2.282 0.071      2.139    2.283       2.42   NA</span></span>
