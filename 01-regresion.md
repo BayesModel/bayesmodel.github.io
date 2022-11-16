@@ -206,7 +206,7 @@ summary(fit)
 #>    silent, inla.mode = inla.mode, safe = FALSE, debug = 
 #>    debug, ", " .parent.frame = .parent.frame)") 
 #> Time used:
-#>     Pre = 2.45, Running = 0.183, Post = 0.019, Total = 2.66 
+#>     Pre = 2.53, Running = 0.186, Post = 0.0187, Total = 2.73 
 #> Fixed effects:
 #>              mean    sd 0.025quant 0.5quant 0.975quant mode
 #> (Intercept) 2.734 0.814      1.135    2.734      4.333   NA
@@ -223,14 +223,14 @@ summary(fit)
 #>                                         0.975quant mode
 #> Precision for the Gaussian observations      0.242   NA
 #> 
-#> Marginal log-Likelihood:  -426.72 
+#> Marginal log-Likelihood:  -426.73 
 #>  is computed 
 #> Posterior summaries for the linear predictor and the fitted values are computed
 #> (Posterior marginals needs also 'control.compute=list(return.marginals.predictor=TRUE)')
 fit$mlik
 #>                                            [,1]
-#> log marginal-likelihood (integration) -426.7295
-#> log marginal-likelihood (Gaussian)    -426.7159
+#> log marginal-likelihood (integration) -426.7377
+#> log marginal-likelihood (Gaussian)    -426.7260
 ```
 
 Obtenemos pues la salida con un descriptivo de la distribución posterior para los efectos fijos interceptación, $\theta$, y el coeficiente del regresor `repwt`, $\beta$, con la media, desviación típica y cuantiles con los que podemos evaluar la región creíble al 95%.
@@ -253,30 +253,32 @@ Y podemos pedir descriptivos específicos de las distribuciones de los efectos f
 # descriptivos efectos fijos
 fit$summary.fixed
 #>                  mean         sd 0.025quant  0.5quant
-#> (Intercept) 2.7338110 0.81444704  1.1347636 2.7338109
-#> repwt       0.9583742 0.01213756  0.9345438 0.9583742
+#> (Intercept) 2.7338097 0.81442646  1.1348067 2.7338097
+#> repwt       0.9583742 0.01213725  0.9345445 0.9583742
 #>             0.975quant mode          kld
-#> (Intercept)  4.3328591   NA 6.375081e-10
-#> repwt        0.9822045   NA 6.375718e-10
+#> (Intercept)  4.3328129   NA 6.337430e-10
+#> repwt        0.9822038   NA 6.338357e-10
 # descriptivos varianza
 fit$summary.hyperpar
-#>                                             mean         sd
-#> Precision for the Gaussian observations 0.199083 0.02088159
+#>                                              mean
+#> Precision for the Gaussian observations 0.1990903
+#>                                                 sd
+#> Precision for the Gaussian observations 0.02087237
 #>                                         0.025quant
-#> Precision for the Gaussian observations  0.1607375
+#> Precision for the Gaussian observations  0.1607845
 #>                                          0.5quant
-#> Precision for the Gaussian observations 0.1983754
+#> Precision for the Gaussian observations 0.1983805
 #>                                         0.975quant mode
-#> Precision for the Gaussian observations  0.2417988   NA
+#> Precision for the Gaussian observations  0.2417843   NA
 # medias de los efectos fijos
 fit$summary.fixed$mean
-#> [1] 2.7338110 0.9583742
+#> [1] 2.7338097 0.9583742
 # descriptivos primer efecto fijo
 fit$summary.fixed[1,]
-#>                 mean       sd 0.025quant 0.5quant
-#> (Intercept) 2.733811 0.814447   1.134764 2.733811
-#>             0.975quant mode          kld
-#> (Intercept)   4.332859   NA 6.375081e-10
+#>                mean        sd 0.025quant 0.5quant
+#> (Intercept) 2.73381 0.8144265   1.134807  2.73381
+#>             0.975quant mode         kld
+#> (Intercept)   4.332813   NA 6.33743e-10
 ```
 
 
@@ -286,19 +288,19 @@ Para describir la marginal posterior sobre cada uno de los datos ajustados:
 ```r
 head(fit$summary.fitted.values)
 #>                          mean        sd 0.025quant 0.5quant
-#> fitted.Predictor.001 76.52862 0.2162862   76.10402 76.52862
-#> fitted.Predictor.002 51.61089 0.2441680   51.13155 51.61089
-#> fitted.Predictor.003 54.48602 0.2190235   54.05604 54.48602
-#> fitted.Predictor.004 69.82000 0.1750487   69.47635 69.82000
-#> fitted.Predictor.005 59.27789 0.1856153   58.91349 59.27789
-#> fitted.Predictor.006 75.57025 0.2087832   75.16037 75.57025
+#> fitted.Predictor.001 76.52862 0.2162808   76.10403 76.52862
+#> fitted.Predictor.002 51.61089 0.2441618   51.13157 51.61089
+#> fitted.Predictor.003 54.48602 0.2190179   54.05605 54.48602
+#> fitted.Predictor.004 69.82000 0.1750443   69.47636 69.82000
+#> fitted.Predictor.005 59.27789 0.1856107   58.91350 59.27789
+#> fitted.Predictor.006 75.57025 0.2087779   75.16038 75.57025
 #>                      0.975quant mode
-#> fitted.Predictor.001   76.95323   NA
-#> fitted.Predictor.002   52.09024   NA
-#> fitted.Predictor.003   54.91599   NA
-#> fitted.Predictor.004   70.16365   NA
-#> fitted.Predictor.005   59.64228   NA
-#> fitted.Predictor.006   75.98012   NA
+#> fitted.Predictor.001   76.95322   NA
+#> fitted.Predictor.002   52.09022   NA
+#> fitted.Predictor.003   54.91598   NA
+#> fitted.Predictor.004   70.16364   NA
+#> fitted.Predictor.005   59.64227   NA
+#> fitted.Predictor.006   75.98011   NA
 ```
 
 Si queremos hacer un **análisis de sensibilidad** sobre las distribuciones a priori, reajustamos el modelo con otras priors y comparamos los resultados.
@@ -314,23 +316,23 @@ fit2=inla(formula,family="gaussian",data=davis,
             control.family = list(hyper = list(
               prec = list(prior="loggamma", param =c(1,0.001)))))
 fit2$summary.fixed
-#>                  mean         sd 0.025quant  0.5quant
-#> (Intercept) 2.7982706 0.81407251  1.2009560 2.7979292
-#> repwt       0.9574339 0.01213213  0.9336006 0.9574389
+#>                  mean         sd 0.025quant 0.5quant
+#> (Intercept) 2.7982710 0.81408682  1.2009229 2.797927
+#> repwt       0.9574339 0.01213234  0.9335999 0.957439
 #>             0.975quant mode          kld
-#> (Intercept)   4.397522   NA 6.249540e-10
-#> repwt         0.981239   NA 6.245646e-10
+#> (Intercept)  4.3975684   NA 6.340787e-10
+#> repwt        0.9812395   NA 6.339712e-10
 fit2$summary.hyperpar
 #>                                              mean
-#> Precision for the Gaussian observations 0.1990996
+#> Precision for the Gaussian observations 0.1990922
 #>                                                 sd
-#> Precision for the Gaussian observations 0.02085016
+#> Precision for the Gaussian observations 0.02085624
 #>                                         0.025quant
-#> Precision for the Gaussian observations  0.1609806
+#> Precision for the Gaussian observations    0.16091
 #>                                          0.5quant
-#> Precision for the Gaussian observations 0.1983598
+#> Precision for the Gaussian observations 0.1983761
 #>                                         0.975quant mode
-#> Precision for the Gaussian observations  0.2416834   NA
+#> Precision for the Gaussian observations  0.2417847   NA
 ```
 
 ## Distribuciones posteriores
@@ -458,11 +460,11 @@ names(sims[[1]])
 #> [1] "hyperpar" "latent"   "logdens"
 sims[[1]]$hyperpar
 #> Precision for the Gaussian observations 
-#>                                0.215942
+#>                               0.2493011
 sims[[1]]$latent
 #>                sample:1
-#> (Intercept):1 3.6452565
-#> repwt:1       0.9483437
+#> (Intercept):1 2.5669681
+#> repwt:1       0.9611978
 ```
 
 y la log-densidad de la posterior en esos valores (`logdens`)
@@ -471,13 +473,13 @@ y la log-densidad de la posterior en esos valores (`logdens`)
 ```r
  sims[[1]]$logdens
 #> $hyperpar
-#> [1] 2.561111
+#> [1] 0.3565695
 #> 
 #> $latent
-#> [1] 1008.692
+#> [1] 1018.047
 #> 
 #> $joint
-#> [1] 1011.253
+#> [1] 1018.404
 ```
 
 Ahora con la función `inla.posterior.sample.eval`, dado que nuestra función depende de efectos fijos (latentes), $(\theta,\beta)$, evaluamos la operación pretendida, y con descriptivos gráficos y numéricos de las simulaciones, podemos aproximar los descriptivos de la distribución posterior.
@@ -487,54 +489,54 @@ Ahora con la función `inla.posterior.sample.eval`, dado que nuestra función de
 peso_real=inla.posterior.sample.eval(function(...) {(Intercept)+repwt*50},sims)
 peso_real
 #>        sample:1 sample:2 sample:3 sample:4 sample:5
-#> fun[1] 51.06244 50.52529 50.70436 50.22757 50.34733
+#> fun[1] 50.62686 50.89754 50.60143 50.70072 50.45229
 #>        sample:6 sample:7 sample:8 sample:9 sample:10
-#> fun[1] 50.44512   51.092 50.70692  50.9964  50.99253
+#> fun[1] 50.70936 50.87012 50.46188 50.85145   50.3504
 #>        sample:11 sample:12 sample:13 sample:14 sample:15
-#> fun[1]  50.69731  50.47479  50.89714   51.0874  50.72708
+#> fun[1]  50.63205  50.36958  51.03538   50.7019  50.49015
 #>        sample:16 sample:17 sample:18 sample:19 sample:20
-#> fun[1]  50.78735  50.80462  50.43316  50.80696  50.65538
+#> fun[1]  50.34699  50.57451  50.53079  50.67525  50.68611
 #>        sample:21 sample:22 sample:23 sample:24 sample:25
-#> fun[1]  51.30029  50.51282  50.91033  50.50204  50.64499
+#> fun[1]  51.01189  50.72256  50.58553  50.47302  50.95834
 #>        sample:26 sample:27 sample:28 sample:29 sample:30
-#> fun[1]  50.36004  50.64481  50.61538   50.8281  50.33711
+#> fun[1]  51.00763  50.48747  50.40644  50.46828  50.74808
 #>        sample:31 sample:32 sample:33 sample:34 sample:35
-#> fun[1]  50.93313  50.19321  51.21467  50.87816  50.69253
+#> fun[1]  51.07799  50.74687  51.17671  50.50971  50.62458
 #>        sample:36 sample:37 sample:38 sample:39 sample:40
-#> fun[1]  50.93738  50.24804   50.4517   50.7124  50.78072
+#> fun[1]  50.64674  51.09127  50.59587  50.96731  50.22406
 #>        sample:41 sample:42 sample:43 sample:44 sample:45
-#> fun[1]  50.13386  50.89244  50.18202  50.84824   50.6755
+#> fun[1]  50.81032  50.29549   50.5857  50.72364   50.6982
 #>        sample:46 sample:47 sample:48 sample:49 sample:50
-#> fun[1]  50.86679  50.65348  50.61743  50.51478  50.36984
+#> fun[1]  50.26499  50.67569  50.79914  51.07413  51.05063
 #>        sample:51 sample:52 sample:53 sample:54 sample:55
-#> fun[1]  50.55761  50.71592    50.626  51.02911  50.18379
+#> fun[1]  50.54757  50.32215  50.75272  50.11353  50.85609
 #>        sample:56 sample:57 sample:58 sample:59 sample:60
-#> fun[1]  51.20378  50.83704  50.54454  50.40454  50.67299
+#> fun[1]  50.84743   50.2467  51.00852  50.85792  50.66588
 #>        sample:61 sample:62 sample:63 sample:64 sample:65
-#> fun[1]   50.3547   50.3291  50.73312  50.34969  50.40699
+#> fun[1]  50.92323  50.62897  50.86008  50.90787  50.41737
 #>        sample:66 sample:67 sample:68 sample:69 sample:70
-#> fun[1]  50.51819  50.24715  50.54578  50.35828  50.17157
+#> fun[1]  50.41452  50.93803  50.87395  50.61422  50.91577
 #>        sample:71 sample:72 sample:73 sample:74 sample:75
-#> fun[1]  50.51734  50.56676  50.64262  50.57489  50.55392
+#> fun[1]   50.4982  50.70477  50.48579  50.47737    50.434
 #>        sample:76 sample:77 sample:78 sample:79 sample:80
-#> fun[1]   50.6588   50.6248  50.38832  50.94177  50.52546
+#> fun[1]  50.98506  50.92143  50.55095  50.54605  50.54882
 #>        sample:81 sample:82 sample:83 sample:84 sample:85
-#> fun[1]  50.33435  50.55521  50.83632   50.6393  49.94654
+#> fun[1]  50.28867  50.88754  50.70405  50.87146  50.91455
 #>        sample:86 sample:87 sample:88 sample:89 sample:90
-#> fun[1]  50.39626  50.88559  50.01248  50.65951  50.24457
+#> fun[1]  50.79342  50.63895  50.76995  50.61052  50.78394
 #>        sample:91 sample:92 sample:93 sample:94 sample:95
-#> fun[1]   50.5403  50.63917  50.59824  50.41855  50.41156
+#> fun[1]  50.26203   50.0621  50.80582  50.71963  50.32551
 #>        sample:96 sample:97 sample:98 sample:99 sample:100
-#> fun[1]   50.7114   50.5354  50.87874  50.56769   50.17803
+#> fun[1]  50.69859  50.66456   50.7935  50.74903   50.53974
 pred=data.frame(peso=as.vector(peso_real))
 summary(pred)
 #>       peso      
-#>  Min.   :49.95  
-#>  1st Qu.:50.41  
-#>  Median :50.62  
-#>  Mean   :50.61  
-#>  3rd Qu.:50.79  
-#>  Max.   :51.30
+#>  Min.   :50.06  
+#>  1st Qu.:50.50  
+#>  Median :50.68  
+#>  Mean   :50.67  
+#>  3rd Qu.:50.86  
+#>  Max.   :51.18
 ggplot(pred,aes(x=peso))+
   geom_histogram(aes(y=..density..), colour="black", fill="white")+
   geom_density(alpha=.2, fill="#80E7F5") 
@@ -630,11 +632,11 @@ fit= inla(formula, data = usair,
 #summary(fit)
 round(fit$summary.fixed,3)
 #>                mean     sd 0.025quant 0.5quant 0.975quant
-#> (Intercept) 135.489 49.862     37.153  135.496    233.784
-#> negtemp       1.769  0.634      0.518    1.769      3.020
+#> (Intercept) 135.488 49.826     37.227  135.496    233.708
+#> negtemp       1.769  0.634      0.519    1.769      3.019
 #> manuf         0.026  0.005      0.017    0.026      0.035
-#> wind         -3.723  1.935     -7.537   -3.723      0.093
-#> precip        0.625  0.387     -0.139    0.625      1.388
+#> wind         -3.723  1.933     -7.534   -3.723      0.090
+#> precip        0.625  0.387     -0.138    0.625      1.388
 #> days         -0.057  0.174     -0.400   -0.057      0.287
 #>             mode kld
 #> (Intercept)   NA   0
@@ -652,13 +654,13 @@ La inferencia posterior sobre la desviación típica de los datos, $\sigma$, la 
 sigma.post= inla.tmarginal(function(tau) tau^(-1/2),
                            fit$marginals.hyperpar[[1]])
 inla.zmarginal(sigma.post)
-#> Mean            15.6719 
-#> Stdev           1.85609 
-#> Quantile  0.025 12.5298 
-#> Quantile  0.25  14.3479 
-#> Quantile  0.5   15.4936 
-#> Quantile  0.75  16.7992 
-#> Quantile  0.975 19.8195
+#> Mean            15.6708 
+#> Stdev           1.85402 
+#> Quantile  0.025 12.5305 
+#> Quantile  0.25  14.347 
+#> Quantile  0.5   15.4934 
+#> Quantile  0.75  16.7995 
+#> Quantile  0.975 19.8123
 ```
 
 Para seleccionar las variables relevantes seguimos el procedimiento descrito anteriormente. Añadimos también el ajuste del modelo de regresión frecuentista, para el que calculamos como criterio de bondad de ajuste el AIC.
@@ -722,31 +724,31 @@ Las inferencias sobre los efectos fijos y la precisión de los datos se muestran
 formula=SO2 ~ negtemp+manuf+pop+wind+precip
 fit=inla(formula, family="gaussian", data=usair, control.compute=list(dic=TRUE, waic=TRUE))
 fit$summary.fixed
-#>                     mean          sd   0.025quant
-#> (Intercept) 100.01507684 30.13792337 40.581810484
-#> negtemp       1.12026648  0.41427010  0.303360918
-#> manuf         0.06489618  0.01548972  0.034355160
-#> pop          -0.03934757  0.01488331 -0.068694574
-#> wind         -3.07254481  1.75652267 -6.535114234
-#> precip        0.41922382  0.21546548 -0.005636355
-#>                 0.5quant   0.975quant mode          kld
-#> (Intercept) 100.01864744 159.42790364   NA 1.157176e-08
-#> negtemp       1.12029323   1.93701886   NA 1.159988e-08
-#> manuf         0.06489594   0.09543860   NA 1.161204e-08
-#> pop          -0.03934723  -0.01000253   NA 1.161129e-08
-#> wind         -3.07280006   0.39148534   NA 1.154611e-08
-#> precip        0.41923027   0.84404705   NA 1.160859e-08
+#>                     mean          sd  0.025quant
+#> (Intercept) 100.01526954 30.15505149 40.54640736
+#> negtemp       1.12026860  0.41450682  0.30287156
+#> manuf         0.06489636  0.01549854  0.03433692
+#> pop          -0.03934775  0.01489179 -0.06871234
+#> wind         -3.07255195  1.75751385 -6.53718599
+#> precip        0.41922429  0.21558854 -0.00589190
+#>                 0.5quant    0.975quant mode          kld
+#> (Intercept) 100.01882415 159.463828181   NA 1.152199e-08
+#> negtemp       1.12029496   1.937515227   NA 1.154834e-08
+#> manuf         0.06489614   0.095457062   NA 1.155830e-08
+#> pop          -0.03934742  -0.009984996   NA 1.155791e-08
+#> wind         -3.07280728   0.393541595   NA 1.149800e-08
+#> precip        0.41923067   0.844304039   NA 1.155696e-08
 fit$summary.hyperpar
 #>                                                mean
-#> Precision for the Gaussian observations 0.005066391
+#> Precision for the Gaussian observations 0.005064815
 #>                                                  sd
-#> Precision for the Gaussian observations 0.001179073
-#>                                         0.025quant
-#> Precision for the Gaussian observations 0.00303505
+#> Precision for the Gaussian observations 0.001179166
+#>                                          0.025quant
+#> Precision for the Gaussian observations 0.003033718
 #>                                            0.5quant
-#> Precision for the Gaussian observations 0.004975893
+#> Precision for the Gaussian observations 0.004973492
 #>                                          0.975quant mode
-#> Precision for the Gaussian observations 0.007618676   NA
+#> Precision for the Gaussian observations 0.007618735   NA
 ```
 
 Y en la Figura \@ref(fig:regmul02) se muestran las distribuciones posteriores de todos los efectos latentes (efectos fijos) en el modelo: interceptación y coeficientes de los regresores.
@@ -797,13 +799,13 @@ fit.pred <- inla(formula, data = usair.combinado,
 ## y describimos los valores ajustados para los tres escenarios añadidos
 fit.pred$summary.fitted.values[(nrow(usair)+1):nrow(usair.combinado),]
 #>                         mean       sd 0.025quant 0.5quant
-#> fitted.Predictor.42 31.62374 8.210923   15.43362 31.62453
-#> fitted.Predictor.43 26.42297 5.478438   15.62107 26.42334
-#> fitted.Predictor.44 53.16282 7.097297   39.16875 53.16340
+#> fitted.Predictor.42 31.62374 8.200469   15.45569 31.62450
+#> fitted.Predictor.43 26.42295 5.471450   15.63580 26.42331
+#> fitted.Predictor.44 53.16279 7.088254   39.18780 53.16335
 #>                     0.975quant mode
-#> fitted.Predictor.42   47.80910   NA
-#> fitted.Predictor.43   37.22256   NA
-#> fitted.Predictor.44   67.15337   NA
+#> fitted.Predictor.42   47.78719   NA
+#> fitted.Predictor.43   37.20788   NA
+#> fitted.Predictor.44   67.13436   NA
 ```
 
 Así graficamos en la Figura \@ref(fig:regmul03) la distribución predictiva del nivel de SO2 para una combinación dada de valores de las variables predictivas, específicamente la que aparece en el escenario 1 propuesto, o lo que es lo mismo, en el registro 42 de la base de datos completada con las nuevas predicciones: negtem=-50, manuf=150, pop=200, wind=6 y precip=10.
