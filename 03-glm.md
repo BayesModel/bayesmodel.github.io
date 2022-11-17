@@ -220,12 +220,12 @@ datos=barometro_feb22 %>%
 Especificamos pues un modelo que asume para los efectos fijos las distribuciones difusas por defecto en INLA, y para la varianza de los efectos aleatorios una $GaI(0.001,0.001)$. 
 
 \begin{eqnarray*}
-y_{ij}|\pi_i & \sim & Br(\pi_i) \\
-&& logit(\pi_i)=\eta_i=\theta + \alpha_{simp} + \alpha_{past} + \gamma_{ca} \\
+y_{ijkl}|\pi_{ijk} & \sim & Br(\pi_{ijk}) \\
+logit(\pi_{ijk}) =\eta_{ijk} &=& \theta + \alpha_i^{simp} + \alpha_j^{past} + \gamma_{k}^{ca} \\
 \theta &\sim& N(0,\infty) \\
-\alpha_{simp}&\sim& N(0,1000) \\
-\alpha_{past}&\sim& N(0,1000) \\
-\gamma_{ca}\alpha_{simp}&\sim& N(0,\sigma_{ca}^2) \\
+\alpha_i^{simp}&\sim& N(0,1000), i=2\\
+\alpha_j^{past}&\sim& N(0,1000), j=2 \\
+\gamma_k^{ca} &\sim& N(0,\sigma_{ca}^2) , k=2,...,17\\
 1/\sigma_{ca}^2  &\sim& Ga(0.001,0.001)
 \end{eqnarray*}
 
@@ -236,50 +236,39 @@ Las inferencias posteriores se resumen en los siguientes descriptivos.
 prec.prior=list(prec=list(param=c(0.001,0.001)))
 formula = psoe ~ psoe_simp + psoe_past+ f(ccaa,model="iid",hyper=prec.prior)
 fit=inla(formula,family="binomial",data=datos)
-fit$summary.fixed
-#>                  mean        sd 0.025quant  0.5quant
-#> (Intercept) -3.590590 0.1897365  -3.998981 -3.578298
-#> psoe_simp    3.085809 0.1865735   2.723938  3.084374
-#> psoe_past    2.352356 0.1856828   1.989733  2.351810
-#>             0.975quant mode          kld
-#> (Intercept)  -3.251374   NA 5.805021e-07
-#> psoe_simp     3.455828   NA 3.434752e-07
-#> psoe_past     2.718075   NA 9.427354e-07
-fit$summary.hyperpar
-#>                        mean       sd 0.025quant 0.5quant
-#> Precision for ccaa 70.85958 251.0441   1.978298 10.68807
-#>                    0.975quant mode
-#> Precision for ccaa   589.4174   NA
-head(fit$summary.fitted.values)
-#>                             mean          sd 0.025quant
-#> fitted.Predictor.0001 0.02613268 0.006597318 0.01417253
-#> fitted.Predictor.0002 0.03313666 0.006805633 0.02191503
-#> fitted.Predictor.0003 0.02920946 0.005829130 0.01886787
-#> fitted.Predictor.0004 0.02920946 0.005829130 0.01886787
-#> fitted.Predictor.0005 0.03313666 0.006805633 0.02191503
-#> fitted.Predictor.0006 0.88231903 0.023396647 0.83526830
-#>                         0.5quant 0.975quant mode
-#> fitted.Predictor.0001 0.02592325 0.03990485   NA
-#> fitted.Predictor.0002 0.03236610 0.04864296   NA
-#> fitted.Predictor.0003 0.02882857 0.04186095   NA
-#> fitted.Predictor.0004 0.02882857 0.04186095   NA
-#> fitted.Predictor.0005 0.03236610 0.04864296   NA
-#> fitted.Predictor.0006 0.88269663 0.92602566   NA
-head(fit$summary.linear.predictor)
-#>                     mean        sd 0.025quant  0.5quant
-#> Predictor.0001 -3.651129 0.2694963  -4.242176 -3.626350
-#> Predictor.0002 -3.393915 0.2091688  -3.798424 -3.397742
-#> Predictor.0003 -3.523517 0.2069641  -3.951246 -3.517136
-#> Predictor.0004 -3.523517 0.2069641  -3.951246 -3.517136
-#> Predictor.0005 -3.393915 0.2091688  -3.798424 -3.397742
-#> Predictor.0006  2.034601 0.2317236   1.623435  2.018218
-#>                0.975quant mode          kld
-#> Predictor.0001  -3.180534   NA 1.900590e-07
-#> Predictor.0002  -2.973382   NA 6.892912e-08
-#> Predictor.0003  -3.130640   NA 1.991678e-07
-#> Predictor.0004  -3.130640   NA 1.991678e-07
-#> Predictor.0005  -2.973382   NA 6.892912e-08
-#> Predictor.0006   2.527184   NA 7.424809e-08
+round(fit$summary.fixed[,1:5],3)
+#>               mean    sd 0.025quant 0.5quant 0.975quant
+#> (Intercept) -3.591 0.190     -3.999   -3.578     -3.251
+#> psoe_simp    3.086 0.187      2.724    3.084      3.456
+#> psoe_past    2.352 0.186      1.990    2.352      2.718
+round(fit$summary.hyperpar[,1:5],3)
+#>                      mean      sd 0.025quant 0.5quant
+#> Precision for ccaa 70.789 250.922      1.978     10.7
+#>                    0.975quant
+#> Precision for ccaa    588.584
+head(round(fit$summary.fitted.values[,1:5],3))
+#>                        mean    sd 0.025quant 0.5quant
+#> fitted.Predictor.0001 0.026 0.007      0.014    0.026
+#> fitted.Predictor.0002 0.033 0.007      0.022    0.032
+#> fitted.Predictor.0003 0.029 0.006      0.019    0.029
+#> fitted.Predictor.0004 0.029 0.006      0.019    0.029
+#> fitted.Predictor.0005 0.033 0.007      0.022    0.032
+#> fitted.Predictor.0006 0.882 0.023      0.835    0.883
+#>                       0.975quant
+#> fitted.Predictor.0001      0.040
+#> fitted.Predictor.0002      0.049
+#> fitted.Predictor.0003      0.042
+#> fitted.Predictor.0004      0.042
+#> fitted.Predictor.0005      0.049
+#> fitted.Predictor.0006      0.926
+head(round(fit$summary.linear.predictor[,1:5],3))
+#>                  mean    sd 0.025quant 0.5quant 0.975quant
+#> Predictor.0001 -3.651 0.269     -4.242   -3.626     -3.181
+#> Predictor.0002 -3.394 0.209     -3.798   -3.398     -2.973
+#> Predictor.0003 -3.524 0.207     -3.951   -3.517     -3.131
+#> Predictor.0004 -3.524 0.207     -3.951   -3.517     -3.131
+#> Predictor.0005 -3.394 0.209     -3.798   -3.398     -2.973
+#> Predictor.0006  2.035 0.232      1.623    2.018      2.527
 ```
 
 La variabilidad para los efectos aleatorios es relevante, como se manifiesta a través de la distribución posterior de su varianza, que se muestra en la Figura \@ref(fig:eleccion4) en términos de $\sigma_{ca}$.
@@ -371,13 +360,13 @@ NOx y el infarto en Sheffield (UK). Utilizaremos la siguiente información:
 - el tamaño de la población en cada distrito, `pop`
 - el riesgo base ajustado por sexo y edad para el número de infartos, calculado con estandarización indirecta con ratios de referencia internos basados en 18 estratos (9 para edad y 2 para género), en la variable `stroke_exp` (Maheswaran et al.2006).
 
-La respuesta $y_{i}$ relativa al número de infartos en el distrito $i$, con una población $n_i$, se puede modelizar con:
+La respuesta $y_{ijk}$ relativa al número de infartos en el distrito $k$ en el nivel $i$ de `NOx` y $j$ de `Townsend`, con una población $n_{ijk}$, se puede modelizar con:
 
-$$y_i|\pi_i \sim Bin(n_i, \pi_i)$$ 
+$$y_{ijk}|\pi_{ij} \sim Bin(n_{ijk}, \pi_{ij})$$ 
 
 Planteamos las asociaciones que intuimos a través del predictor lineal, definido en función del nivel de `NOx` y el nivel de privación `Townsend`, ambos como efectos fijos, así como de *offset* que representa el riesgo base corregido por el tamaño del distrito, $\tilde{p_i}=$stroke_exp/pop, en escala logit.
 
-$$\eta_i=logit(\pi_i)=\theta + \alpha_i^{NOx} + \alpha_i^{Town} + logit(\tilde{p_i})$$
+$$\eta_{ij}=logit(\pi_{ij})=\theta + \alpha_i^{NOx} + \alpha_j^{Town} + Offset(logit(\tilde{p_i}))$$
 Ajustamos pues el modelo con los efectos fijos `NOx` y `Townsend`, y el *offset* que calculamos y llamamos `logit.adjusted.prob`, que proporciona una estandarización del riesgo en base al tamaño de población en cada distrito, y para el que no se estima coeficiente. 
 
 
@@ -544,10 +533,10 @@ ggplot(warpbreaks,aes(x=tension,y=breaks))+
 
 ![](03-glm_files/figure-latex/hilos1-1.pdf)<!-- --> 
 
-Queremos pues predecir el número de roturas en función del tipo de lana y la tensión del telar, que consideramos como efectos fijos. 
+Queremos pues predecir el número de roturas en un telar $k$, en función del tipo de lana $i$ y la tensión del telar $j$, que consideramos como efectos fijos. 
 
-$$ y_i|\lambda_i \sim Po(\lambda_i) \\
-log(\lambda_i)=\eta_i=\theta+ \alpha_i^w+ \alpha_i^t$$
+$$ y_{ijk}|\lambda_{ij} \sim Po(\lambda_{ij}) \\
+log(\lambda_{ij})=\eta_{ij}=\theta+ \alpha_i^w+ \alpha_j^t$$
 
 Ajustamos el modelo anterior con las priors por defecto y obtenemos:
 
@@ -648,11 +637,12 @@ estimar el riesgo mensual de incidentes en barcos. Los factores
 potenciales del riesgo son el periodo de construcción (*built*), el
 periodo de operación (*oper*) y el tipo de barco (*type*). 
 
-El modelo se formula considerando que el número de incidentes será proporcional al número de meses que ha navegado el barco, de modo que utilizaremos como offset el *log(months)*, donde `months` son los meses que ha navegado el bargo y que ponderan en consecuencia el riesgo de incidentes $rho$. 
+El modelo se formula considerando que el número de incidentes será proporcional al número de meses que ha navegado el barco, de modo que utilizaremos como offset el *log(months)*, donde `months` son los meses que ha navegado el barco y que ponderan en consecuencia el riesgo de incidentes $\rho=\lambda/months$. 
 
 El modelo con el offset será entonces
-$$y_i \sim Poisson (E_i \rho_i)\\
-\eta_i=log(\rho_i)= \theta + \alpha_i^b+\alpha_i^o+\alpha_i^t+Offset(log(month))$$
+$$y_{ijkl} \sim Poisson (\lambda_{ijkl} )\\
+\eta_{ijkl}=log(\lambda_{ijkl})= \theta + \alpha_i^b+\alpha_j^o+\alpha_k^t+Offset(log(month)_{ijkl})$$
+
 
 Para los efectos fijos especificaremos las distribuciones a priori por defecto que proporciona INLA.
 
@@ -662,7 +652,9 @@ url="https://raw.githubusercontent.com/BayesModel/data/main/Ships.csv"
 ShipsIncidents <- read.csv(url,sep=",") 
 
 formula.inla <- y ~ 1 + built + oper + type
-fit <- inla(formula.inla,family="poisson", data=ShipsIncidents, offset=log(months))
+fit <- inla(formula.inla,family="poisson", 
+            data=ShipsIncidents, offset=log(months),
+            control.compute=list(return.marginals.predictor=TRUE))
 round(fit$summary.fixed[,1:5],3)
 #>               mean    sd 0.025quant 0.5quant 0.975quant
 #> (Intercept) -6.416 0.217     -6.852   -6.413     -5.998
@@ -693,7 +685,7 @@ g2=ggplot(as.data.frame(riesgoE),aes(x=x,y=y))+
 grid.arrange(g1,g2,ncol=2)
 ```
 
-![](03-glm_files/figure-latex/unnamed-chunk-11-1.pdf)<!-- --> 
+![(\#fig:incidents1)Distribuciones posteriores de los coeficientes relativos al riesgo base e incremento relativo por tipo E](03-glm_files/figure-latex/incidents1-1.pdf) 
 
 Para el riesgo base tenemos:
 
@@ -708,32 +700,11 @@ des.rbase=inla.zmarginal(rbase)
 #> Quantile  0.5   0.00163997 
 #> Quantile  0.75  0.00189552 
 #> Quantile  0.975 0.0024769
-des.rbase
-#> $mean
-#> [1] 0.001673763
-#> 
-#> $sd
-#> [1] 0.0003620923
-#> 
-#> $quant0.025
-#> [1] 0.001059467
-#> 
-#> $quant0.25
-#> [1] 0.001414768
-#> 
-#> $quant0.5
-#> [1] 0.001639975
-#> 
-#> $quant0.75
-#> [1] 0.001895523
-#> 
-#> $quant0.975
-#> [1] 0.002476898
 ```
 
-esto es, el ratio de incidentes por cada 1000 meses navegados para los niveles base será de 1.67 incidentes.
+esto es, el ratio de incidentes por cada 1000 meses navegados por barcos en los niveles base de todos los factores, es decir, fabricados antes del 65, con periodo de operación 60-74 y de tipo A, será de 1.67 incidentes.
 
-Para el incremento del riesgo de los barcos de tipo E respecto de los de tipo A, tenemos
+Para el incremento del riesgo de los barcos de tipo E respecto de los de tipo A, sin variar el resto de condiciones en los niveles base (construidos antes del 64 y con periodo de operación 60-74), tenemos:
 
 
 ```r
@@ -745,29 +716,41 @@ des.riesgoE=inla.zmarginal(riesgoE)
 #> Quantile  0.5   1.38686 
 #> Quantile  0.75  1.62474 
 #> Quantile  0.975 2.18636
-des.riesgoE
-#> $mean
-#> [1] 1.423969
-#> 
-#> $sd
-#> [1] 0.3366165
-#> 
-#> $quant0.025
-#> [1] 0.8700537
-#> 
-#> $quant0.25
-#> [1] 1.182271
-#> 
-#> $quant0.5
-#> [1] 1.386862
-#> 
-#> $quant0.75
-#> [1] 1.624742
-#> 
-#> $quant0.975
-#> [1] 2.186358
 ```
 
 es decir, el riesgo de incidente por usar un barco de tipo E respecto a usar uno de tipo A se incrementa en un 42.4%. 
 
+La distribución posterior para un barco de tipo A, construido entre los años 70-74 y con periodo de operación 75-79 y funcionando 1500 meses, viene dada en la Figura \@ref(fig:incidents2).
+
+
+```r
+formula <- y ~ 1 + built + oper + type
+new.data <- data.frame(type="A",
+                       built ="70-74", 
+                       oper = "75-79",
+                       months=1500,
+                       y=NA,
+                       id=NA)
+ships.combinado <- rbind(ShipsIncidents,new.data) 
+
+## creamos un vector con NA's para observaciones y 1's para predicciones
+ships.indicador <- c(rep(NA, nrow(ShipsIncidents)), 1)
+## reajustamos el modelo añadiendo la opción de predicción de datos
+fit.pred <- inla(formula, family="poisson",data = ships.combinado, 
+                 offset=log(months),
+                 control.compute=list(return.marginals.predictor=TRUE),
+                 control.predictor = list(link = ships.indicador))
+## y describimos los valores ajustados para los tres escenarios añadidos
+fit.pred$summary.fitted.values[nrow(ships.combinado),]
+#>                         mean      sd 0.025quant 0.5quant
+#> fitted.Predictor.35 8.324152 1.37842   5.849265 8.246215
+#>                     0.975quant mode
+#> fitted.Predictor.35     11.247   NA
+pred=fit.pred$marginals.fitted.values[[nrow(ships.combinado)]]
+ggplot(as.data.frame(pred),aes(x=x,y=y))+
+  geom_line()+
+  labs(x="Número de incidentes",y="D.Posterior")
+```
+
+![](03-glm_files/figure-latex/unnamed-chunk-13-1.pdf)<!-- --> 
 

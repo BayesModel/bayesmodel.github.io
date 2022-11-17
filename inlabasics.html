@@ -231,7 +231,7 @@ los parámetros e hiperparámetros</li>
 <span><span class="co">#&gt;    silent, inla.mode = inla.mode, safe = FALSE, debug = </span></span>
 <span><span class="co">#&gt;    debug, ", " .parent.frame = .parent.frame)") </span></span>
 <span><span class="co">#&gt; Time used:</span></span>
-<span><span class="co">#&gt;     Pre = 2.57, Running = 0.198, Post = 0.019, Total = 2.78 </span></span>
+<span><span class="co">#&gt;     Pre = 2.41, Running = 0.192, Post = 0.019, Total = 2.62 </span></span>
 <span><span class="co">#&gt; Fixed effects:</span></span>
 <span><span class="co">#&gt;              mean    sd 0.025quant 0.5quant 0.975quant mode</span></span>
 <span><span class="co">#&gt; (Intercept) 2.734 0.814      1.135    2.734      4.333   NA</span></span>
@@ -248,14 +248,14 @@ los parámetros e hiperparámetros</li>
 <span><span class="co">#&gt;                                         0.975quant mode</span></span>
 <span><span class="co">#&gt; Precision for the Gaussian observations      0.242   NA</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Marginal log-Likelihood:  -426.74 </span></span>
+<span><span class="co">#&gt; Marginal log-Likelihood:  -426.73 </span></span>
 <span><span class="co">#&gt;  is computed </span></span>
 <span><span class="co">#&gt; Posterior summaries for the linear predictor and the fitted values are computed</span></span>
 <span><span class="co">#&gt; (Posterior marginals needs also 'control.compute=list(return.marginals.predictor=TRUE)')</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">mlik</span></span>
 <span><span class="co">#&gt;                                            [,1]</span></span>
-<span><span class="co">#&gt; log marginal-likelihood (integration) -426.7359</span></span>
-<span><span class="co">#&gt; log marginal-likelihood (Gaussian)    -426.7379</span></span></code></pre></div>
+<span><span class="co">#&gt; log marginal-likelihood (integration) -426.7385</span></span>
+<span><span class="co">#&gt; log marginal-likelihood (Gaussian)    -426.7323</span></span></code></pre></div>
 <p>Obtenemos pues la salida con un descriptivo de la distribución posterior para los efectos fijos interceptación, <span class="math inline">\(\theta\)</span>, y el coeficiente del regresor <code>repwt</code>, <span class="math inline">\(\beta\)</span>, con la media, desviación típica y cuantiles con los que podemos evaluar la región creíble al 95%.</p>
 <p>También muestra a continuación una tabla con los descriptivos de la distribución posterior para la precisión <span class="math inline">\(\tau=1/\sigma^2\)</span> de los datos.</p>
 <p>Si queremos obtener los nombres con los que INLA reconoce los efectos fijos (interceptación y coeficiente del regresor) e hiperparámetros (precisión de los datos), llamamos a</p>
@@ -269,49 +269,49 @@ los parámetros e hiperparámetros</li>
 <code class="sourceCode R"><span><span class="co"># descriptivos efectos fijos</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span></span>
 <span><span class="co">#&gt;                  mean         sd 0.025quant  0.5quant</span></span>
-<span><span class="co">#&gt; (Intercept) 2.7338113 0.81435321  1.1349659 2.7338112</span></span>
-<span><span class="co">#&gt; repwt       0.9583742 0.01213616  0.9345469 0.9583742</span></span>
+<span><span class="co">#&gt; (Intercept) 2.7338111 0.81438483  1.1348914 2.7338110</span></span>
+<span><span class="co">#&gt; repwt       0.9583742 0.01213663  0.9345457 0.9583742</span></span>
 <span><span class="co">#&gt;             0.975quant mode          kld</span></span>
-<span><span class="co">#&gt; (Intercept)  4.3326571   NA 6.175375e-10</span></span>
-<span><span class="co">#&gt; repwt        0.9822015   NA 6.175542e-10</span></span>
+<span><span class="co">#&gt; (Intercept)  4.3327314   NA 6.303549e-10</span></span>
+<span><span class="co">#&gt; repwt        0.9822026   NA 6.306970e-10</span></span>
 <span><span class="co"># descriptivos varianza</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">summary.hyperpar</span></span>
 <span><span class="co">#&gt;                                              mean</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.1990768</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.1990956</span></span>
 <span><span class="co">#&gt;                                                 sd</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.02084091</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.02088519</span></span>
 <span><span class="co">#&gt;                                         0.025quant</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations  0.1609258</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations  0.1608475</span></span>
 <span><span class="co">#&gt;                                          0.5quant</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.1983532</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.1983642</span></span>
 <span><span class="co">#&gt;                                         0.975quant mode</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations  0.2417495   NA</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations  0.2418474   NA</span></span>
 <span><span class="co"># medias de los efectos fijos</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span><span class="op">$</span><span class="va">mean</span></span>
-<span><span class="co">#&gt; [1] 2.7338113 0.9583742</span></span>
+<span><span class="co">#&gt; [1] 2.7338111 0.9583742</span></span>
 <span><span class="co"># descriptivos primer efecto fijo</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span></span>
 <span><span class="co">#&gt;                 mean        sd 0.025quant 0.5quant</span></span>
-<span><span class="co">#&gt; (Intercept) 2.733811 0.8143532   1.134966 2.733811</span></span>
+<span><span class="co">#&gt; (Intercept) 2.733811 0.8143848   1.134891 2.733811</span></span>
 <span><span class="co">#&gt;             0.975quant mode          kld</span></span>
-<span><span class="co">#&gt; (Intercept)   4.332657   NA 6.175375e-10</span></span></code></pre></div>
+<span><span class="co">#&gt; (Intercept)   4.332731   NA 6.303549e-10</span></span></code></pre></div>
 <p>Para describir la marginal posterior sobre cada uno de los datos ajustados:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fitted.values</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                          mean        sd 0.025quant 0.5quant</span></span>
-<span><span class="co">#&gt; fitted.Predictor.001 76.52862 0.2162614   76.10407 76.52862</span></span>
-<span><span class="co">#&gt; fitted.Predictor.002 51.61089 0.2441399   51.13161 51.61089</span></span>
-<span><span class="co">#&gt; fitted.Predictor.003 54.48602 0.2189983   54.05609 54.48602</span></span>
-<span><span class="co">#&gt; fitted.Predictor.004 69.82000 0.1750286   69.47640 69.82000</span></span>
-<span><span class="co">#&gt; fitted.Predictor.005 59.27789 0.1855940   58.91354 59.27789</span></span>
-<span><span class="co">#&gt; fitted.Predictor.006 75.57025 0.2087591   75.16042 75.57025</span></span>
+<span><span class="co">#&gt; fitted.Predictor.001 76.52862 0.2162698   76.10405 76.52862</span></span>
+<span><span class="co">#&gt; fitted.Predictor.002 51.61089 0.2441494   51.13159 51.61089</span></span>
+<span><span class="co">#&gt; fitted.Predictor.003 54.48602 0.2190068   54.05607 54.48602</span></span>
+<span><span class="co">#&gt; fitted.Predictor.004 69.82000 0.1750354   69.47638 69.82000</span></span>
+<span><span class="co">#&gt; fitted.Predictor.005 59.27789 0.1856012   58.91352 59.27789</span></span>
+<span><span class="co">#&gt; fitted.Predictor.006 75.57025 0.2087672   75.16040 75.57025</span></span>
 <span><span class="co">#&gt;                      0.975quant mode</span></span>
-<span><span class="co">#&gt; fitted.Predictor.001   76.95317   NA</span></span>
-<span><span class="co">#&gt; fitted.Predictor.002   52.09018   NA</span></span>
-<span><span class="co">#&gt; fitted.Predictor.003   54.91594   NA</span></span>
-<span><span class="co">#&gt; fitted.Predictor.004   70.16361   NA</span></span>
-<span><span class="co">#&gt; fitted.Predictor.005   59.64223   NA</span></span>
-<span><span class="co">#&gt; fitted.Predictor.006   75.98007   NA</span></span></code></pre></div>
+<span><span class="co">#&gt; fitted.Predictor.001   76.95319   NA</span></span>
+<span><span class="co">#&gt; fitted.Predictor.002   52.09020   NA</span></span>
+<span><span class="co">#&gt; fitted.Predictor.003   54.91596   NA</span></span>
+<span><span class="co">#&gt; fitted.Predictor.004   70.16362   NA</span></span>
+<span><span class="co">#&gt; fitted.Predictor.005   59.64225   NA</span></span>
+<span><span class="co">#&gt; fitted.Predictor.006   75.98009   NA</span></span></code></pre></div>
 <p>Si queremos hacer un <strong>análisis de sensibilidad</strong> sobre las distribuciones a priori, reajustamos el modelo con otras priors y comparamos los resultados.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># ajuste del modelo </span></span>
@@ -324,22 +324,22 @@ los parámetros e hiperparámetros</li>
 <span>              prec <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>prior<span class="op">=</span><span class="st">"loggamma"</span>, param <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0.001</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fit2</span><span class="op">$</span><span class="va">summary.fixed</span></span>
 <span><span class="co">#&gt;                  mean         sd 0.025quant  0.5quant</span></span>
-<span><span class="co">#&gt; (Intercept) 2.7982775 0.81415880  1.2007928 2.7979345</span></span>
-<span><span class="co">#&gt; repwt       0.9574338 0.01213341  0.9335978 0.9574388</span></span>
-<span><span class="co">#&gt;             0.975quant mode         kld</span></span>
-<span><span class="co">#&gt; (Intercept)  4.3977086   NA 6.31560e-10</span></span>
-<span><span class="co">#&gt; repwt        0.9812415   NA 6.30654e-10</span></span>
+<span><span class="co">#&gt; (Intercept) 2.7982510 0.81395827  1.2011565 2.7979109</span></span>
+<span><span class="co">#&gt; repwt       0.9574342 0.01213043  0.9336043 0.9574392</span></span>
+<span><span class="co">#&gt;             0.975quant mode          kld</span></span>
+<span><span class="co">#&gt; (Intercept)   4.397273   NA 6.167716e-10</span></span>
+<span><span class="co">#&gt; repwt         0.981236   NA 6.162515e-10</span></span>
 <span><span class="va">fit2</span><span class="op">$</span><span class="va">summary.hyperpar</span></span>
 <span><span class="co">#&gt;                                              mean</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.1990747</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.1990551</span></span>
 <span><span class="co">#&gt;                                                 sd</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.02086498</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.02087866</span></span>
 <span><span class="co">#&gt;                                         0.025quant</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations  0.1608589</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations  0.1603498</span></span>
 <span><span class="co">#&gt;                                          0.5quant</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.1983573</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.1983172</span></span>
 <span><span class="co">#&gt;                                         0.975quant mode</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations  0.2416539   NA</span></span></code></pre></div>
+<span><span class="co">#&gt; Precision for the Gaussian observations  0.2418039   NA</span></span></code></pre></div>
 </div>
 <div id="distribuciones-posteriores" class="section level2" number="2.7">
 <h2>
@@ -471,75 +471,75 @@ los parámetros e hiperparámetros</li>
 <span><span class="co">#&gt; [1] "hyperpar" "latent"   "logdens"</span></span>
 <span><span class="va">sims</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">hyperpar</span></span>
 <span><span class="co">#&gt; Precision for the Gaussian observations </span></span>
-<span><span class="co">#&gt;                               0.2530298</span></span>
+<span><span class="co">#&gt;                               0.2507863</span></span>
 <span><span class="va">sims</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">latent</span></span>
 <span><span class="co">#&gt;                sample:1</span></span>
-<span><span class="co">#&gt; (Intercept):1 1.4668281</span></span>
-<span><span class="co">#&gt; repwt:1       0.9785024</span></span></code></pre></div>
+<span><span class="co">#&gt; (Intercept):1 2.0338024</span></span>
+<span><span class="co">#&gt; repwt:1       0.9690668</span></span></code></pre></div>
 <p>y la log-densidad de la posterior en esos valores (<code>logdens</code>)</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span> <span class="va">sims</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">logdens</span></span>
 <span><span class="co">#&gt; $hyperpar</span></span>
-<span><span class="co">#&gt; [1] -0.01536876</span></span>
+<span><span class="co">#&gt; [1] 0.2088468</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $latent</span></span>
-<span><span class="co">#&gt; [1] 1006.527</span></span>
+<span><span class="co">#&gt; [1] 1014.145</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $joint</span></span>
-<span><span class="co">#&gt; [1] 1006.512</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 1014.354</span></span></code></pre></div>
 <p>Ahora con la función <code>inla.posterior.sample.eval</code>, dado que nuestra función depende de efectos fijos (latentes), <span class="math inline">\((\theta,\beta)\)</span>, evaluamos la operación pretendida, y con descriptivos gráficos y numéricos de las simulaciones, podemos aproximar los descriptivos de la distribución posterior.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">peso_real</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/posterior.sample.html">inla.posterior.sample.eval</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span><span class="op">(</span><span class="va">Intercept</span><span class="op">)</span><span class="op">+</span><span class="va">repwt</span><span class="op">*</span><span class="fl">50</span><span class="op">}</span>,<span class="va">sims</span><span class="op">)</span></span>
 <span><span class="va">peso_real</span></span>
 <span><span class="co">#&gt;        sample:1 sample:2 sample:3 sample:4 sample:5</span></span>
-<span><span class="co">#&gt; fun[1] 50.39195 50.49447 50.73348 50.69687 50.95756</span></span>
+<span><span class="co">#&gt; fun[1] 50.48714 50.96914 50.88513 50.55123 50.43433</span></span>
 <span><span class="co">#&gt;        sample:6 sample:7 sample:8 sample:9 sample:10</span></span>
-<span><span class="co">#&gt; fun[1] 50.58477 50.60815 50.44038 51.05681  51.15707</span></span>
+<span><span class="co">#&gt; fun[1] 50.95626 50.24634 50.67908 50.79885  50.40503</span></span>
 <span><span class="co">#&gt;        sample:11 sample:12 sample:13 sample:14 sample:15</span></span>
-<span><span class="co">#&gt; fun[1]  50.61342  50.74629   50.5264  50.34927  50.45925</span></span>
+<span><span class="co">#&gt; fun[1]  50.85233  50.76262  50.49461  50.12846  50.02194</span></span>
 <span><span class="co">#&gt;        sample:16 sample:17 sample:18 sample:19 sample:20</span></span>
-<span><span class="co">#&gt; fun[1]  50.64779  50.70268  50.55846  50.44271  50.61888</span></span>
+<span><span class="co">#&gt; fun[1]  50.71335   50.6657  50.22515  50.53359  50.83593</span></span>
 <span><span class="co">#&gt;        sample:21 sample:22 sample:23 sample:24 sample:25</span></span>
-<span><span class="co">#&gt; fun[1]  50.92908  50.45523  50.57965  50.40769  50.87848</span></span>
+<span><span class="co">#&gt; fun[1]  50.81653  50.53385  50.37291  50.78633  50.55807</span></span>
 <span><span class="co">#&gt;        sample:26 sample:27 sample:28 sample:29 sample:30</span></span>
-<span><span class="co">#&gt; fun[1]  50.76205  50.84694  50.43585  50.48276  50.84483</span></span>
+<span><span class="co">#&gt; fun[1]  51.11283  50.99547  50.99155  50.53261   50.9319</span></span>
 <span><span class="co">#&gt;        sample:31 sample:32 sample:33 sample:34 sample:35</span></span>
-<span><span class="co">#&gt; fun[1]  50.29843  50.56675  50.99351  50.41154  50.21491</span></span>
+<span><span class="co">#&gt; fun[1]  50.60077  50.75911  50.88658  50.96568  50.42115</span></span>
 <span><span class="co">#&gt;        sample:36 sample:37 sample:38 sample:39 sample:40</span></span>
-<span><span class="co">#&gt; fun[1]  50.60359    50.874   50.7273  50.76059   50.9783</span></span>
+<span><span class="co">#&gt; fun[1]  51.25975  50.41521  50.30793  50.61346  50.87203</span></span>
 <span><span class="co">#&gt;        sample:41 sample:42 sample:43 sample:44 sample:45</span></span>
-<span><span class="co">#&gt; fun[1]  50.71039  51.20515  50.50641  50.45701  50.26417</span></span>
+<span><span class="co">#&gt; fun[1]  50.58164    50.644  50.48652  50.15448  50.39808</span></span>
 <span><span class="co">#&gt;        sample:46 sample:47 sample:48 sample:49 sample:50</span></span>
-<span><span class="co">#&gt; fun[1]  50.46171  50.27084  50.86175  50.53681  50.96079</span></span>
+<span><span class="co">#&gt; fun[1]  51.04667  50.79767  50.36373  50.89159  50.82715</span></span>
 <span><span class="co">#&gt;        sample:51 sample:52 sample:53 sample:54 sample:55</span></span>
-<span><span class="co">#&gt; fun[1]  50.70532  50.27444  50.04959  50.88417  50.59455</span></span>
+<span><span class="co">#&gt; fun[1]  50.46695  50.73265  50.47238  49.88365  50.42799</span></span>
 <span><span class="co">#&gt;        sample:56 sample:57 sample:58 sample:59 sample:60</span></span>
-<span><span class="co">#&gt; fun[1]  51.00629  50.74319   50.6464  50.52637  50.44482</span></span>
+<span><span class="co">#&gt; fun[1]  50.84092  50.92923  50.89597  50.94903  50.56953</span></span>
 <span><span class="co">#&gt;        sample:61 sample:62 sample:63 sample:64 sample:65</span></span>
-<span><span class="co">#&gt; fun[1]  50.68667  50.08106  50.50401  50.29553  50.49995</span></span>
+<span><span class="co">#&gt; fun[1]  51.06785  50.44609  50.40124  50.91221  50.37128</span></span>
 <span><span class="co">#&gt;        sample:66 sample:67 sample:68 sample:69 sample:70</span></span>
-<span><span class="co">#&gt; fun[1]  50.38375  50.54195  50.72104  51.23912  50.68038</span></span>
+<span><span class="co">#&gt; fun[1]  50.98535  50.97738  50.76141  50.58924   50.6614</span></span>
 <span><span class="co">#&gt;        sample:71 sample:72 sample:73 sample:74 sample:75</span></span>
-<span><span class="co">#&gt; fun[1]  50.91548  50.28724  50.22408   50.3021  50.70991</span></span>
+<span><span class="co">#&gt; fun[1]  50.41653  50.95951  50.81905  50.69168  50.63137</span></span>
 <span><span class="co">#&gt;        sample:76 sample:77 sample:78 sample:79 sample:80</span></span>
-<span><span class="co">#&gt; fun[1]  50.46519   51.1422  50.40357    50.393  50.51115</span></span>
+<span><span class="co">#&gt; fun[1]  50.80738  50.37161  50.52499  50.32938  50.64523</span></span>
 <span><span class="co">#&gt;        sample:81 sample:82 sample:83 sample:84 sample:85</span></span>
-<span><span class="co">#&gt; fun[1]  50.46578  50.62615  50.56356  50.53492  50.56351</span></span>
+<span><span class="co">#&gt; fun[1]  50.61906  50.46631  50.31782  50.39405   50.6167</span></span>
 <span><span class="co">#&gt;        sample:86 sample:87 sample:88 sample:89 sample:90</span></span>
-<span><span class="co">#&gt; fun[1]  50.84656  50.90328  50.53168  50.16833  50.47207</span></span>
+<span><span class="co">#&gt; fun[1]  50.41176  51.17623  50.90767  50.71781   50.4825</span></span>
 <span><span class="co">#&gt;        sample:91 sample:92 sample:93 sample:94 sample:95</span></span>
-<span><span class="co">#&gt; fun[1]  50.78837  50.38073  50.71036  50.99355  50.83683</span></span>
+<span><span class="co">#&gt; fun[1]  50.45913  50.39679   50.9806  50.63767  50.55077</span></span>
 <span><span class="co">#&gt;        sample:96 sample:97 sample:98 sample:99 sample:100</span></span>
-<span><span class="co">#&gt; fun[1]  50.69186  50.94702  50.72392  50.57307   50.61513</span></span>
+<span><span class="co">#&gt; fun[1]  50.84225  50.97529  50.53797  50.29124   50.43499</span></span>
 <span><span class="va">pred</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>peso<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="va">peso_real</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">pred</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       peso      </span></span>
-<span><span class="co">#&gt;  Min.   :50.05  </span></span>
-<span><span class="co">#&gt;  1st Qu.:50.46  </span></span>
-<span><span class="co">#&gt;  Median :50.59  </span></span>
-<span><span class="co">#&gt;  Mean   :50.62  </span></span>
-<span><span class="co">#&gt;  3rd Qu.:50.76  </span></span>
-<span><span class="co">#&gt;  Max.   :51.24</span></span>
+<span><span class="co">#&gt;  Min.   :49.88  </span></span>
+<span><span class="co">#&gt;  1st Qu.:50.43  </span></span>
+<span><span class="co">#&gt;  Median :50.63  </span></span>
+<span><span class="co">#&gt;  Mean   :50.64  </span></span>
+<span><span class="co">#&gt;  3rd Qu.:50.86  </span></span>
+<span><span class="co">#&gt;  Max.   :51.26</span></span>
 <span><span class="fu">ggplot</span><span class="op">(</span><span class="va">pred</span>,<span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">peso</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y<span class="op">=</span><span class="va">..density..</span><span class="op">)</span>, colour<span class="op">=</span><span class="st">"black"</span>, fill<span class="op">=</span><span class="st">"white"</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">geom_density</span><span class="op">(</span>alpha<span class="op">=</span><span class="fl">.2</span>, fill<span class="op">=</span><span class="st">"#80E7F5"</span><span class="op">)</span> </span>
@@ -630,7 +630,7 @@ Figura 2.1: Relaciones entre variables en la base de datos usair(brinla).
 <span><span class="co">#summary(fit)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span>,<span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                mean     sd 0.025quant 0.5quant 0.975quant</span></span>
-<span><span class="co">#&gt; (Intercept) 135.490 49.860     37.158  135.497    233.779</span></span>
+<span><span class="co">#&gt; (Intercept) 135.487 49.861     37.151  135.495    233.780</span></span>
 <span><span class="co">#&gt; negtemp       1.769  0.634      0.518    1.769      3.020</span></span>
 <span><span class="co">#&gt; manuf         0.026  0.005      0.017    0.026      0.035</span></span>
 <span><span class="co">#&gt; wind         -3.723  1.935     -7.536   -3.723      0.093</span></span>
@@ -648,13 +648,13 @@ Figura 2.1: Relaciones entre variables en la base de datos usair(brinla).
 <code class="sourceCode R"><span><span class="va">sigma.post</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">tau</span><span class="op">)</span> <span class="va">tau</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span>
 <span>                           <span class="va">fit</span><span class="op">$</span><span class="va">marginals.hyperpar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.zmarginal</a></span><span class="op">(</span><span class="va">sigma.post</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Mean            15.6709 </span></span>
-<span><span class="co">#&gt; Stdev           1.85568 </span></span>
-<span><span class="co">#&gt; Quantile  0.025 12.5309 </span></span>
-<span><span class="co">#&gt; Quantile  0.25  14.3469 </span></span>
-<span><span class="co">#&gt; Quantile  0.5   15.4916 </span></span>
-<span><span class="co">#&gt; Quantile  0.75  16.7979 </span></span>
-<span><span class="co">#&gt; Quantile  0.975 19.8178</span></span></code></pre></div>
+<span><span class="co">#&gt; Mean            15.6813 </span></span>
+<span><span class="co">#&gt; Stdev           1.84661 </span></span>
+<span><span class="co">#&gt; Quantile  0.025 12.5832 </span></span>
+<span><span class="co">#&gt; Quantile  0.25  14.3546 </span></span>
+<span><span class="co">#&gt; Quantile  0.5   15.4971 </span></span>
+<span><span class="co">#&gt; Quantile  0.75  16.8026 </span></span>
+<span><span class="co">#&gt; Quantile  0.975 19.8219</span></span></code></pre></div>
 <p>Para seleccionar las variables relevantes seguimos el procedimiento descrito anteriormente. Añadimos también el ajuste del modelo de regresión frecuentista, para el que calculamos como criterio de bondad de ajuste el AIC.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># variables en la bd</span></span>
@@ -706,30 +706,30 @@ Figura 2.1: Relaciones entre variables en la base de datos usair(brinla).
 <span><span class="va">fit</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>, family<span class="op">=</span><span class="st">"gaussian"</span>, data<span class="op">=</span><span class="va">usair</span>, control.compute<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>dic<span class="op">=</span><span class="cn">TRUE</span>, waic<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span></span>
 <span><span class="co">#&gt;                     mean          sd   0.025quant</span></span>
-<span><span class="co">#&gt; (Intercept) 100.01602006 30.14048606 40.578041934</span></span>
-<span><span class="co">#&gt; negtemp       1.12027539  0.41430403  0.303306327</span></span>
-<span><span class="co">#&gt; manuf         0.06489622  0.01549095  0.034352843</span></span>
-<span><span class="co">#&gt; pop          -0.03934760  0.01488449 -0.068696865</span></span>
-<span><span class="co">#&gt; wind         -3.07259574  1.75666726 -6.535458540</span></span>
-<span><span class="co">#&gt; precip        0.41922480  0.21548149 -0.005665703</span></span>
+<span><span class="co">#&gt; (Intercept) 100.01542077 30.13189996 40.595824939</span></span>
+<span><span class="co">#&gt; negtemp       1.12026887  0.41418629  0.303552452</span></span>
+<span><span class="co">#&gt; manuf         0.06489630  0.01548657  0.034362250</span></span>
+<span><span class="co">#&gt; pop          -0.03934768  0.01488029 -0.068687883</span></span>
+<span><span class="co">#&gt; wind         -3.07256361  1.75616870 -6.534354955</span></span>
+<span><span class="co">#&gt; precip        0.41922312  0.21542102 -0.005537739</span></span>
 <span><span class="co">#&gt;                 0.5quant   0.975quant mode          kld</span></span>
-<span><span class="co">#&gt; (Intercept) 100.01951877 159.43400066   NA 1.157387e-08</span></span>
-<span><span class="co">#&gt; negtemp       1.12030159   1.93709455   NA 1.160226e-08</span></span>
-<span><span class="co">#&gt; manuf         0.06489598   0.09544099   NA 1.161421e-08</span></span>
-<span><span class="co">#&gt; pop          -0.03934726  -0.01000028   NA 1.161365e-08</span></span>
-<span><span class="co">#&gt; wind         -3.07284603   0.39169726   NA 1.154854e-08</span></span>
-<span><span class="co">#&gt; precip        0.41923114   0.84407899   NA 1.161159e-08</span></span>
+<span><span class="co">#&gt; (Intercept) 100.01892454 159.41499344   NA 1.154246e-08</span></span>
+<span><span class="co">#&gt; negtemp       1.12029498   1.93683617   NA 1.157203e-08</span></span>
+<span><span class="co">#&gt; manuf         0.06489607   0.09543164   NA 1.158379e-08</span></span>
+<span><span class="co">#&gt; pop          -0.03934735  -0.01000932   NA 1.158317e-08</span></span>
+<span><span class="co">#&gt; wind         -3.07281490   0.39066413   NA 1.151620e-08</span></span>
+<span><span class="co">#&gt; precip        0.41922947   0.84394766   NA 1.158140e-08</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">summary.hyperpar</span></span>
 <span><span class="co">#&gt;                                                mean</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.005065466</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.005066401</span></span>
 <span><span class="co">#&gt;                                                  sd</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.001179034</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.001178478</span></span>
 <span><span class="co">#&gt;                                         0.025quant</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations  0.0030354</span></span>
-<span><span class="co">#&gt;                                            0.5quant</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.004974661</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.00303683</span></span>
+<span><span class="co">#&gt;                                           0.5quant</span></span>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.00497558</span></span>
 <span><span class="co">#&gt;                                          0.975quant mode</span></span>
-<span><span class="co">#&gt; Precision for the Gaussian observations 0.007617484   NA</span></span></code></pre></div>
+<span><span class="co">#&gt; Precision for the Gaussian observations 0.007614574   NA</span></span></code></pre></div>
 <p>Y en la Figura <a href="inlabasics.html#fig:regmul02">2.2</a> se muestran las distribuciones posteriores de todos los efectos latentes (efectos fijos) en el modelo: interceptación y coeficientes de los regresores.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nfixed</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">names.fixed</span><span class="op">)</span></span>
@@ -779,13 +779,13 @@ Figura 2.2: Distribuciones posteriores de los efectos latentes.
 <span><span class="co">## y describimos los valores ajustados para los tres escenarios añadidos</span></span>
 <span><span class="va">fit.pred</span><span class="op">$</span><span class="va">summary.fitted.values</span><span class="op">[</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">usair</span><span class="op">)</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">usair.combinado</span><span class="op">)</span>,<span class="op">]</span></span>
 <span><span class="co">#&gt;                         mean       sd 0.025quant 0.5quant</span></span>
-<span><span class="co">#&gt; fitted.Predictor.42 31.62389 8.207011   15.44205 31.62465</span></span>
-<span><span class="co">#&gt; fitted.Predictor.43 26.42296 5.475799   15.62663 26.42332</span></span>
-<span><span class="co">#&gt; fitted.Predictor.44 53.16293 7.093925   39.17600 53.16349</span></span>
+<span><span class="co">#&gt; fitted.Predictor.42 31.62380 8.203890   15.44856 31.62455</span></span>
+<span><span class="co">#&gt; fitted.Predictor.43 26.42291 5.473735   15.63094 26.42327</span></span>
+<span><span class="co">#&gt; fitted.Predictor.44 53.16293 7.091250   39.18167 53.16348</span></span>
 <span><span class="co">#&gt;                     0.975quant mode</span></span>
-<span><span class="co">#&gt; fitted.Predictor.42   47.80117   NA</span></span>
-<span><span class="co">#&gt; fitted.Predictor.43   37.21707   NA</span></span>
-<span><span class="co">#&gt; fitted.Predictor.44   67.14650   NA</span></span></code></pre></div>
+<span><span class="co">#&gt; fitted.Predictor.42   47.79447   NA</span></span>
+<span><span class="co">#&gt; fitted.Predictor.43   37.21264   NA</span></span>
+<span><span class="co">#&gt; fitted.Predictor.44   67.14085   NA</span></span></code></pre></div>
 <p>Así graficamos en la Figura <a href="inlabasics.html#fig:regmul03">2.3</a> la distribución predictiva del nivel de SO2 para una combinación dada de valores de las variables predictivas, específicamente la que aparece en el escenario 1 propuesto, o lo que es lo mismo, en el registro 42 de la base de datos completada con las nuevas predicciones: negtem=-50, manuf=150, pop=200, wind=6 y precip=10.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pred</span><span class="op">=</span><span class="va">fit.pred</span><span class="op">$</span><span class="va">marginals.fitted.values</span><span class="op">[[</span><span class="fl">42</span><span class="op">]</span><span class="op">]</span></span>
