@@ -6,14 +6,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Unidad 4 Modelos lineales generalizados | Una primera aproximación a la Estadística Bayesiana</title>
 <meta name="author" content="Asunción M. Mayoral y Javier Morales. IUI CIO-UMH">
-<meta name="description" content="Los modelos lineales generalizados (Generalized Linear Models or GLM), son una clase de modelos introducidos por Nelder y Wedderburn (1972) y McCullagh y Nelder (1989), con el objetivo de extender...">
+<meta name="description" content="Los modelos lineales generalizados, conocidos en inglés como Generalized Linear Models o GLM, son una clase de modelos introducidos por Nelder y Wedderburn (1972) y McCullagh y Nelder (1989), con...">
 <meta name="generator" content="bookdown 0.28 with bs4_book()">
 <meta property="og:title" content="Unidad 4 Modelos lineales generalizados | Una primera aproximación a la Estadística Bayesiana">
 <meta property="og:type" content="book">
-<meta property="og:description" content="Los modelos lineales generalizados (Generalized Linear Models or GLM), son una clase de modelos introducidos por Nelder y Wedderburn (1972) y McCullagh y Nelder (1989), con el objetivo de extender...">
+<meta property="og:description" content="Los modelos lineales generalizados, conocidos en inglés como Generalized Linear Models o GLM, son una clase de modelos introducidos por Nelder y Wedderburn (1972) y McCullagh y Nelder (1989), con...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unidad 4 Modelos lineales generalizados | Una primera aproximación a la Estadística Bayesiana">
-<meta name="twitter:description" content="Los modelos lineales generalizados (Generalized Linear Models or GLM), son una clase de modelos introducidos por Nelder y Wedderburn (1972) y McCullagh y Nelder (1989), con el objetivo de extender...">
+<meta name="twitter:description" content="Los modelos lineales generalizados, conocidos en inglés como Generalized Linear Models o GLM, son una clase de modelos introducidos por Nelder y Wedderburn (1972) y McCullagh y Nelder (1989), con...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.0/transition.js"></script><script src="libs/bs3compat-0.4.0/tabs.js"></script><script src="libs/bs3compat-0.4.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
@@ -59,211 +59,370 @@
 <h1>
 <span class="header-section-number">Unidad 4</span> Modelos lineales generalizados<a class="anchor" aria-label="anchor" href="#glm"><i class="fas fa-link"></i></a>
 </h1>
-<p>Los modelos lineales generalizados (Generalized Linear Models or GLM), son una clase de modelos introducidos por Nelder y Wedderburn (1972) y McCullagh y Nelder (1989), con el objetivo de extender la regresión lineal al caso en el que la variable dependiente no se distribuya necesariamente según una normal, pero su distribución todavía pertenezca a la familia exponencial (Binomial, Poisson, Gamma, Gausiana inversa básicamente). Trabajamos a continuación con dos de los GLM más comunes en epidemiología y ciencias sociales: la regresión logística y la de Poisson, mostrando cómo usar R-INLA.</p>
-<p>Un modelo lineal generalizado está basado en asumir, además de una distribución de los datos dentro de la familia exponencial, una relación lineal entre cierta transformación del valor esperado de la respuesta <span class="math inline">\(E(y_i)\)</span> y los predictores disponibles, sean covariables, efectos fijos, efectos aleatorios, o incluso alguna función de estos.</p>
-<p>Si <span class="math inline">\(y\)</span> representa una respuesta observada, <span class="math inline">\(x_1,x_2,..\)</span> una serie de covariables o efectos fijos, y <span class="math inline">\(z_1,z_2,...\)</span> efectos aleatorios, el valor esperado de la respuesta lo denotamos como <span class="math inline">\(\mu\)</span>, que</p>
-<p><span class="math display">\[E(y_i|x,z,\theta)=\mu_i\]</span>
-Pues bien, la relación entre esta media <span class="math inline">\(\mu\)</span> y un predictor lineal <span class="math inline">\(\eta\)</span> que construimos a partir de los predictores disponibles, viene dado por una función link <span class="math inline">\(g\)</span> tal que:</p>
-<p><span class="math display">\[g(\mu_i)=\eta_i=\mu + \beta_1 x_{1i} +   \beta_2 x_{2i} +...+ z_{1i} + z_{2i}+...\]</span></p>
-<p>Todos los parámetros involucrados en el predictor lineal <span class="math inline">\(\eta\)</span> son los efectos latentes del modelo (fijos o aleatorios). Estos, junto con el resto de parámetros definidos en este primer nivel de la modelización (nivel de datos), han de modelizarse a continuación, en un segundo nivel del modelo, con sus correspondientes distribuciones a priori.</p>
-<p>El predictor lineal <span class="math inline">\(\eta\)</span> está relacionado linealmente con los predictores según:
-<span class="math display">\[\eta_i=\mu + \beta_1 x_{1i} +   \beta_2 x_{2i} +...+ z_{1i} + z_{2i}+...\]</span>
-relación que se suele representar en forma matricial como
-<span class="math display">\[\eta=X\beta + Z u\]</span></p>
-<p>Los modelos lineales que hemos visto antes (regresión, anova, ancova, modelos mixtos) se engloban dentro del modelo lineal generalizado.</p>
-<p>El argumento <code>control.predictor=list(compute=TRUE)</code> en la función <code>inla</code> permite obtener las distribuciones predictivas para el predictor lineal, que en estos casos es distinto a los valores ajustados, <code>fit$summary.fitted</code>. Además para obtener la distribución marginal de los valores ajustados y predichos necesitamos incorporar a la función <code>inla</code> el argumento <code>control.compute=list(return.marginals.predictor=TRUE)</code>, y ya con todo ello podemos:</p>
-<ul>
-<li>
-<code>fit$summary.linear.predictor</code> resumir la inferencia posterior sobre los
-predictores lineales (distintos a los fitted cuando hay una función <em>link</em>)</li>
-<li>
-<code>fit$marginals.linear.predictor</code> graficar y describir las distribuciones posteriores marginales para los predictores lineales</li>
-</ul>
+<p>Los modelos lineales generalizados, conocidos en inglés como
+<em>Generalized Linear Models</em> o GLM, son una clase de modelos introducidos
+por Nelder y Wedderburn (1972) y McCullagh y Nelder (1989), con el
+objetivo de extender la regresión lineal al caso en el que la variable
+dependiente no se distribuye necesariamente según una normal, pero su
+distribución todavía pertenece a la familia exponencial. Estamos
+hablando de distribuciones como la Binomial, Poisson, Gamma, o Gausiana
+inversa, básicamente. Trabajamos a continuación con dos de los GLM más
+comunes en epidemiología y ciencias sociales: la regresión logística y
+la de Poisson, mostrando cómo resolver este tipo de problemas con INLA.</p>
+<p>Un modelo lineal generalizado está basado en asumir, además de una
+distribución de los datos dentro de la familia exponencial, una relación
+lineal entre cierta transformación del valor esperado de la respuesta y
+los predictores disponibles, sean covariables, efectos fijos, efectos
+aleatorios, o incluso alguna función de estos.</p>
+<p>Si <span class="math inline">\(y\)</span> representa una respuesta observada, <span class="math inline">\(x_1,x_2,..\)</span> una serie de
+covariables o efectos fijos, y <span class="math inline">\(z_1,z_2,...\)</span> efectos aleatorios, y el
+valor esperado de la respuesta lo denotamos como <span class="math inline">\(\mu\)</span>,
+<span class="math display">\[E(y|x,z,\theta)=\mu\]</span> la relación entre esta media <span class="math inline">\(\mu\)</span> y un
+predictor lineal <span class="math inline">\(\eta\)</span> que construimos a partir de una combinación
+lineal de los predictores disponibles, viene dado por una <em>función link</em>
+<span class="math inline">\(g\)</span> tal que:</p>
+<p><span class="math display">\[g(\mu)=\eta=X\beta + Z u\]</span></p>
+<p>Todos los parámetros involucrados en el predictor lineal <span class="math inline">\(\eta\)</span> son los
+efectos latentes del modelo (fijos o aleatorios). Estos, junto con el
+resto de parámetros definidos en este primer nivel de la modelización
+(nivel de datos), han de modelizarse a continuación, en un segundo nivel
+del modelo, con sus correspondientes distribuciones a priori.</p>
+<p>Los modelos lineales que hemos visto antes (regresión, anova, ancova,
+modelos mixtos) se engloban dentro del modelo lineal generalizado.</p>
+<p>El argumento <code>control.predictor=list(compute=TRUE)</code> en la función <code>inla</code>
+permite obtener las distribuciones predictivas para el predictor lineal,
+que en estos modelos será distinto al valor medio ajustado <code>fitted</code>.
+Además para obtener la distribución marginal de los valores ajustados y
+predichos necesitamos incorporar a la función <code>inla</code> el argumento
+<code>control.compute=list(return.marginals.predictor=TRUE)</code>. Ya con todo
+ello podremos resumir las inferencias posteriores sobre los predictores
+lineales con el comando <code>fit$summary.linear.predictor</code> y obtener para
+graficar sus distribuciones posteriores con
+<code>fit$marginals.linear.predictor</code>.</p>
 <div id="modelos-jerárquicos-bayesianos" class="section level2" number="4.1">
 <h2>
 <span class="header-section-number">4.1</span> Modelos jerárquicos bayesianos<a class="anchor" aria-label="anchor" href="#modelos-jer%C3%A1rquicos-bayesianos"><i class="fas fa-link"></i></a>
 </h2>
-<p>A lo largo del curso ya hemos ido comentando en ocasiones, algo sobre la especificación de un modelo en varios niveles. Presentamos ya de lleno estos modelos lineales generalizados como modelos multi-nivel o modelos jerárquicos, denominados así porque se va especificando por niveles (o jerarquías) la información disponible sobre todo aquello que es desconocido, distribución de los datos y parámetros.</p>
-<p>Un modelo bayesiano se modeliza a través de un modelo jerárquico o multinivel en el que en el nivel I se define la distribución asumida sobre la variable respuesta y que determina la verosimilitud. Esta variable depende de unos parámetros que definen los efectos fijos y aleatorios, y para los que hay que proporcionar la información previa disponible a través de una distribución a priori en el segundo nivel del modelo jerárquico. La distribución a priori para los efectos fijos generalmente será común a todos ellos, mientras que la distribución a priori para los efectos aleatorios estará vinculada a otros hiperparámetros para los que también será preciso especificar una distribución a priori en un tercer nivel de la modelización, y así sucesivamente.</p>
-<p><span class="math display">\[\begin{eqnarray*}
+<p>A lo largo del curso ya hemos ido comentando algo sobre la
+especificación de un modelo en varios niveles. Presentamos ya de lleno
+estos modelos lineales generalizados como modelos multi-nivel o modelos
+jerárquicos, denominados así porque se va especificando por niveles (o
+jerarquías) la información disponible sobre todo aquello que es
+desconocido, distribución de los datos y parámetros.</p>
+<p>Un modelo bayesiano se modeliza a través de un modelo jerárquico o
+multinivel en el que en el nivel I se define la distribución asumida
+sobre la variable respuesta y que determina la verosimilitud. Esta
+variable depende de unos parámetros que definen los efectos fijos y
+aleatorios, y para los que hay que proporcionar la información previa
+disponible a través de una distribución a priori en el segundo nivel del
+modelo jerárquico. La distribución a priori para los efectos fijos
+generalmente será común a todos ellos, mientras que la distribución a
+priori para los efectos aleatorios estará vinculada a otros
+hiperparámetros para los que también será preciso especificar una
+distribución a priori en un tercer nivel de la modelización, y así
+sucesivamente. Podríamos esquematizar un modelo jerárquico, a grosso
+modo, a través de la siguiente jerarquía.</p>
+<span class="math display">\[\begin{eqnarray*}
 Nivel I &amp;&amp;\\
-( y | X, Z, \theta) &amp;\sim &amp; f(y|x,z,\theta) \text{f en fam.exponencial}\\
-&amp;&amp; E(y|x,z,\theta)=\mu; Var(y|x,z,\theta)=\Sigma \\
+( y | \beta,u,\Sigma) &amp;\sim &amp; f(y|\beta,u,\Sigma) \\
+&amp;&amp; E(y|beta,u,\Sigma)=\mu;  Var(y|beta,u,\Sigma)=\Sigma \\
 &amp;&amp; g(\mu)=\eta=X\beta + Z u \\
 Nivel II &amp;&amp;\\
-\beta &amp;\sim &amp; N(0,\sigma_{\beta}), \text{ con un valor dado  para } \sigma_{\beta} \\
-u|\sigma_u^2 &amp;\sim_{iid}&amp;  N(0,{\sigma_u^2}) \\
-\Sigma|s &amp;\sim&amp; F_{\Sigma|s} \\
+\beta &amp;\sim &amp; N(0,\sigma_{\beta}^2), \ \ \sigma_{\beta}^2 \text{ fijo} \\
+(u|\sigma_u^2) &amp;\sim_{iid}&amp;  N(0,{\sigma_u^2}) \\
+\Sigma|\sigma &amp;\sim&amp; F_{\Sigma|\sigma} \\
 Nivel III &amp;&amp;\\
-\sigma_u^2 &amp;\sim&amp;  F_{\sigma} \\
-s &amp;\sim&amp;  F_{s}
-\end{eqnarray*}\]</span></p>
+\sigma_u^2 &amp;\sim&amp;  F_{\sigma_u} \\
+\sigma &amp;\sim&amp;  F_{\sigma}
+\end{eqnarray*}\]</span>
 </div>
 <div id="regresión-logística" class="section level2" number="4.2">
 <h2>
 <span class="header-section-number">4.2</span> Regresión logística<a class="anchor" aria-label="anchor" href="#regresi%C3%B3n-log%C3%ADstica"><i class="fas fa-link"></i></a>
 </h2>
-<p>La regresión logística es el modelo estándar para respuestas binarias (éxitos/fracasos). Tiene dos variaciones, en función de si la respuesta representa observaciones individuales (0/1) o conteos (de éxitos) en grupos de sujetos.</p>
-<p>Si las observaciones son individualizadas, entonces</p>
-<p><span class="math display">\[y_i|\pi_i \sim Ber(\pi_i), \ i=1,...,n\]</span>
-En el caso de que sean conteos en grupos,</p>
-<p><span class="math display">\[y_i|\pi_i\sim Bin(n_i,\pi_i), \ i=1,...,n\]</span>
-siendo <span class="math inline">\(n_i\)</span> el tamaño de cada uno de los <span class="math inline">\(n\)</span> grupos disponibles, y <span class="math inline">\(\pi_i\)</span> la probabilidad de éxito (output de interés).</p>
-<p>La relación entre el predictor lineal <span class="math inline">\(\eta\)</span> construido con los predictores disponibles <span class="math inline">\(x=(x_{1},...x_{M})\)</span> y la probabilidad <span class="math inline">\(\pi\)</span> se especifica a través de la función <em>logit</em>:
-<span class="math display">\[logit(\pi)=log\left(\frac{\pi}{1-\pi}\right)=\eta=X\beta=\beta_0+\sum_{j=1}^M \beta_j x_{j}\]</span>
-de forma que
-<span class="math display">\[\pi=logit^{-1}(X\beta)=\frac{exp(X\beta)}{1-exp(X\beta)}\]</span>
-Una vez especificado el modelo, si no hay información previa disponible sobre los efectos (fijos) <span class="math inline">\({\beta_o,\beta_1,...\beta_M}\)</span>, se asumen distribuciones a priori independientes y normales con media cero y varianza muy grande.</p>
-<div id="interpretación-de-los-coeficientes-en-la-regresión-logit" class="section level3 unnumbered">
-<h3>Interpretación de los coeficientes en la regresión logit<a class="anchor" aria-label="anchor" href="#interpretaci%C3%B3n-de-los-coeficientes-en-la-regresi%C3%B3n-logit"><i class="fas fa-link"></i></a>
-</h3>
-<p>Puesto que <span class="math inline">\(X\beta=\beta_0+\sum_{j=1}^M \beta_j x_{j}\)</span>, la interceptación del predictor lineal <span class="math inline">\(\beta_0\)</span> se interpreta como los predictores toman el valor cero si son numéricos, o están en el nivel de referencia (para la estimación) si son categóricos, <span class="math inline">\(\eta(X=0)=\beta_0=logit(\pi)\)</span>. En consecuencia, el logit inverso de <span class="math inline">\(\beta_0\)</span> se interpreta como la probabilidad de éxito <span class="math inline">\(\pi_i\)</span> cuando los predictores están en su nivel de referencia o son cero.
-<span class="math display">\[logit^{-1}(\beta_0)=Pr(y=1|X=0).\]</span></p>
-<p>En cuanto a la interpretación de cualquier otro coeficiente de regresión en el predictor lineal, como <span class="math inline">\(\beta_1\)</span>, echamos mano del concepto de <em>odds</em> y <em>odds ratio</em>.</p>
-<p>Los odds ratio, OR, comparan, a través de un cociente, las posibilidades a favor de un evento <span class="math inline">\(E\)</span> bajo condiciones A y de las posibilidades del mismo evento bajo condiciones B. Nos sirve para evaluar cuánto afecta a dicho evento el hecho de variar las condiciones de B a A.
-<span class="math display">\[OR(A,B)=\frac{Pr(E|A)/(1-Pr(E|A))}{Pr(E|B)/(1-Pr(E|B))}.\]</span></p>
-<p>En el modelo logístico, nos interesa saber el efecto que tiene sobre la respuesta (realmente sobre las probabilidad de éxito) el incremento de una unidad en la variable <span class="math inline">\(x\)</span>, y para ello consideramos los odds bajo <span class="math inline">\(x\)</span> y los odds bajo <span class="math inline">\(x+1\)</span>, y en particular el logaritmo de los odds, log-odds:
-<span class="math display">\[log.odds(x+1)=log \left( \frac{P(y=1|x+1)}{P(y=0|x+1)} \right)=log \left(\frac{\pi}{1-\pi} | x+1\right)=\beta_0+\beta_1 (x+1)\]</span>
-<span class="math display">\[log.odds(x)=log \left(\frac{P(y=1|x)}{P(y=0|x)} \right)=log \left(\frac{\pi}{1-\pi} | x\right)=\beta_0+\beta_1 x\]</span>
-de modo que
-<span class="math display">\[log(OR(x+1,x))=log \left(\frac{ods (x+1)}{ods(x)} \right) = log.odds(x+1)-log.ods(x)= \beta_1\]</span>
-y tenemos entonces que la exponencial del coeficiente <span class="math inline">\(\beta_1\)</span> nos da el odds ratio asociado a dicha covariable.
-<span class="math display">\[exp(\beta_1)=\frac{odds(x+1)}{odds(x)}=OR(x+1,x).\]</span>
-Es decir, el coeficiente <span class="math inline">\(\beta_1\)</span> representa el cambio en los odds a favor de un éxito cuando se incrementa en una unidad el predictor <span class="math inline">\(x\)</span> al que acompaña en el predictor linea. Esta interpretación es muy común en Epidemiología.</p>
-</div>
-<div id="intención-de-voto-feb2022" class="section level3" number="4.2.1">
+<p>La regresión logística es el modelo estándar para respuestas binarias
+(éxitos/fracasos). Tiene dos variaciones, en función de si la respuesta
+viene dada en función de las observaciones individuales (0/1), o de los
+conteos (número de éxitos en <span class="math inline">\(n\)</span> pruebas).</p>
+<p>Si las observaciones de éxitos-fracasos vienen individualizadas, tenemos
+que la respuesta es directamente modelizable con una distribución
+<em>Bernouilli</em>:</p>
+<p><span class="math display">\[Y|\pi \sim Ber(\pi) \rightarrow E(Y)=\pi\]</span> En el caso de que los datos
+vengan agrupados a modo de conteos de éxitos en diversos grupos
+poblacionales, modelizaremos con distribuciones Binomiales de tamaño
+<span class="math inline">\(n\)</span>, que podría variar en cada grupo:</p>
+<p><span class="math display">\[(Z=\sum_{i=1}^n Y_i)|\pi\sim Bin(n,\pi)\rightarrow E(Z)=n\pi\]</span> En
+cualquiera de los casos, el objetivo es inferir sobre la probabilidad de
+éxito <span class="math inline">\(\pi\)</span>. El modelo logit utiliza la función logit para relacionar el
+predictor lineal <span class="math inline">\(\eta\)</span> y la probabilidad <span class="math inline">\(\pi\)</span>:
+<span class="math display">\[logit(\pi)=log\left(\frac{\pi}{1-\pi}\right)=\eta=X\beta+Zu\]</span> de forma
+que
+<span class="math display">\[\pi=logit^{-1}(X\beta+Zu)=\frac{exp(X\beta+Zu)}{1-exp(X\beta+Zu)}\]</span>
+Una vez especificado el modelo, si no hay información previa disponible
+sobre los efectos latentes <span class="math inline">\((\beta,u)\)</span>, se asumen las distribuciones a
+priori habituales, generalmente normales independientes con media cero y
+varianza grande para efectos fijos y varianza desconocida para efectos
+aleatorios. En un tercer nivel se habrá de modelizar la información a
+priori de las varianzas para los efectos aleatorios.</p>
+<div id="interpretación-de-los-coeficientes-en-la-regresión-logit" class="section level3" number="4.2.1">
 <h3>
-<span class="header-section-number">4.2.1</span> Intención de voto feb2022<a class="anchor" aria-label="anchor" href="#intenci%C3%B3n-de-voto-feb2022"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.2.1</span> Interpretación de los coeficientes en la regresión logit<a class="anchor" aria-label="anchor" href="#interpretaci%C3%B3n-de-los-coeficientes-en-la-regresi%C3%B3n-logit"><i class="fas fa-link"></i></a>
 </h3>
-<p>Tenemos acceso a los datos completos obtenidos en la encuesta encargada por El País y la Cadena Ser a la empresa “40dB”, en febrero de 2022, sobre la intención de voto nacional (<a href="https://elpais.com/espana/2022-02-07/consulte-todos-los-datos-internos-de-la-encuesta-de-el-pais-cuestionarios-cruces-y-respuestas-individuales.html">fuente</a>).</p>
-<p>Queremos predecir la probabilidad de votar al partido que gobierna mayoritariamente en la actualidad, PSOE, registrado en la variable <code>psoe</code>. Vamos a utilizar como predictores dos factores que nos dicen si el sujeto tiene simpatía por ese partido, <code>psoe_sim</code>, y si votó PSOE en las últimas elecciones <code>psoe_past</code>; también utilizaremos la comunidad autónoma <code>ccaa</code> como un efecto aleatorio, para contabilizar posible variación extra.</p>
+<p>Por simplificar la interpretación de los coeficientes, vamos a asumir
+que la respuesta es Bernouilli y todos los efectos latentes son fijos,
+de modo que el predictor lineal se puede escribir como:
+<span class="math display">\[\eta=X\beta=\beta_0+\sum_{j=1}^M \beta_j x_{j}\]</span></p>
+<p>A partir de esta expresión se entiende claramente que la interceptación
+del predictor lineal <span class="math inline">\(\beta_0\)</span> se interpreta como el valor del predictor
+cuando las variables predictivas toman el valor cero si son numéricas, o
+cuando se refieren al nivel de referencia si son categóricas, es decir,<br><span class="math display">\[\beta_0=\eta_{(X=0)}=logit(\pi_{(X=0)})\]</span></p>
+<p>En consecuencia, el logit inverso de <span class="math inline">\(\beta_0\)</span> se interpreta como <em>“la
+probabilidad de éxito cuando los predictores están en su nivel de
+referencia o son cero”</em>.</p>
+<p><span class="math display">\[logit^{-1}(\beta_0)=\pi_{(X=0)}=Pr(Y=1|X=0)\]</span></p>
+<p>En cuanto a la interpretación de cualquier otro coeficiente de regresión
+en el predictor lineal, como <span class="math inline">\(\beta_1\)</span>, echamos mano del concepto de
+<em>odds</em> y <em>odds ratio</em>.</p>
+<p>Los <em>odds</em> de un evento <span class="math inline">\(E\)</span> se definen a través de las posibilidades de
+que se dé dicho evento, y se calcula con el cociente de su probabilidad
+y la probabilidad de que no se dé: <span class="math display">\[odds(E)=\frac{Pr(E)}{1-Pr(E)}\]</span></p>
+<p>Los <em>odds ratio, OR</em> de un evento relativo a dos condiciones A y B,
+comparan, a través de un cociente, las posibilidades a favor del evento
+<span class="math inline">\(E\)</span> bajo condiciones A y sus posibilidades bajo condiciones B. Nos sirve
+para evaluar cuánto afectan a las posibilidades del evento el hecho de
+variar las condiciones de B a A.
+<span class="math display">\[OR(A,B)=\frac{Pr(E|A)/(1-Pr(E|A))}{Pr(E|B)/(1-Pr(E|B))}.\]</span></p>
+<p>En el modelo logístico, nos interesa saber el efecto que tiene sobre la
+respuesta (realmente sobre la probabilidad de éxito) el incremento de
+una unidad en la variable predictora <span class="math inline">\(X\)</span>, y para ello consideramos los
+odds bajo <span class="math inline">\(X=x\)</span> y los odds bajo <span class="math inline">\(X=x+1\)</span>, esto es, las posibilidades de
+éxito bajo <span class="math inline">\(x\)</span> y bajo <span class="math inline">\(x+1\)</span>. Si además consideramos estos odds en escala
+logarítmica, esto es, los <em>log-odds</em>, tenemos:</p>
+<span class="math display">\[\begin{eqnarray*}
+log.odds(x+1)&amp;=&amp;log \left( \frac{P(y=1|x+1)}{P(y=0|x+1)} \right)\\
+&amp;=&amp;logit(\pi_{(x+1)}) =\beta_0+\beta_1 (x+1) \\
+log.odds(x) &amp;=&amp; log \left(\frac{P(y=1|x)}{P(y=0|x)} \right)\\
+&amp;=&amp;logit(\pi_{(x)})=\beta_0+\beta_1 x
+\end{eqnarray*}\]</span>
+<p>Así tendremos que el logaritmo del <em>odds-ratio</em> coincide con el
+coeficiente que relaciona <span class="math inline">\(X\)</span> con el predictor lineal, esto es,
+<span class="math inline">\(\beta_1\)</span>:<br><span class="math display">\[\begin{eqnarray*}
+log(OR(x+1,x)) &amp;=&amp; log \left(\frac{ods (x+1)}{ods(x)} \right) \\
+&amp;=&amp; log.odds(x+1)-log.ods(x)= \beta_1
+\end{eqnarray*}\]</span></p>
+<p>Es decir, la exponencial del coeficiente <span class="math inline">\(\beta_1\)</span> nos da el odds ratio
+asociado a dicha covariable, esto es, el cambio en los odds a favor de
+un éxito cuando se incrementa en una unidad la variable predictora <span class="math inline">\(X\)</span>.
+Esta interpretación es muy común en Epidemiología.</p>
+<p><span class="math display">\[exp(\beta_1)=\frac{odds(x+1)}{odds(x)}=OR(x+1,x).\]</span>
+Cuando estamos ante un predictor categórico, la exponencial del coeficiente estimado para un nivel o categoría <span class="math inline">\(i\)</span> representa la variación en los odds que se produce al pasar del nivel base del factor al nivel <span class="math inline">\(i\)</span>. Si dicha variación es superior a 1, entonces hablamos de que es más probable el evento, y si es inferior a 1, decimos que es menos probable cuando estamos en el nivel <span class="math inline">\(i\)</span> que en el nivel 1.</p>
+</div>
+<div id="intención-de-voto-feb2022" class="section level3" number="4.2.2">
+<h3>
+<span class="header-section-number">4.2.2</span> Intención de voto feb2022<a class="anchor" aria-label="anchor" href="#intenci%C3%B3n-de-voto-feb2022"><i class="fas fa-link"></i></a>
+</h3>
+<p>Tenemos acceso a los datos completos obtenidos en la encuesta encargada
+por El País y la Cadena Ser a la empresa “40dB”, en febrero de 2022,
+sobre la intención de voto nacional en España
+(<a href="https://elpais.com/espana/2022-02-07/consulte-todos-los-datos-internos-de-la-encuesta-de-el-pais-cuestionarios-cruces-y-respuestas-individuales.html">fuente</a>).</p>
+<p>Queremos predecir la probabilidad de votar al partido que gobierna
+mayoritariamente en la actualidad, PSOE, registrado en la variable
+<code>psoe</code>. Vamos a utilizar como predictores dos factores que nos dicen si
+el sujeto tiene simpatía por ese partido, <code>psoe_sim</code>, y si votó PSOE en
+las últimas elecciones <code>psoe_past</code>; también utilizaremos la comunidad
+autónoma <code>ccaa</code> como un efecto aleatorio, para contabilizar posible
+variación extra (igualmente podríamos considerarla como un efecto fijo).</p>
 <div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">url</span><span class="op">=</span><span class="st">"https://raw.githubusercontent.com/BayesModel/data/main/barometro_feb22.csv"</span></span>
 <span><span class="va">barometro_feb22</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">barometro_feb22</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] "X"                   "id"                 </span></span>
-<span><span class="co">#&gt;  [3] "sexo"                "edad"               </span></span>
-<span><span class="co">#&gt;  [5] "edad_r"              "hab"                </span></span>
-<span><span class="co">#&gt;  [7] "prov"                "ccaa"               </span></span>
-<span><span class="co">#&gt;  [9] "edu"                 "cs"                 </span></span>
-<span><span class="co">#&gt; [11] "p1"                  "p2"                 </span></span>
-<span><span class="co">#&gt; [13] "p3"                  "p4_1"               </span></span>
-<span><span class="co">#&gt; [15] "p4_2"                "p4_3"               </span></span>
-<span><span class="co">#&gt; [17] "p4_4"                "p5"                 </span></span>
-<span><span class="co">#&gt; [19] "p6"                  "p7"                 </span></span>
-<span><span class="co">#&gt; [21] "hab_r"               "clase_social_r"     </span></span>
-<span><span class="co">#&gt; [23] "situacion_laboral_r" "educacion_r"        </span></span>
-<span><span class="co">#&gt; [25] "ponde"</span></span>
 <span><span class="va">datos</span><span class="op">=</span><span class="va">barometro_feb22</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="va">id</span>,<span class="va">p2</span>,<span class="va">p3</span>,<span class="va">p5</span>,<span class="va">ccaa</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>psoe<span class="op">=</span><span class="fl">1</span><span class="op">*</span><span class="op">(</span><span class="va">p2</span><span class="op">==</span><span class="st">"PSOE (Partido Socialista Obrero Español)"</span><span class="op">)</span>,</span>
 <span>         psoe_simp<span class="op">=</span><span class="fl">1</span><span class="op">*</span><span class="op">(</span><span class="va">p3</span><span class="op">==</span><span class="st">"PSOE (Partido Socialista Obrero Español)"</span><span class="op">)</span>,</span>
 <span>         psoe_past<span class="op">=</span><span class="fl">1</span><span class="op">*</span><span class="op">(</span><span class="va">p5</span><span class="op">==</span><span class="st">"PSOE (Partido Socialista Obrero Español)"</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="co">#summary(datos)</span></span></code></pre></div>
-<p>Para ajustar el modelo utilizamos el argumento <code>family=binomial</code> y la opción <code>control.predictor = list(link = 1)</code> para establecer la función link apropiada para tener los valores ajustados en la escala correcta.</p>
+<p>Especificamos pues un modelo que asume para los efectos fijos las distribuciones difusas por defecto en INLA, y para la varianza de los efectos aleatorios una <span class="math inline">\(GaI(0.001,0.001)\)</span>.</p>
+<p><span class="math display">\[\begin{eqnarray*}
+y_{ij}|\pi_i &amp; \sim &amp; Br(\pi_i) \\
+&amp;&amp; logit(\pi_i)=\eta_i=\theta + \alpha_{simp} + \alpha_{past} + \gamma_{ca} \\
+\theta &amp;\sim&amp; N(0,\infty) \\
+\alpha_{simp}&amp;\sim&amp; N(0,1000) \\
+\alpha_{past}&amp;\sim&amp; N(0,1000) \\
+\gamma_{ca}\alpha_{simp}&amp;\sim&amp; N(0,\sigma_{ca}^2) \\
+1/\sigma_{ca}^2  &amp;\sim&amp; Ga(0.001,0.001)
+\end{eqnarray*}\]</span></p>
+<p>Las inferencias posteriores se resumen en los siguientes descriptivos.</p>
 <div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prec.prior</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>prec<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>param<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.001</span>,<span class="fl">0.001</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">formula</span> <span class="op">=</span> <span class="va">psoe</span> <span class="op">~</span> <span class="va">psoe_simp</span> <span class="op">+</span> <span class="va">psoe_past</span><span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/f.html">f</a></span><span class="op">(</span><span class="va">ccaa</span>,model<span class="op">=</span><span class="st">"iid"</span>,hyper<span class="op">=</span><span class="va">prec.prior</span><span class="op">)</span></span>
-<span><span class="va">fit</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>,family<span class="op">=</span><span class="st">"binomial"</span>,data<span class="op">=</span><span class="va">datos</span>,control.predictor <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>link <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fit</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>,family<span class="op">=</span><span class="st">"binomial"</span>,data<span class="op">=</span><span class="va">datos</span><span class="op">)</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span></span>
 <span><span class="co">#&gt;                  mean        sd 0.025quant  0.5quant</span></span>
-<span><span class="co">#&gt; (Intercept) -3.590584 0.1897382  -3.998972 -3.578293</span></span>
-<span><span class="co">#&gt; psoe_simp    3.085807 0.1865761   2.723930  3.084372</span></span>
-<span><span class="co">#&gt; psoe_past    2.352354 0.1856856   1.989725  2.351808</span></span>
+<span><span class="co">#&gt; (Intercept) -3.590591 0.1897366  -3.998982 -3.578299</span></span>
+<span><span class="co">#&gt; psoe_simp    3.085809 0.1865734   2.723939  3.084374</span></span>
+<span><span class="co">#&gt; psoe_past    2.352356 0.1856827   1.989734  2.351810</span></span>
 <span><span class="co">#&gt;             0.975quant mode          kld</span></span>
-<span><span class="co">#&gt; (Intercept)  -3.251360   NA 5.807529e-07</span></span>
-<span><span class="co">#&gt; psoe_simp     3.455831   NA 3.433699e-07</span></span>
-<span><span class="co">#&gt; psoe_past     2.718078   NA 9.427676e-07</span></span>
+<span><span class="co">#&gt; (Intercept)  -3.251375   NA 5.804739e-07</span></span>
+<span><span class="co">#&gt; psoe_simp     3.455828   NA 3.434890e-07</span></span>
+<span><span class="co">#&gt; psoe_past     2.718075   NA 9.427349e-07</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">summary.hyperpar</span></span>
-<span><span class="co">#&gt;                        mean      sd 0.025quant 0.5quant</span></span>
-<span><span class="co">#&gt; Precision for ccaa 70.84301 250.892   1.978347 10.68948</span></span>
+<span><span class="co">#&gt;                        mean       sd 0.025quant 0.5quant</span></span>
+<span><span class="co">#&gt; Precision for ccaa 70.84238 250.9026   1.978292 10.68791</span></span>
 <span><span class="co">#&gt;                    0.975quant mode</span></span>
-<span><span class="co">#&gt; Precision for ccaa   589.3423   NA</span></span></code></pre></div>
-<p>Las distribuciones posteriores de los exponenciales de los efectos aleatorios se muestran en la Figura <a href="glm.html#fig:eleccion2">4.1</a>, identificadas en verde las de efectos positivos en la media posterior del predictor lineal (log-odds <span class="math inline">\(&gt;1\)</span>), y en rojo las de efectos negativos, e interpretables como más y menos favorables a votar por el PSOE.</p>
+<span><span class="co">#&gt; Precision for ccaa   589.3774   NA</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fitted.values</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                             mean          sd 0.025quant</span></span>
+<span><span class="co">#&gt; fitted.Predictor.0001 0.02613266 0.006597326 0.01417251</span></span>
+<span><span class="co">#&gt; fitted.Predictor.0002 0.03313668 0.006805640 0.02191504</span></span>
+<span><span class="co">#&gt; fitted.Predictor.0003 0.02920946 0.005829136 0.01886787</span></span>
+<span><span class="co">#&gt; fitted.Predictor.0004 0.02920946 0.005829136 0.01886787</span></span>
+<span><span class="co">#&gt; fitted.Predictor.0005 0.03313668 0.006805640 0.02191504</span></span>
+<span><span class="co">#&gt; fitted.Predictor.0006 0.88231912 0.023396658 0.83526833</span></span>
+<span><span class="co">#&gt;                         0.5quant 0.975quant mode</span></span>
+<span><span class="co">#&gt; fitted.Predictor.0001 0.02592323 0.03990486   NA</span></span>
+<span><span class="co">#&gt; fitted.Predictor.0002 0.03236612 0.04864299   NA</span></span>
+<span><span class="co">#&gt; fitted.Predictor.0003 0.02882857 0.04186096   NA</span></span>
+<span><span class="co">#&gt; fitted.Predictor.0004 0.02882857 0.04186096   NA</span></span>
+<span><span class="co">#&gt; fitted.Predictor.0005 0.03236612 0.04864299   NA</span></span>
+<span><span class="co">#&gt; fitted.Predictor.0006 0.88269675 0.92602573   NA</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.linear.predictor</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                     mean        sd 0.025quant  0.5quant</span></span>
+<span><span class="co">#&gt; Predictor.0001 -3.651130 0.2694967  -4.242177 -3.626351</span></span>
+<span><span class="co">#&gt; Predictor.0002 -3.393914 0.2091689  -3.798423 -3.397742</span></span>
+<span><span class="co">#&gt; Predictor.0003 -3.523517 0.2069643  -3.951247 -3.517136</span></span>
+<span><span class="co">#&gt; Predictor.0004 -3.523517 0.2069643  -3.951247 -3.517136</span></span>
+<span><span class="co">#&gt; Predictor.0005 -3.393914 0.2091689  -3.798423 -3.397742</span></span>
+<span><span class="co">#&gt; Predictor.0006  2.034602 0.2317239   1.623435  2.018219</span></span>
+<span><span class="co">#&gt;                0.975quant mode          kld</span></span>
+<span><span class="co">#&gt; Predictor.0001  -3.180534   NA 1.900514e-07</span></span>
+<span><span class="co">#&gt; Predictor.0002  -2.973382   NA 6.892865e-08</span></span>
+<span><span class="co">#&gt; Predictor.0003  -3.130639   NA 1.991595e-07</span></span>
+<span><span class="co">#&gt; Predictor.0004  -3.130639   NA 1.991595e-07</span></span>
+<span><span class="co">#&gt; Predictor.0005  -2.973382   NA 6.892865e-08</span></span>
+<span><span class="co">#&gt; Predictor.0006   2.527185   NA 7.424055e-08</span></span></code></pre></div>
+<p>La variabilidad para los efectos aleatorios es relevante, como se manifiesta a través de la distribución posterior de su varianza, que se muestra en la Figura <a href="glm.html#fig:eleccion4">4.1</a> en términos de <span class="math inline">\(\sigma_{ca}\)</span>.</p>
 <div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sigma.post</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">tau</span><span class="op">)</span> <span class="va">tau</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span>
+<span>  <span class="va">fit</span><span class="op">$</span><span class="va">marginals.hyperpar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co"># y la pintamos</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">sigma.post</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">sigma</span><span class="op">)</span>,y<span class="op">=</span><span class="st">"D.Posterior"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.hpdmarginal</a></span><span class="op">(</span><span class="fl">0.95</span>,<span class="va">sigma.post</span><span class="op">)</span>,</span>
+<span>             linetype<span class="op">=</span><span class="st">"dotted"</span>,color<span class="op">=</span><span class="st">"blue"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.emarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span>,<span class="va">sigma.post</span><span class="op">)</span>,</span>
+<span>             linetype<span class="op">=</span><span class="st">"dashed"</span>,color<span class="op">=</span><span class="st">"blue"</span><span class="op">)</span></span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:eleccion4"></span>
+<img src="03-glm_files/figure-html/eleccion4-1.png" alt="Distribución posterior, media y RC, de la desviación típica de los efectos aleatorios" width="672"><p class="caption">
+Figura 4.1: Distribución posterior, media y RC, de la desviación típica de los efectos aleatorios
+</p>
+</div>
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Valor esperado</span></span>
+<span><span class="va">sigma.e</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.emarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">tau</span><span class="op">)</span> <span class="va">tau</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span>
+<span>  <span class="va">fit</span><span class="op">$</span><span class="va">marginals.hyperpar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span></span>
+<span><span class="co"># HPD95%</span></span>
+<span><span class="va">sigma.hpd</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.hpdmarginal</a></span><span class="op">(</span><span class="fl">0.95</span>,<span class="va">sigma.post</span><span class="op">)</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"E(sigma.post)="</span>,<span class="va">sigma.e</span>,</span>
+<span>      <span class="st">"HPD95%=("</span>,<span class="va">sigma.hpd</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,<span class="st">","</span>,<span class="va">sigma.hpd</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,<span class="st">")"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "E(sigma.post)= 0.3189 HPD95%=( 0.021 , 0.638 )"</span></span></code></pre></div>
+<p>Las distribuciones posteriores de los exponenciales de los efectos
+aleatorios (que representan los <em>odds-ratios</em>) se muestran en la Figura <a href="glm.html#fig:eleccion2">4.2</a>, en términos de medias y regiones creíbles. Están identificadas en verde las comunidades con efectos positivos hacia el voto PSOE (odds&gt;1), y en rojo las de efectos negativos (odds&lt;1). Estas distribuciones de efectos aleatorios nos permiten diferenciar qué comunidades autónomas son más (verde) y menos (rojo) favorables a votar por el PSOE, en términos de valor esperado (a posterior), así como descubrir la incertidumbre y variabilidad existente en dichas afirmaciones, dada por la región creíble.</p>
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">random</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.random</span><span class="op">)</span></span>
 <span><span class="va">random</span><span class="op">$</span><span class="va">pro</span><span class="op">=</span><span class="fl">1</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">random</span><span class="op">$</span><span class="va">ccaa.mean</span><span class="op">)</span><span class="op">&gt;</span><span class="fl">1</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">random</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">ccaa.mean</span><span class="op">)</span>,y<span class="op">=</span><span class="va">ccaa.ID</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">pro</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_errorbarh.html">geom_errorbarh</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>xmin<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">ccaa.0.025quant</span><span class="op">)</span>,xmax<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">ccaa.0.975quant</span><span class="op">)</span>,color<span class="op">=</span><span class="va">pro</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_errorbarh.html">geom_errorbarh</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>xmin<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">ccaa.0.025quant</span><span class="op">)</span>,</span>
+<span>          xmax<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">ccaa.0.975quant</span><span class="op">)</span>,color<span class="op">=</span><span class="va">pro</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept<span class="op">=</span><span class="fl">1</span>,linetype<span class="op">=</span><span class="st">"dotted"</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"Medias y RC posteriores para el log-odds"</span>,y<span class="op">=</span><span class="st">"Comunidad autónoma"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"Medias y RC posteriores para los odds-ratio"</span>,</span>
+<span>       y<span class="op">=</span><span class="st">"Comunidad autónoma"</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position<span class="op">=</span><span class="st">"none"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:eleccion2"></span>
-<img src="03-glm_files/figure-html/eleccion2-1.png" alt="Medias y RC posterioris para el log-odds de los efectos aleatorios" width="672"><p class="caption">
-Figura 4.1: Medias y RC posterioris para el log-odds de los efectos aleatorios
+<img src="03-glm_files/figure-html/eleccion2-1.png" alt="Medias y RC posteriores para los odds-ratios de los efectos aleatorios" width="672"><p class="caption">
+Figura 4.2: Medias y RC posteriores para los odds-ratios de los efectos aleatorios
 </p>
 </div>
-<p>La distribución posterior de la probabilidad de voto para el PSOE para la comunidad con más variabilidad en el efecto aleatorio (Castilla-La Mancha), viene representada en la Figura <a href="glm.html#fig:eleccion3">4.2</a> para las cuatro combinaciones posibles de valores para los predictores de simpatía y voto en el pasado.</p>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<p>La distribución posterior de la probabilidad de voto para el PSOE la conseguimos a través de los valores ajustados, <code>fitted</code>. En la Figura <a href="glm.html#fig:eleccion3">4.3</a> está representada la inferencia posterior sobre la probabilidad de voto para cada uno de los cuatro colectivos que identificamos en función de su simpatía por el PSOE y su voto en el pasado, en la comunidad autónoma con más variabilidad en el efecto aleatorio, esto es, Castilla-La Mancha.</p>
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">datos_pred</span> <span class="op">=</span> <span class="va">datos</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>f.post<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fitted.values</span><span class="op">$</span><span class="va">mean</span>,<span class="fl">3</span><span class="op">)</span>,</span>
-<span>        f.rc.low<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fitted.values</span><span class="op">$</span><span class="st">"0.025quant"</span>,<span class="fl">3</span><span class="op">)</span>,</span>
-<span>         f.rc.up<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fitted.values</span><span class="op">$</span><span class="st">"0.975quant"</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    f.rc.low<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fitted.values</span><span class="op">$</span><span class="st">"0.025quant"</span>,<span class="fl">3</span><span class="op">)</span>,</span>
+<span>    f.rc.up<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fitted.values</span><span class="op">$</span><span class="st">"0.975quant"</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">distinct</span><span class="op">(</span><span class="va">f.post</span>,.keep_all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">ccaa</span><span class="op">==</span><span class="st">"Castilla - La Mancha"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>simpast<span class="op">=</span><span class="fu">str_c</span><span class="op">(</span><span class="va">psoe_simp</span>,<span class="va">psoe_past</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">datos_pred</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">f.post</span>,y<span class="op">=</span><span class="va">simpast</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">simpast</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_errorbarh.html">geom_errorbarh</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>xmin<span class="op">=</span><span class="va">f.rc.low</span>,xmax<span class="op">=</span><span class="va">f.rc.up</span>,color<span class="op">=</span><span class="va">simpast</span><span class="op">)</span>,height<span class="op">=</span><span class="fl">0.2</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"Medias y RC posteriores para la probabilidad de voto PSOE"</span>,title<span class="op">=</span><span class="st">"Castilla - La Mancha"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_errorbarh.html">geom_errorbarh</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>xmin<span class="op">=</span><span class="va">f.rc.low</span>,xmax<span class="op">=</span><span class="va">f.rc.up</span>,color<span class="op">=</span><span class="va">simpast</span><span class="op">)</span>,</span>
+<span>    height<span class="op">=</span><span class="fl">0.2</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"Medias y RC posteriores para la probabilidad de voto PSOE"</span>,</span>
+<span>       title<span class="op">=</span><span class="st">"Castilla - La Mancha"</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html">scale_y_discrete</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">""</span>, </span>
-<span>                   labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"No simpatía/No votó PSOE"</span>,<span class="st">"No simpatía/Votó PSOE"</span>,</span>
-<span>                            <span class="st">"Simpatía/No votó PSOE"</span>,<span class="st">"Simpatía/Votó PSOE"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>        labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"No simpatía/No votó PSOE"</span>,<span class="st">"No simpatía/Votó PSOE"</span>,</span>
+<span>           <span class="st">"Simpatía/No votó PSOE"</span>,<span class="st">"Simpatía/Votó PSOE"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position<span class="op">=</span><span class="st">"none"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:eleccion3"></span>
 <img src="03-glm_files/figure-html/eleccion3-1.png" alt="Medias y RC posteriores para la probabilidad de voto PSOE" width="672"><p class="caption">
-Figura 4.2: Medias y RC posteriores para la probabilidad de voto PSOE
+Figura 4.3: Medias y RC posteriores para la probabilidad de voto PSOE
 </p>
 </div>
 </div>
-<div id="mortalidad-por-infarto-en-sheffield" class="section level3" number="4.2.2">
+<div id="mortalidad-por-infarto-en-sheffield" class="section level3" number="4.2.3">
 <h3>
-<span class="header-section-number">4.2.2</span> Mortalidad por infarto en Sheffield<a class="anchor" aria-label="anchor" href="#mortalidad-por-infarto-en-sheffield"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.2.3</span> Mortalidad por infarto en Sheffield<a class="anchor" aria-label="anchor" href="#mortalidad-por-infarto-en-sheffield"><i class="fas fa-link"></i></a>
 </h3>
-<p>Utilizamos los datos <em>stroke</em>, disponibles en <a href="https://sites.google.com/a/r-inla.org/stbook/datasets">datasets in SSTM-RINLA</a>. Queremos evaluar la presencia de cierta asociación entre los niveles de NOx y el infarto en Sheffield, UK. Se dispone de la concentración anual de NOx medida en <span class="math inline">\(\mu g/m^3\)</span> y categorizada en quintiles, promediada durante el periodo 1994-1999, en la variable <em>NOx.class</em> y su análoga <span class="math inline">\(NOx\)</span>, y el número de muertes por infarto <span class="math inline">\(y\)</span> en cada distrito identificado por el índice de desventajas y privación <em>Townsend</em> (categorizado en quintiles). Se dispone igualmente del tamaño de la población para cada registro, en la variable <span class="math inline">\(pop\)</span>. La respuesta <span class="math inline">\(y\)</span> se puede considerar entonces como conteos (de muertes) sobre la población de cada distrito,
-<span class="math display">\[y_i|\pi_i \sim Bin(n_i, \pi_i)\]</span>
-y el predictor lineal es función del nivel de NOx y del distrito:
-<span class="math display">\[\eta_i=logit(\pi_i)=\beta_0 + \sum_{k=2}^5 \beta_{1k} I(NOx_i=k)+ \sum_{h=2}^5 \beta_{2h} I(Townsend_i=h)+logit(\tilde{p_i})\]</span>
-siendo <span class="math inline">\(n_i\)</span> la población (número total de habitantes) del distrito en el que se ubica el registro <span class="math inline">\(i\)</span> (disponible en la variable <span class="math inline">\(pop\)</span>). El término <span class="math inline">\(\tilde{p_i}\)</span> representa el resgo ajustado por sexo y edad de la mortalidad por infarto, calculada utilizando estandarización indirecta con ratios de referencia internos basados en 18 estratos (9 para edad y 2 para género), y que se usa como un riesgo base en el modelo (Maheswaran et al.2006). En el ejemplo se calcula como el ratio de la mortalidad dividido por la población de cada registro.</p>
-<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
+<p>Utilizamos los datos <em>stroke</em>, disponibles en <a href="https://sites.google.com/a/r-inla.org/stbook/datasets">datasets in
+SSTM-RINLA</a> relativos al periodo 1994-1999. El objetivo es evaluar la asociación entre los niveles de
+NOx y el infarto en Sheffield (UK). Utilizaremos la siguiente información:</p>
+<ul>
+<li>número de infartos <code>y</code> en cada distrito,</li>
+<li>una agrupación de distritos en base a cierto índice relativo al nivel de desventajas y privación en dicho distrito, <code>Townsend</code> (en escala 1-5),</li>
+<li>la concentración anual media de <code>NOx</code>, categorizada en cinco niveles (escala 1-5)</li>
+<li>el tamaño de la población en cada distrito, <code>pop</code>
+</li>
+<li>el riesgo base ajustado por sexo y edad para el número de infartos, calculado con estandarización indirecta con ratios de referencia internos basados en 18 estratos (9 para edad y 2 para género), en la variable <code>stroke_exp</code> (Maheswaran et al.2006).</li>
+</ul>
+<p>La respuesta <span class="math inline">\(y_{i}\)</span> relativa al número de infartos en el distrito <span class="math inline">\(i\)</span>, con una población <span class="math inline">\(n_i\)</span>, se puede modelizar con:</p>
+<p><span class="math display">\[y_i|\pi_i \sim Bin(n_i, \pi_i)\]</span></p>
+<p>Planteamos las asociaciones que intuimos a través del predictor lineal, definido en función del nivel de <code>NOx</code> y el nivel de privación <code>Townsend</code>, ambos como efectos fijos, así como de <em>offset</em> que representa el riesgo base corregido por el tamaño del distrito, <span class="math inline">\(\tilde{p_i}=\)</span>stroke_exp/pop, en escala logit.</p>
+<p><span class="math display">\[\eta_i=logit(\pi_i)=\theta + \alpha_i^{NOx} + \alpha_i^{Town} + logit(\tilde{p_i})\]</span>
+Ajustamos pues el modelo con los efectos fijos <code>NOx</code> y <code>Townsend</code>, y el <em>offset</em> que calculamos y llamamos <code>logit.adjusted.prob</code>, que proporciona una estandarización del riesgo en base al tamaño de población en cada distrito, y para el que no se estima coeficiente.</p>
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">url</span><span class="op">=</span><span class="st">"https://raw.githubusercontent.com/BayesModel/data/main/Stroke.csv"</span></span>
 <span><span class="va">Stroke</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">url</span>,sep<span class="op">=</span><span class="st">","</span>,dec<span class="op">=</span><span class="st">"."</span>,header<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#riesgo base: ajuste por tamaño de la población</span></span>
-<span><span class="va">Stroke</span><span class="op">$</span><span class="va">Adjusted.prob</span> <span class="op">&lt;-</span> <span class="va">Stroke</span><span class="op">$</span><span class="va">stroke_exp</span><span class="op">/</span><span class="va">Stroke</span><span class="op">$</span><span class="va">pop</span></span>
-<span><span class="co"># logit del riesgo base</span></span>
-<span><span class="va">Stroke</span><span class="op">$</span><span class="va">logit.adjusted.prob</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">Stroke</span><span class="op">$</span><span class="va">Adjusted.prob</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">Stroke</span><span class="op">$</span><span class="va">Adjusted.prob</span><span class="op">)</span><span class="op">)</span>                          </span></code></pre></div>
-<p>Ajustamos ya el modelo, en el que las variables NOx y Townsend actúan como factores (efectos fijos) y el riesgo base se introduce como offset, para estandarizar los riesgos en función del tamaño de la población y poder equiparar así todos los distritos:</p>
-<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">formula.inla</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">NOx</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">Townsend</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/offset.html">offset</a></span><span class="op">(</span><span class="va">logit.adjusted.prob</span><span class="op">)</span></span>
-<span><span class="va">model.logistic</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula.inla</span>, family<span class="op">=</span><span class="st">"binomial"</span>, Ntrials<span class="op">=</span><span class="va">pop</span>, data<span class="op">=</span><span class="va">Stroke</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">model.logistic</span><span class="op">$</span><span class="va">summary.fixed</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>,<span class="fl">3</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                     mean    sd 0.025quant 0.5quant</span></span>
-<span><span class="co">#&gt; (Intercept)       -0.181 0.057     -0.293   -0.180</span></span>
-<span><span class="co">#&gt; factor(NOx)2       0.132 0.059      0.016    0.132</span></span>
-<span><span class="co">#&gt; factor(NOx)3       0.105 0.061     -0.014    0.105</span></span>
-<span><span class="co">#&gt; factor(NOx)4       0.261 0.059      0.144    0.260</span></span>
-<span><span class="co">#&gt; factor(NOx)5       0.425 0.062      0.302    0.425</span></span>
-<span><span class="co">#&gt; factor(Townsend)2  0.077 0.061     -0.043    0.077</span></span>
-<span><span class="co">#&gt; factor(Townsend)3  0.137 0.060      0.020    0.137</span></span>
-<span><span class="co">#&gt; factor(Townsend)4 -0.132 0.063     -0.255   -0.132</span></span>
-<span><span class="co">#&gt; factor(Townsend)5 -0.118 0.067     -0.250   -0.118</span></span>
-<span><span class="co">#&gt;                   0.975quant</span></span>
-<span><span class="co">#&gt; (Intercept)           -0.071</span></span>
-<span><span class="co">#&gt; factor(NOx)2           0.248</span></span>
-<span><span class="co">#&gt; factor(NOx)3           0.225</span></span>
-<span><span class="co">#&gt; factor(NOx)4           0.377</span></span>
-<span><span class="co">#&gt; factor(NOx)5           0.547</span></span>
-<span><span class="co">#&gt; factor(Townsend)2      0.198</span></span>
-<span><span class="co">#&gt; factor(Townsend)3      0.255</span></span>
-<span><span class="co">#&gt; factor(Townsend)4     -0.009</span></span>
-<span><span class="co">#&gt; factor(Townsend)5      0.014</span></span></code></pre></div>
-<p>Para obtener la probabilidad promedio de muerte por infarto en el distrito Townsend=1 y para el nivel NOx=1, que son los niveles base, nos apoyamos en la interceptación <span class="math inline">\(\beta_0\)</span>. Sobre sus simulaciones será preciso deshacer el logit (con la función logit-inversa):</p>
-<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">prob.stroke</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>, <span class="va">model.logistic</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.zmarginal</a></span><span class="op">(</span><span class="va">prob.stroke</span><span class="op">)</span></span>
+<span><span class="co"># conversión a factores y cálculo del riesgo base</span></span>
+<span><span class="va">stroke</span><span class="op">=</span><span class="va">Stroke</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>NOx<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">NOx</span><span class="op">)</span>,Townsend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">Townsend</span><span class="op">)</span>,</span>
+<span>         adjusted.prob<span class="op">=</span><span class="va">stroke_exp</span><span class="op">/</span><span class="va">pop</span>,</span>
+<span>         logit.adjusted.prob<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">adjusted.prob</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">adjusted.prob</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># ajuste del modelo</span></span>
+<span><span class="va">formula.inla</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="va">NOx</span> <span class="op">+</span> <span class="va">Townsend</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/offset.html">offset</a></span><span class="op">(</span><span class="va">logit.adjusted.prob</span><span class="op">)</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula.inla</span>, family<span class="op">=</span><span class="st">"binomial"</span>, Ntrials<span class="op">=</span><span class="va">pop</span>, data<span class="op">=</span><span class="va">stroke</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt;               mean    sd 0.025quant 0.5quant 0.975quant</span></span>
+<span><span class="co">#&gt; (Intercept) -0.181 0.057     -0.293   -0.180     -0.071</span></span>
+<span><span class="co">#&gt; NOx2         0.132 0.059      0.016    0.132      0.248</span></span>
+<span><span class="co">#&gt; NOx3         0.105 0.061     -0.014    0.105      0.225</span></span>
+<span><span class="co">#&gt; NOx4         0.261 0.059      0.144    0.260      0.377</span></span>
+<span><span class="co">#&gt; NOx5         0.425 0.062      0.302    0.425      0.547</span></span>
+<span><span class="co">#&gt; Townsend2    0.077 0.061     -0.043    0.077      0.198</span></span>
+<span><span class="co">#&gt; Townsend3    0.137 0.060      0.020    0.137      0.255</span></span>
+<span><span class="co">#&gt; Townsend4   -0.132 0.063     -0.255   -0.132     -0.009</span></span>
+<span><span class="co">#&gt; Townsend5   -0.118 0.067     -0.250   -0.118      0.014</span></span></code></pre></div>
+<p>Inferimos sobre la probabilidad esperada de infarto en un distrito con niveles base en privación <code>Townsend</code> y <code>NOx</code>, esto es, Townsend=1 y NOx=1, con la distribución posterior del logit inverso de la interceptación <span class="math inline">\(\theta\)</span>. Esta distribución posterior la obtendremos entonces a partir de simulaciones de la distribución posterior de <span class="math inline">\(\theta\)</span> y utilizando la función logit-inversa
+<span class="math display">\[logit^{-1}(\theta)=\frac{exp(\theta)}{1+exp(\theta)}\]</span></p>
+<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">prob.stroke</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>, <span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">des</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.zmarginal</a></span><span class="op">(</span><span class="va">prob.stroke</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Mean            0.455034 </span></span>
 <span><span class="co">#&gt; Stdev           0.0139168 </span></span>
 <span><span class="co">#&gt; Quantile  0.025 0.427486 </span></span>
@@ -271,65 +430,222 @@ siendo <span class="math inline">\(n_i\)</span> la población (número total de 
 <span><span class="co">#&gt; Quantile  0.5   0.455082 </span></span>
 <span><span class="co">#&gt; Quantile  0.75  0.464485 </span></span>
 <span><span class="co">#&gt; Quantile  0.975 0.482137</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">prob.stroke</span><span class="op">)</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
-<span>         <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">pi</span><span class="op">)</span>,y<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu">tilde</span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">pi</span>,<span class="st">"|"</span>,<span class="va">y</span>,<span class="st">","</span>,<span class="va">NOx</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,<span class="st">","</span>,<span class="va">TS</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="03-glm_files/figure-html/unnamed-chunk-6-1.png" width="672"></div>
-<p>El efecto <span class="math inline">\(\beta_{12}\)</span> representa el efecto en los log.odds de la mortalidad por infarto de estar en el nivel <span class="math inline">\(NOx=2\)</span> frente al de estar en el nivel <span class="math inline">\(NOx=1\)</span>. Si queremos evaluar el odds-ratio, simplemente calculamos la distribución posterior de <span class="math inline">\(exp(\beta_{12})\)</span> con <code>inla.tmarginal</code>. Si sólo estamos interesados en su media, bastaría utilizar `inla.emarginal’:</p>
-<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">odds.nox21</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="va">model.logistic</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">$</span><span class="st">"factor(NOx)2"</span><span class="op">)</span></span>
-<span><span class="va">e</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.emarginal</a></span><span class="op">(</span><span class="va">exp</span>, <span class="va">model.logistic</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">$</span><span class="st">"factor(NOx)2"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">odds.nox21</span><span class="op">)</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu">OR</span><span class="op">(</span><span class="va">NOx</span><span class="op">[</span><span class="fl">21</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,y<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu">tilde</span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu">OR</span><span class="op">(</span><span class="va">NOx</span><span class="op">[</span><span class="fl">21</span><span class="op">]</span><span class="op">)</span>,<span class="st">"|"</span>,<span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept<span class="op">=</span><span class="va">e</span>,color<span class="op">=</span><span class="st">"pink"</span><span class="op">)</span><span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">e</span>,y<span class="op">=</span><span class="fl">1</span>,label<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"mean="</span>,<span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">e</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span>,color<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="03-glm_files/figure-html/unnamed-chunk-7-1.png" width="672"></div>
-<p>La probabilidad de muerte por infarto se incrementa en un 14.3% cuando la exposición de NOx cambia del primer al segundo nivel. Los odds-ratio para el resto de los niveles resultan realmente significativos: 11,3% el odds-ratio NOx3/NOx1, 30% NOx4/NOx1 y 53.2% NOx5/NOx1.</p>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">prob.stroke</span><span class="op">)</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept<span class="op">=</span><span class="va">des</span><span class="op">$</span><span class="va">mean</span>,linetype<span class="op">=</span><span class="st">"dashed"</span>,color<span class="op">=</span><span class="st">"red"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">des</span><span class="op">$</span><span class="st">"quant0.025"</span>,<span class="va">des</span><span class="op">$</span><span class="st">"quant0.975"</span><span class="op">)</span>,</span>
+<span>             linetype<span class="op">=</span><span class="st">"dotted"</span>,color<span class="op">=</span><span class="st">"blue"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">pi</span><span class="op">)</span>,</span>
+<span>       y<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"DPosterior|"</span>,<span class="va">NOx</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,<span class="st">","</span>,<span class="va">TS</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="03-glm_files/figure-html/unnamed-chunk-5-1.png" width="672"></div>
+<p>El efecto <span class="math inline">\(\alpha_2^{NOx}\)</span> representa el efecto diferencial en los log-odds del infarto al estar en el nivel <span class="math inline">\(NOx=2\)</span> frente al de estar
+en el nivel de referencia <span class="math inline">\(NOx=1\)</span>. Si queremos evaluar el odds-ratio, simplemente
+calculamos la distribución posterior de <span class="math inline">\(exp(\alpha_2^{NOx})\)</span> con
+<code>inla.tmarginal</code>. Si sólo estamos interesados en sus descriptivos posteriores bastaría utilizar <code>inla.zmarginal</code>.</p>
 <div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.emarginal</a></span><span class="op">(</span><span class="va">exp</span>, <span class="va">model.logistic</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">$</span><span class="st">"factor(NOx)3"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1.113128</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.emarginal</a></span><span class="op">(</span><span class="va">exp</span>, <span class="va">model.logistic</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">$</span><span class="st">"factor(NOx)4"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1.299909</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.emarginal</a></span><span class="op">(</span><span class="va">exp</span>, <span class="va">model.logistic</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">$</span><span class="st">"factor(NOx)5"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1.532265</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">odds.nox21</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="va">exp</span>, </span>
+<span>                             <span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">$</span><span class="va">NOx2</span><span class="op">)</span></span>
+<span><span class="va">m</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.emarginal</a></span><span class="op">(</span><span class="va">exp</span>,<span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">$</span><span class="va">NOx2</span><span class="op">)</span></span>
+<span><span class="va">hpd</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.hpdmarginal</a></span><span class="op">(</span><span class="fl">0.95</span>,<span class="va">odds.nox21</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">odds.nox21</span><span class="op">)</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu">OR</span><span class="op">(</span><span class="va">NOx</span><span class="op">[</span><span class="fl">21</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>             y<span class="op">=</span> <span class="st">"DPosterior"</span><span class="op">)</span><span class="op">+</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept<span class="op">=</span><span class="va">m</span>,linetype<span class="op">=</span><span class="st">"dashed"</span>,color<span class="op">=</span><span class="st">"red"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept<span class="op">=</span><span class="va">hpd</span>,</span>
+<span>             linetype<span class="op">=</span><span class="st">"dotted"</span>,color<span class="op">=</span><span class="st">"blue"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="03-glm_files/figure-html/unnamed-chunk-6-1.png" width="672"></div>
+<p>Concluimos pues, que la probabilidad de muerte por infarto se incrementa en un -54.5 cuando
+la exposición de NOx cambia del primer al segundo nivel (la región creíble da un margen de crecimiento entre -57.25 y -51.79.</p>
+<p>Los odds-ratio para el resto de los niveles resultan igualmente “significativos” desde el punto de vista bayesiano, teniendo en cuenta sus estimaciones (media de la distribución posterior) e intervalos creíbles:</p>
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">OR31</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.zmarginal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, </span>
+<span>                             <span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">$</span><span class="va">NOx3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Mean            1.1131 </span></span>
+<span><span class="co">#&gt; Stdev           0.0673074 </span></span>
+<span><span class="co">#&gt; Quantile  0.025 0.986696 </span></span>
+<span><span class="co">#&gt; Quantile  0.25  1.06638 </span></span>
+<span><span class="co">#&gt; Quantile  0.5   1.11095 </span></span>
+<span><span class="co">#&gt; Quantile  0.75  1.1574 </span></span>
+<span><span class="co">#&gt; Quantile  0.975 1.25097</span></span>
+<span><span class="va">OR41</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.zmarginal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, </span>
+<span>                             <span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">$</span><span class="va">NOx4</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Mean            1.29988 </span></span>
+<span><span class="co">#&gt; Stdev           0.0766197 </span></span>
+<span><span class="co">#&gt; Quantile  0.025 1.15596 </span></span>
+<span><span class="co">#&gt; Quantile  0.25  1.24669 </span></span>
+<span><span class="co">#&gt; Quantile  0.5   1.29744 </span></span>
+<span><span class="co">#&gt; Quantile  0.75  1.35031 </span></span>
+<span><span class="co">#&gt; Quantile  0.975 1.4568</span></span>
+<span><span class="va">OR51</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.zmarginal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, </span>
+<span>                             <span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">$</span><span class="va">NOx5</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Mean            1.53223 </span></span>
+<span><span class="co">#&gt; Stdev           0.0950874 </span></span>
+<span><span class="co">#&gt; Quantile  0.025 1.35392 </span></span>
+<span><span class="co">#&gt; Quantile  0.25  1.46617 </span></span>
+<span><span class="co">#&gt; Quantile  0.5   1.52909 </span></span>
+<span><span class="co">#&gt; Quantile  0.75  1.59475 </span></span>
+<span><span class="co">#&gt; Quantile  0.975 1.72726</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">OR31</span>,<span class="va">OR41</span>,<span class="va">OR51</span><span class="op">)</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">7</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;      mean     sd         quant0.025 quant0.975</span></span>
+<span><span class="co">#&gt; OR31 1.113102 0.06730743 0.9866958  1.250967  </span></span>
+<span><span class="co">#&gt; OR41 1.29988  0.07661972 1.155961   1.456801  </span></span>
+<span><span class="co">#&gt; OR51 1.532227 0.09508741 1.353922   1.727261</span></span></code></pre></div>
 </div>
 </div>
 <div id="regresión-de-poisson" class="section level2" number="4.3">
 <h2>
 <span class="header-section-number">4.3</span> Regresión de Poisson<a class="anchor" aria-label="anchor" href="#regresi%C3%B3n-de-poisson"><i class="fas fa-link"></i></a>
 </h2>
-<p>La regresión de Poisson es útil cuando la variable respuesta representa conteos y estos toman valores discretos entre 0 y <span class="math inline">\(+\infty\)</span>, sin una cota superior de referencia. El parámetro de interés es el número promedio de eventos <span class="math inline">\(\lambda=E(y)\)</span> y el link natural es el logaritmo, de modo que el predictor lineal está ligado con las covariables y factores según:
-<span class="math display">\[\eta=log(\lambda)=x \beta, \ \ \mbox{ y } \ \ \lambda_i=exp(X \beta)\]</span></p>
-<p>Un modelo de Poisson puede especificarse según
-<span class="math display">\[y_i \sim Po(\lambda_i), i=1,...,n\]</span>
-<span class="math display">\[\eta_i=log(\lambda_i)=\beta_0+\sum_{m=1}^M \beta_mx_{im}.\]</span></p>
-<p>Para completar el modelo se especifican distribuciones a priori para <span class="math inline">\(\beta\)</span>, típicamente como normales con media cero y una varianza grande cuando no hay información disponible de estudios previos u opinión de expertos.</p>
-<p>Los coeficientes se interpretan a través de la función exponencial:</p>
+<p>La regresión de Poisson es útil cuando la variable respuesta representa
+conteos y estos toman valores discretos entre 0 y <span class="math inline">\(+\infty\)</span>, sin una
+cota superior de referencia. El parámetro de interés es el número
+promedio de eventos <span class="math inline">\(\lambda=E(y)\)</span> y el link natural es el logaritmo, de
+modo que el predictor lineal está ligado con las covariables y factores
+según:</p>
+<p><span class="math display">\[\begin{eqnarray*}
+y &amp;\sim&amp; Po(\lambda) \\
+\eta=log(\lambda)=X \beta+Zu, &amp;&amp; \lambda=exp(X \beta+Zu)
+\end{eqnarray*}\]</span></p>
+<p>Para completar el modelo bayesiano, se especifican distribuciones a priori para los coeficientes de los efectos fijos y aleatorios, <span class="math inline">\((\beta,u)\)</span>, típicamente como normales con media cero y una varianza grande para efectos fijos <span class="math inline">\(\beta\)</span> cuando no hay información previa disponible, y varianzas desconocidas para los efectos aleatorios <span class="math inline">\(u\)</span>. En el siguiente nivel se especificarán gammas dispersas para la precisión de los efectos aleatorios.</p>
+<p>Los coeficientes se interpretan a través de la función exponencial. Supongamos por simplicidad, un predictor lineal de la forma <span class="math inline">\(\eta=\theta+\sum_{i=1}^M \beta_i x_i\)</span>:</p>
 <ul>
 <li>
-<span class="math inline">\(exp(\beta_0)=\lambda_i\)</span> cuando todas las <span class="math inline">\(x=0\)</span> si son continuas, o para el primer nivel de las categorías posibles si son categóricas.</li>
+<span class="math inline">\(exp(\theta)\)</span> representa el valor esperado de la respuesta cuando todas las covariables son cero, o si son categóricas para el primer nivel de las categorías posibles.</li>
 <li>
-<span class="math inline">\(exp(\beta_m)\)</span> es el cambio que se produce en la respuesta promedio <span class="math inline">\(y\)</span> cuando <span class="math inline">\(x_m\)</span> se incrementa en una unidad.</li>
+<span class="math inline">\(exp(\beta_i)\)</span> es el cambio que se produce en la respuesta promedio
+<span class="math inline">\(y\)</span> cuando <span class="math inline">\(x_i\)</span> se incrementa en una unidad si dicha variable es numérica, o el cambio que se produce al pasar del primer nivel o categoría al nivel <span class="math inline">\(i\)</span>.</li>
 </ul>
-<p>La mayoría de las veces que se utiliza la regresión de Poisson, el interés recáe en las ratios o riesgos relativos, más que en el número promedio de casos <span class="math inline">\(\lambda_i\)</span>. Para cambiar la escala en términos de riesgo, ha de utilizarse un offset como factor de corrección en la especificación del modelo. Este offset representa el denominador del riesgo y entra en la regresión en una escala logarítmica, asumiendo que tiene un coeficiente de regresión fijado a 1:
-<span class="math display">\[\eta_i=log(\lambda_i)=\beta_0+\sum_{m=1}^M \beta_mx_{im}+log(Offset_i)\]</span>
-donde el riesgo relativo de que se produzca un evento se obtiene según
-<span class="math display">\[log\left(\frac{\lambda_i}{Offset_i}\right)=\beta_0+\sum_{m=1}^M \beta_mx_{im}\]</span>
-y los coeficientes entonces se interpretan en una escala de riesgo. En este caso al exponenciar la interceptación obtenemos el riesgo base, mientras que <span class="math inline">\(exp(\beta_m)\)</span> representa el cambio en el riesgo relativo debido a un cambio de unidad en el predictor correspondiente.</p>
-<div id="incidentes-en-barcos" class="section level3" number="4.3.1">
+<p>La mayoría de las veces que se utiliza la regresión de Poisson, el
+interés recae en las ratios o riesgos relativos, más que en el número
+esperado de casos <span class="math inline">\(\lambda\)</span>. Para cambiar la escala en términos de
+riesgo <span class="math inline">\(\rho\)</span>, generalmente expresado con <span class="math inline">\(\lambda=\rho \cdot E\)</span>, ha de utilizarse un offset <span class="math inline">\(E\)</span> como factor de corrección en la
+especificación del modelo. Este offset representa el denominador común del
+riesgo, o riesgo base, y entra en la regresión en una escala logarítmica (dada la función link), asumiendo que tiene un coeficiente de regresión fijado a 1, es decir, no se estima coeficiente para él.</p>
+<p><span class="math display">\[\eta=log(\lambda)=X\beta+Zu+log(E)\]</span></p>
+<p>Así, el riesgo relativo de que se produzca un evento se calculará dividiendo por el riesgo base, que en escala logarítmica será
+<span class="math display">\[log\left(\frac{\lambda}{Offset}\right)\]</span></p>
+<p>y al exponenciar los coeficientes <span class="math inline">\(exp(\beta)\)</span>, podremos interpretarlos como el cambio que se produce en el riesgo relativo al incrementar en una unidad el predictor correspondiente, si es continuo, o al pasar del nivel base al nivel que representa dicho coeficiente.</p>
+<div id="roturas-de-hilo" class="section level3" number="4.3.1">
 <h3>
-<span class="header-section-number">4.3.1</span> Incidentes en barcos<a class="anchor" aria-label="anchor" href="#incidentes-en-barcos"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.3.1</span> Roturas de hilo<a class="anchor" aria-label="anchor" href="#roturas-de-hilo"><i class="fas fa-link"></i></a>
 </h3>
-<p>Utilizamos los datos <em>ships.csv</em> en <a href="https://sites.google.com/a/r-inla.org/stbook/datasets">datasets for SSTM-RINLA</a> para estimar el riesgo mensual de incidentes en barcos. Los factores potenciales del riesgo son el periodo de construcción (<em>built</em>), el periodo de operación (<em>oper</em>) y el tipo de barco (<em>type</em>).
-El modelo se escribe en INLA a continuación, utilizando como offset el <em>log(months)</em>, que son los meses que ha navegado y ponderan en consecuencia el riesgo de incidentes. El modelo con el offset será entonces
-<span class="math display">\[y_i \sim Poisson (E_i \rho_i),\]</span>
-donde <span class="math inline">\(\eta_i=log(\rho_i)\)</span> es el predictor lineal y el promedio del número de incidentes <span class="math inline">\(\lambda_i=E_i \rho_i\)</span>. El offset no se incluye en esta formulación en el predictor lineal.</p>
-<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
+<p>La base de datos <code>warpbreaks</code> en la librería <code>datasets</code> proporciona el número de roturas <code>breaks</code> en el hilado en cada telar, para una serie de telares de longitud común. Contiene también información sobre el tipo de lana (A y B), <code>wool</code> y el nivel de tensión del telar (L,M,H), <code>tension</code>. En la Figura <a href="#fig:hilos1"><strong>??</strong></a> se representan los datos.</p>
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">warpbreaks</span>, package<span class="op">=</span><span class="st">"datasets"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">warpbreaks</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">tension</span>,y<span class="op">=</span><span class="va">breaks</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">wool</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="03-glm_files/figure-html/hilos1-1.png" width="672"></div>
+<p>Queremos pues predecir el número de roturas en función del tipo de lana y la tensión del telar, que consideramos como efectos fijos.</p>
+<p><span class="math display">\[ y_i|\lambda_i \sim Po(\lambda_i) \\
+log(\lambda_i)=\eta_i=\theta+ \alpha_i^w+ \alpha_i^t\]</span></p>
+<p>Ajustamos el modelo anterior con las priors por defecto y obtenemos:</p>
+<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">formula</span><span class="op">=</span> <span class="va">breaks</span> <span class="op">~</span> <span class="va">wool</span> <span class="op">+</span> <span class="va">tension</span></span>
+<span><span class="va">fit</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>,family<span class="op">=</span><span class="st">"poisson"</span>,data<span class="op">=</span><span class="va">warpbreaks</span>,</span>
+<span>         control.compute<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>return.marginals.predictor<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt;               mean    sd 0.025quant 0.5quant 0.975quant</span></span>
+<span><span class="co">#&gt; (Intercept)  3.692 0.045      3.602    3.692      3.780</span></span>
+<span><span class="co">#&gt; woolB       -0.206 0.052     -0.307   -0.206     -0.105</span></span>
+<span><span class="co">#&gt; tensionM    -0.321 0.060     -0.440   -0.321     -0.203</span></span>
+<span><span class="co">#&gt; tensionH    -0.518 0.064     -0.645   -0.518     -0.393</span></span></code></pre></div>
+<p>Los efectos fijos expresados con sus distribuciones posteriores completas los representamos en la Figura <a href="glm.html#fig:hilos2">4.4</a>.</p>
+<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fixed</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">)</span></span>
+<span><span class="va">g</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">fixed</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="va">g</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept<span class="op">=</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span><span class="op">$</span><span class="va">mean</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,linetype<span class="op">=</span><span class="st">"dashed"</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept<span class="op">=</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span><span class="op">[</span><span class="va">i</span>,<span class="fl">3</span><span class="op">]</span>,linetype<span class="op">=</span><span class="st">"dotted"</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept<span class="op">=</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span><span class="op">[</span><span class="va">i</span>,<span class="fl">5</span><span class="op">]</span>,linetype<span class="op">=</span><span class="st">"dotted"</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">fixed</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,y<span class="op">=</span><span class="st">"D.posterior"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html">grid.arrange</a></span><span class="op">(</span><span class="va">g</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">g</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,<span class="va">g</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="va">g</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>,ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:hilos2"></span>
+<img src="03-glm_files/figure-html/hilos2-1.png" alt="Distribución posterior de los efectos fijos" width="672"><p class="caption">
+Figura 4.4: Distribución posterior de los efectos fijos
+</p>
+</div>
+<p>Y si queremos intentar una interpretación en términos de exponenciales de los efectos, tenemos sus distribuciones posteriores representadas en la Figura <a href="glm.html#fig:hilos3">4.5</a>.</p>
+<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fixed</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">)</span></span>
+<span><span class="va">g</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">fixed</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="va">exp.eff</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,<span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="va">g</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">exp.eff</span><span class="op">)</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span></span>
+<span>      xintercept<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.emarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>                 <span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>               linetype<span class="op">=</span><span class="st">"dashed"</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.hpdmarginal</a></span><span class="op">(</span><span class="fl">0.95</span>,<span class="va">exp.eff</span><span class="op">)</span>,</span>
+<span>               linetype<span class="op">=</span><span class="st">"dotted"</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">fixed</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,y<span class="op">=</span><span class="st">"D.posterior"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html">grid.arrange</a></span><span class="op">(</span><span class="va">g</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">g</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,<span class="va">g</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="va">g</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>,ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:hilos3"></span>
+<img src="03-glm_files/figure-html/hilos3-1.png" alt="Distribución posterior de los exponenciales de los efectos fijos" width="672"><p class="caption">
+Figura 4.5: Distribución posterior de los exponenciales de los efectos fijos
+</p>
+</div>
+<p>Si quisiéramos reajustar el modelo utilizando como nivel de referencia en la variable <code>tension</code> el nivel H y en <code>wool</code> el nivel B, lo hacemos con la función <code>relevel</code>.</p>
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">warp</span><span class="op">=</span><span class="va">warpbreaks</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>wool<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/relevel.html">relevel</a></span><span class="op">(</span><span class="va">wool</span>,<span class="st">"B"</span><span class="op">)</span>,</span>
+<span>         tension<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/relevel.html">relevel</a></span><span class="op">(</span><span class="va">tension</span>,<span class="st">"H"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">formula</span><span class="op">=</span> <span class="va">breaks</span> <span class="op">~</span> <span class="va">wool</span> <span class="op">+</span> <span class="va">tension</span></span>
+<span><span class="va">fit</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>,family<span class="op">=</span><span class="st">"poisson"</span>,data<span class="op">=</span><span class="va">warp</span>,</span>
+<span>         control.compute<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>return.marginals.predictor<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Y obtenemos entonces las distribuciones posteriores para los exponenciales de los efectos fijos, en la Figura <a href="glm.html#fig:hilos4">4.6</a>.</p>
+<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fixed</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">)</span></span>
+<span><span class="va">g</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">fixed</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="va">exp.eff</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,<span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="va">g</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">exp.eff</span><span class="op">)</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span></span>
+<span>      xintercept<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.emarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>                 <span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>               linetype<span class="op">=</span><span class="st">"dashed"</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.hpdmarginal</a></span><span class="op">(</span><span class="fl">0.95</span>,<span class="va">exp.eff</span><span class="op">)</span>,</span>
+<span>               linetype<span class="op">=</span><span class="st">"dotted"</span><span class="op">)</span><span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">fixed</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,y<span class="op">=</span><span class="st">"D.posterior"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html">grid.arrange</a></span><span class="op">(</span><span class="va">g</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,<span class="va">g</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,<span class="va">g</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,<span class="va">g</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>,ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:hilos4"></span>
+<img src="03-glm_files/figure-html/hilos4-1.png" alt="Distribución posterior de los exponenciales de los efectos fijos, con niveles de referencia wool=B y tension=H" width="672"><p class="caption">
+Figura 4.6: Distribución posterior de los exponenciales de los efectos fijos, con niveles de referencia wool=B y tension=H
+</p>
+</div>
+</div>
+<div id="incidentes-en-barcos" class="section level3" number="4.3.2">
+<h3>
+<span class="header-section-number">4.3.2</span> Incidentes en barcos<a class="anchor" aria-label="anchor" href="#incidentes-en-barcos"><i class="fas fa-link"></i></a>
+</h3>
+<p>Utilizamos los datos <code>ShipsIncidents</code> en <a href="https://sites.google.com/a/r-inla.org/stbook/datasets">datasets for
+SSTM-RINLA</a> para
+estimar el riesgo mensual de incidentes en barcos. Los factores
+potenciales del riesgo son el periodo de construcción (<em>built</em>), el
+periodo de operación (<em>oper</em>) y el tipo de barco (<em>type</em>).</p>
+<p>El modelo se formula considerando que el número de incidentes será proporcional al número de meses que ha navegado el barco, de modo que utilizaremos como offset el <em>log(months)</em>, donde <code>months</code> son los meses que ha navegado el bargo y que ponderan en consecuencia el riesgo de incidentes <span class="math inline">\(rho\)</span>.</p>
+<p>El modelo con el offset será entonces
+<span class="math display">\[y_i \sim Poisson (E_i \rho_i)\\
+\eta_i=log(\rho_i)= \theta + \alpha_i^b+\alpha_i^o+\alpha_i^t+Offset(log(month))\]</span></p>
+<p>Para los efectos fijos especificaremos las distribuciones a priori por defecto que proporciona INLA.</p>
+<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">url</span><span class="op">=</span><span class="st">"https://raw.githubusercontent.com/BayesModel/data/main/Ships.csv"</span></span>
 <span><span class="va">ShipsIncidents</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">url</span>,sep<span class="op">=</span><span class="st">","</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="va">formula.inla</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="va">built</span> <span class="op">+</span> <span class="va">oper</span> <span class="op">+</span> <span class="va">type</span></span>
-<span><span class="va">model.poisson</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula.inla</span>,family<span class="op">=</span><span class="st">"poisson"</span>, data<span class="op">=</span><span class="va">ShipsIncidents</span>, offset<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">months</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">model.poisson</span><span class="op">$</span><span class="va">summary.fixed</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>,<span class="fl">3</span><span class="op">)</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula.inla</span>,family<span class="op">=</span><span class="st">"poisson"</span>, data<span class="op">=</span><span class="va">ShipsIncidents</span>, offset<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">months</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fixed</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>,<span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               mean    sd 0.025quant 0.5quant 0.975quant</span></span>
 <span><span class="co">#&gt; (Intercept) -6.416 0.217     -6.852   -6.413     -5.998</span></span>
 <span><span class="co">#&gt; built65-69   0.696 0.150      0.406    0.695      0.994</span></span>
@@ -340,63 +656,85 @@ donde <span class="math inline">\(\eta_i=log(\rho_i)\)</span> es el predictor li
 <span><span class="co">#&gt; typeC       -0.688 0.329     -1.366   -0.678     -0.075</span></span>
 <span><span class="co">#&gt; typeD       -0.075 0.291     -0.664   -0.069      0.476</span></span>
 <span><span class="co">#&gt; typeE        0.326 0.236     -0.141    0.327      0.785</span></span></code></pre></div>
-<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">model.poisson</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "(Intercept)" "built65-69"  "built70-74"  "built75-79" </span></span>
-<span><span class="co">#&gt; [5] "oper75-79"   "typeB"       "typeC"       "typeD"      </span></span>
-<span><span class="co">#&gt; [9] "typeE"</span></span>
+<p>Vamos pues a interpretar algunos de los efectos fijos. El parámetro <span class="math inline">\(exp(\theta)\)</span> representa el ratio medio de incidentes por mes navegado para los barcos que fueron construidos entre el 60 y el 64, han operado entre el 60 y el 74 y son de tipo A (las categorías de referencia). El parámetro <span class="math inline">\(exp(\alpha_E^t)\)</span> proporciona el incremento respecto de la categoría base <code>type=A</code> que se produce en el ratio mensual de incidentes en los barcos de <code>type=E</code>. Las distribuciones posteriores de dichos efectos se muestra en la Figura <a href="#fig:incidents1"><strong>??</strong></a>.</p>
+<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#names(fit$marginals.fixed)</span></span>
 <span><span class="co"># ratio medio de incidentes por mes en las categorías base</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.emarginal</a></span><span class="op">(</span><span class="va">exp</span>,<span class="va">model.poisson</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.001674164</span></span>
+<span><span class="va">rbase</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,<span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co"># riesgo relativo de barcos tipo E</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.emarginal</a></span><span class="op">(</span><span class="va">exp</span>,<span class="va">model.poisson</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">$</span><span class="va">typeE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1.424414</span></span></code></pre></div>
-<p>Así, la media de <span class="math inline">\(exp(\beta_0)\)</span>, 0.0018, representa el ratio medio de incidentes por mes entre los barcos que fueron construidos entre el 60 y el 64, han operado entre el 60 y el 74 y son de tipo A (las categorías de referencia). El ratio en 1000 meses sería del 1.8.Para los barcos de tipo E el incremento en el ratio mensual de incidentes, comparado con los de tipo A es del 42,4%.</p>
-<p>Otros datos modelizables con una regresión de Poisson son los que provienen del libro de Andrews and Herzberg y están descritos en (<a href="http://www.randomservices.org/random/data/HorseKicks.html">randomservices.org/random</a>) consistentes en el número de soldados muertos por coces de caballo en diversos cuerpos de caballería del ejército prusiano, entre 1875 y 1894.</p>
-<p>Este modelo se implementa en INLA, a partir de datos simulados, con el siguiente código</p>
-<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">url</span><span class="op">=</span><span class="st">"https://raw.githubusercontent.com/BayesModel/data/main/HorseKicks.txt"</span></span>
-<span><span class="va">horse</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">url</span>,sep<span class="op">=</span><span class="st">""</span>, dec<span class="op">=</span><span class="st">"."</span>,header<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">horse</span><span class="op">$</span><span class="va">sum</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">horse</span><span class="op">[</span>,<span class="fl">2</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">horse</span><span class="op">)</span><span class="op">]</span>,<span class="fl">1</span>,<span class="va">sum</span><span class="op">)</span></span>
+<span><span class="va">riesgoE</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.tmarginal</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,<span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">$</span><span class="va">typeE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fit</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">sum</span><span class="op">~</span><span class="fl">1</span>,data<span class="op">=</span><span class="va">horse</span>,family<span class="op">=</span><span class="st">"poisson"</span>,control.predictor<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>compute<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
+<span><span class="va">g1</span><span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">rbase</span><span class="op">)</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"Riesgo base=incidentes por mes"</span>,y<span class="op">=</span><span class="st">"D.Posterior"</span><span class="op">)</span></span>
+<span><span class="va">g2</span><span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">riesgoE</span><span class="op">)</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"Riesgo relativo type=E-A"</span>,y<span class="op">=</span><span class="st">"D.Posterior"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html">grid.arrange</a></span><span class="op">(</span><span class="va">g1</span>,<span class="va">g2</span>,ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="03-glm_files/figure-html/unnamed-chunk-11-1.png" width="672"></div>
+<p>Para el riesgo base tenemos:</p>
+<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># descriptivos</span></span>
+<span><span class="va">des.rbase</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.zmarginal</a></span><span class="op">(</span><span class="va">rbase</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Mean            0.00167376 </span></span>
+<span><span class="co">#&gt; Stdev           0.000362092 </span></span>
+<span><span class="co">#&gt; Quantile  0.025 0.00105947 </span></span>
+<span><span class="co">#&gt; Quantile  0.25  0.00141477 </span></span>
+<span><span class="co">#&gt; Quantile  0.5   0.00163997 </span></span>
+<span><span class="co">#&gt; Quantile  0.75  0.00189552 </span></span>
+<span><span class="co">#&gt; Quantile  0.975 0.0024769</span></span>
+<span><span class="va">des.rbase</span></span>
+<span><span class="co">#&gt; $mean</span></span>
+<span><span class="co">#&gt; [1] 0.001673763</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Call:</span></span>
-<span><span class="co">#&gt;    c("inla.core(formula = formula, family = family, </span></span>
-<span><span class="co">#&gt;    contrasts = contrasts, ", " data = data, quantiles = </span></span>
-<span><span class="co">#&gt;    quantiles, E = E, offset = offset, ", " scale = </span></span>
-<span><span class="co">#&gt;    scale, weights = weights, Ntrials = Ntrials, strata = </span></span>
-<span><span class="co">#&gt;    strata, ", " lp.scale = lp.scale, link.covariates = </span></span>
-<span><span class="co">#&gt;    link.covariates, verbose = verbose, ", " lincomb = </span></span>
-<span><span class="co">#&gt;    lincomb, selection = selection, control.compute = </span></span>
-<span><span class="co">#&gt;    control.compute, ", " control.predictor = </span></span>
-<span><span class="co">#&gt;    control.predictor, control.family = control.family, </span></span>
-<span><span class="co">#&gt;    ", " control.inla = control.inla, control.fixed = </span></span>
-<span><span class="co">#&gt;    control.fixed, ", " control.mode = control.mode, </span></span>
-<span><span class="co">#&gt;    control.expert = control.expert, ", " control.hazard </span></span>
-<span><span class="co">#&gt;    = control.hazard, control.lincomb = control.lincomb, </span></span>
-<span><span class="co">#&gt;    ", " control.update = control.update, </span></span>
-<span><span class="co">#&gt;    control.lp.scale = control.lp.scale, ", " </span></span>
-<span><span class="co">#&gt;    control.pardiso = control.pardiso, only.hyperparam = </span></span>
-<span><span class="co">#&gt;    only.hyperparam, ", " inla.call = inla.call, inla.arg </span></span>
-<span><span class="co">#&gt;    = inla.arg, num.threads = num.threads, ", " </span></span>
-<span><span class="co">#&gt;    blas.num.threads = blas.num.threads, keep = keep, </span></span>
-<span><span class="co">#&gt;    working.directory = working.directory, ", " silent = </span></span>
-<span><span class="co">#&gt;    silent, inla.mode = inla.mode, safe = FALSE, debug = </span></span>
-<span><span class="co">#&gt;    debug, ", " .parent.frame = .parent.frame)") </span></span>
-<span><span class="co">#&gt; Time used:</span></span>
-<span><span class="co">#&gt;     Pre = 2.19, Running = 0.158, Post = 0.00726, Total = 2.35 </span></span>
-<span><span class="co">#&gt; Fixed effects:</span></span>
-<span><span class="co">#&gt;              mean    sd 0.025quant 0.5quant 0.975quant mode</span></span>
-<span><span class="co">#&gt; (Intercept) 2.282 0.071      2.139    2.283       2.42   NA</span></span>
-<span><span class="co">#&gt;             kld</span></span>
-<span><span class="co">#&gt; (Intercept)   0</span></span>
+<span><span class="co">#&gt; $sd</span></span>
+<span><span class="co">#&gt; [1] 0.0003620923</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Marginal log-Likelihood:  -61.30 </span></span>
-<span><span class="co">#&gt;  is computed </span></span>
-<span><span class="co">#&gt; Posterior summaries for the linear predictor and the fitted values are computed</span></span>
-<span><span class="co">#&gt; (Posterior marginals needs also 'control.compute=list(return.marginals.predictor=TRUE)')</span></span></code></pre></div>
+<span><span class="co">#&gt; $quant0.025</span></span>
+<span><span class="co">#&gt; [1] 0.001059467</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $quant0.25</span></span>
+<span><span class="co">#&gt; [1] 0.001414768</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $quant0.5</span></span>
+<span><span class="co">#&gt; [1] 0.001639975</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $quant0.75</span></span>
+<span><span class="co">#&gt; [1] 0.001895523</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $quant0.975</span></span>
+<span><span class="co">#&gt; [1] 0.002476898</span></span></code></pre></div>
+<p>esto es, el ratio de incidentes por cada 1000 meses navegados para los niveles base será de 1.67 incidentes.</p>
+<p>Para el incremento del riesgo de los barcos de tipo E respecto de los de tipo A, tenemos</p>
+<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">des.riesgoE</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.zmarginal</a></span><span class="op">(</span><span class="va">riesgoE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Mean            1.42397 </span></span>
+<span><span class="co">#&gt; Stdev           0.336616 </span></span>
+<span><span class="co">#&gt; Quantile  0.025 0.870054 </span></span>
+<span><span class="co">#&gt; Quantile  0.25  1.18227 </span></span>
+<span><span class="co">#&gt; Quantile  0.5   1.38686 </span></span>
+<span><span class="co">#&gt; Quantile  0.75  1.62474 </span></span>
+<span><span class="co">#&gt; Quantile  0.975 2.18636</span></span>
+<span><span class="va">des.riesgoE</span></span>
+<span><span class="co">#&gt; $mean</span></span>
+<span><span class="co">#&gt; [1] 1.423969</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $sd</span></span>
+<span><span class="co">#&gt; [1] 0.3366165</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $quant0.025</span></span>
+<span><span class="co">#&gt; [1] 0.8700537</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $quant0.25</span></span>
+<span><span class="co">#&gt; [1] 1.182271</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $quant0.5</span></span>
+<span><span class="co">#&gt; [1] 1.386862</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $quant0.75</span></span>
+<span><span class="co">#&gt; [1] 1.624742</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $quant0.975</span></span>
+<span><span class="co">#&gt; [1] 2.186358</span></span></code></pre></div>
+<p>es decir, el riesgo de incidente por usar un barco de tipo E respecto a usar uno de tipo A se incrementa en un 42.4%.</p>
 
 </div>
 </div>
@@ -411,13 +749,16 @@ donde <span class="math inline">\(\eta_i=log(\rho_i)\)</span> es el predictor li
 <li><a class="nav-link" href="#modelos-jer%C3%A1rquicos-bayesianos"><span class="header-section-number">4.1</span> Modelos jerárquicos bayesianos</a></li>
 <li>
 <a class="nav-link" href="#regresi%C3%B3n-log%C3%ADstica"><span class="header-section-number">4.2</span> Regresión logística</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#interpretaci%C3%B3n-de-los-coeficientes-en-la-regresi%C3%B3n-logit">Interpretación de los coeficientes en la regresión logit</a></li>
-<li><a class="nav-link" href="#intenci%C3%B3n-de-voto-feb2022"><span class="header-section-number">4.2.1</span> Intención de voto feb2022</a></li>
-<li><a class="nav-link" href="#mortalidad-por-infarto-en-sheffield"><span class="header-section-number">4.2.2</span> Mortalidad por infarto en Sheffield</a></li>
+<li><a class="nav-link" href="#interpretaci%C3%B3n-de-los-coeficientes-en-la-regresi%C3%B3n-logit"><span class="header-section-number">4.2.1</span> Interpretación de los coeficientes en la regresión logit</a></li>
+<li><a class="nav-link" href="#intenci%C3%B3n-de-voto-feb2022"><span class="header-section-number">4.2.2</span> Intención de voto feb2022</a></li>
+<li><a class="nav-link" href="#mortalidad-por-infarto-en-sheffield"><span class="header-section-number">4.2.3</span> Mortalidad por infarto en Sheffield</a></li>
 </ul>
 </li>
 <li>
-<a class="nav-link" href="#regresi%C3%B3n-de-poisson"><span class="header-section-number">4.3</span> Regresión de Poisson</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#incidentes-en-barcos"><span class="header-section-number">4.3.1</span> Incidentes en barcos</a></li></ul>
+<a class="nav-link" href="#regresi%C3%B3n-de-poisson"><span class="header-section-number">4.3</span> Regresión de Poisson</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#roturas-de-hilo"><span class="header-section-number">4.3.1</span> Roturas de hilo</a></li>
+<li><a class="nav-link" href="#incidentes-en-barcos"><span class="header-section-number">4.3.2</span> Incidentes en barcos</a></li>
+</ul>
 </li>
 </ul>
 
