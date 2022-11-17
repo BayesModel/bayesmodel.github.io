@@ -82,7 +82,7 @@ modo, a través de la siguiente jerarquía.
 \begin{eqnarray*}
 Nivel I &&\\
 ( y | \beta,u,\Sigma) &\sim & f(y|\beta,u,\Sigma) \\
-&& E(y|beta,u,\Sigma)=\mu;  Var(y|beta,u,\Sigma)=\Sigma \\
+&& E(y|\beta,u,\Sigma)=\mu;  Var(y|\beta,u,\Sigma)=\Sigma \\
 && g(\mu)=\eta=X\beta + Z u \\
 Nivel II &&\\
 \beta &\sim & N(0,\sigma_{\beta}^2), \ \ \sigma_{\beta}^2 \text{ fijo} \\
@@ -243,9 +243,9 @@ round(fit$summary.fixed[,1:5],3)
 #> psoe_past    2.352 0.186      1.990    2.352      2.718
 round(fit$summary.hyperpar[,1:5],3)
 #>                      mean      sd 0.025quant 0.5quant
-#> Precision for ccaa 70.789 250.922      1.978     10.7
+#> Precision for ccaa 70.845 250.946      1.978   10.688
 #>                    0.975quant
-#> Precision for ccaa    588.584
+#> Precision for ccaa    589.353
 head(round(fit$summary.fitted.values[,1:5],3))
 #>                        mean    sd 0.025quant 0.5quant
 #> fitted.Predictor.0001 0.026 0.007      0.014    0.026
@@ -531,7 +531,7 @@ ggplot(warpbreaks,aes(x=tension,y=breaks))+
   geom_boxplot(aes(color=wool))
 ```
 
-![](03-glm_files/figure-latex/hilos1-1.pdf)<!-- --> 
+![(\#fig:hilos1)Relaciones en la base de datos warpbreaks](03-glm_files/figure-latex/hilos1-1.pdf) 
 
 Queremos pues predecir el número de roturas en un telar $k$, en función del tipo de lana $i$ y la tensión del telar $j$, que consideramos como efectos fijos. 
 

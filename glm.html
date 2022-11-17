@@ -125,7 +125,7 @@ modo, a través de la siguiente jerarquía.</p>
 <span class="math display">\[\begin{eqnarray*}
 Nivel I &amp;&amp;\\
 ( y | \beta,u,\Sigma) &amp;\sim &amp; f(y|\beta,u,\Sigma) \\
-&amp;&amp; E(y|beta,u,\Sigma)=\mu;  Var(y|beta,u,\Sigma)=\Sigma \\
+&amp;&amp; E(y|\beta,u,\Sigma)=\mu;  Var(y|\beta,u,\Sigma)=\Sigma \\
 &amp;&amp; g(\mu)=\eta=X\beta + Z u \\
 Nivel II &amp;&amp;\\
 \beta &amp;\sim &amp; N(0,\sigma_{\beta}^2), \ \ \sigma_{\beta}^2 \text{ fijo} \\
@@ -262,10 +262,10 @@ logit(\pi_{ijk}) =\eta_{ijk} &amp;=&amp; \theta + \alpha_i^{simp} + \alpha_j^{pa
 <span><span class="co">#&gt; psoe_simp    3.086 0.187      2.724    3.084      3.456</span></span>
 <span><span class="co">#&gt; psoe_past    2.352 0.186      1.990    2.352      2.718</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.hyperpar</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>,<span class="fl">3</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                      mean     sd 0.025quant 0.5quant</span></span>
-<span><span class="co">#&gt; Precision for ccaa 70.775 250.75      1.979   10.712</span></span>
+<span><span class="co">#&gt;                      mean      sd 0.025quant 0.5quant</span></span>
+<span><span class="co">#&gt; Precision for ccaa 70.843 250.892      1.978   10.689</span></span>
 <span><span class="co">#&gt;                    0.975quant</span></span>
-<span><span class="co">#&gt; Precision for ccaa    588.838</span></span>
+<span><span class="co">#&gt; Precision for ccaa    589.342</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.fitted.values</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                        mean    sd 0.025quant 0.5quant</span></span>
 <span><span class="co">#&gt; fitted.Predictor.0001 0.026 0.007      0.014    0.026</span></span>
@@ -283,11 +283,11 @@ logit(\pi_{ijk}) =\eta_{ijk} &amp;=&amp; \theta + \alpha_i^{simp} + \alpha_j^{pa
 <span><span class="co">#&gt; fitted.Predictor.0006      0.926</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">summary.linear.predictor</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                  mean    sd 0.025quant 0.5quant 0.975quant</span></span>
-<span><span class="co">#&gt; Predictor.0001 -3.651 0.269     -4.242   -3.626     -3.180</span></span>
-<span><span class="co">#&gt; Predictor.0002 -3.394 0.209     -3.799   -3.398     -2.973</span></span>
+<span><span class="co">#&gt; Predictor.0001 -3.651 0.269     -4.242   -3.626     -3.181</span></span>
+<span><span class="co">#&gt; Predictor.0002 -3.394 0.209     -3.798   -3.398     -2.973</span></span>
 <span><span class="co">#&gt; Predictor.0003 -3.524 0.207     -3.951   -3.517     -3.131</span></span>
 <span><span class="co">#&gt; Predictor.0004 -3.524 0.207     -3.951   -3.517     -3.131</span></span>
-<span><span class="co">#&gt; Predictor.0005 -3.394 0.209     -3.799   -3.398     -2.973</span></span>
+<span><span class="co">#&gt; Predictor.0005 -3.394 0.209     -3.798   -3.398     -2.973</span></span>
 <span><span class="co">#&gt; Predictor.0006  2.035 0.232      1.623    2.018      2.527</span></span></code></pre></div>
 <p>La variabilidad para los efectos aleatorios es relevante, como se manifiesta a través de la distribución posterior de su varianza, que se muestra en la Figura <a href="glm.html#fig:eleccion4">4.1</a> en términos de <span class="math inline">\(\sigma_{ca}\)</span>.</p>
 <div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
@@ -316,7 +316,7 @@ Figura 4.1: Distribución posterior, media y RC, de la desviación típica de lo
 <span><span class="va">sigma.hpd</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/marginal.html">inla.hpdmarginal</a></span><span class="op">(</span><span class="fl">0.95</span>,<span class="va">sigma.post</span><span class="op">)</span>,<span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"E(sigma.post)="</span>,<span class="va">sigma.e</span>,</span>
 <span>      <span class="st">"HPD95%=("</span>,<span class="va">sigma.hpd</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,<span class="st">","</span>,<span class="va">sigma.hpd</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,<span class="st">")"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "E(sigma.post)= 0.3188 HPD95%=( 0.021 , 0.638 )"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "E(sigma.post)= 0.3189 HPD95%=( 0.021 , 0.638 )"</span></span></code></pre></div>
 <p>Las distribuciones posteriores de los exponenciales de los efectos
 aleatorios (que representan los <em>odds-ratios</em>) se muestran en la Figura <a href="glm.html#fig:eleccion2">4.2</a>, en términos de medias y regiones creíbles. Están identificadas en verde las comunidades con efectos positivos hacia el voto PSOE (odds&gt;1), y en rojo las de efectos negativos (odds&lt;1). Estas distribuciones de efectos aleatorios nos permiten diferenciar qué comunidades autónomas son más (verde) y menos (rojo) favorables a votar por el PSOE, en términos de valor esperado (a posterior), así como descubrir la incertidumbre y variabilidad existente en dichas afirmaciones, dada por la región creíble.</p>
 <div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
@@ -520,12 +520,17 @@ riesgo, o riesgo base, y entra en la regresión en una escala logarítmica (dada
 <h3>
 <span class="header-section-number">4.3.1</span> Roturas de hilo<a class="anchor" aria-label="anchor" href="#roturas-de-hilo"><i class="fas fa-link"></i></a>
 </h3>
-<p>La base de datos <code>warpbreaks</code> en la librería <code>datasets</code> proporciona el número de roturas <code>breaks</code> en el hilado en cada telar, para una serie de telares de longitud común. Contiene también información sobre el tipo de lana (A y B), <code>wool</code> y el nivel de tensión del telar (L,M,H), <code>tension</code>. En la Figura <a href="#fig:hilos1"><strong>??</strong></a> se representan los datos.</p>
+<p>La base de datos <code>warpbreaks</code> en la librería <code>datasets</code> proporciona el número de roturas <code>breaks</code> en el hilado en cada telar, para una serie de telares de longitud común. Contiene también información sobre el tipo de lana (A y B), <code>wool</code> y el nivel de tensión del telar (L,M,H), <code>tension</code>. En la Figura <a href="glm.html#fig:hilos1">4.4</a> se representan los datos.</p>
 <div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">warpbreaks</span>, package<span class="op">=</span><span class="st">"datasets"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">warpbreaks</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">tension</span>,y<span class="op">=</span><span class="va">breaks</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">wool</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="03-glm_files/figure-html/hilos1-1.png" width="672"></div>
+<div class="figure">
+<span style="display:block;" id="fig:hilos1"></span>
+<img src="03-glm_files/figure-html/hilos1-1.png" alt="Relaciones en la base de datos warpbreaks" width="672"><p class="caption">
+Figura 4.4: Relaciones en la base de datos warpbreaks
+</p>
+</div>
 <p>Queremos pues predecir el número de roturas en un telar <span class="math inline">\(k\)</span>, en función del tipo de lana <span class="math inline">\(i\)</span> y la tensión del telar <span class="math inline">\(j\)</span>, que consideramos como efectos fijos.</p>
 <p><span class="math display">\[ y_{ijk}|\lambda_{ij} \sim Po(\lambda_{ij}) \\
 log(\lambda_{ij})=\eta_{ij}=\theta+ \alpha_i^w+ \alpha_j^t\]</span></p>
@@ -540,7 +545,7 @@ log(\lambda_{ij})=\eta_{ij}=\theta+ \alpha_i^w+ \alpha_j^t\]</span></p>
 <span><span class="co">#&gt; woolB       -0.206 0.052     -0.307   -0.206     -0.105</span></span>
 <span><span class="co">#&gt; tensionM    -0.321 0.060     -0.440   -0.321     -0.203</span></span>
 <span><span class="co">#&gt; tensionH    -0.518 0.064     -0.645   -0.518     -0.393</span></span></code></pre></div>
-<p>Los efectos fijos expresados con sus distribuciones posteriores completas los representamos en la Figura <a href="glm.html#fig:hilos2">4.4</a>.</p>
+<p>Los efectos fijos expresados con sus distribuciones posteriores completas los representamos en la Figura <a href="glm.html#fig:hilos2">4.5</a>.</p>
 <div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fixed</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">)</span></span>
 <span><span class="va">g</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -556,10 +561,10 @@ log(\lambda_{ij})=\eta_{ij}=\theta+ \alpha_i^w+ \alpha_j^t\]</span></p>
 <div class="figure">
 <span style="display:block;" id="fig:hilos2"></span>
 <img src="03-glm_files/figure-html/hilos2-1.png" alt="Distribución posterior de los efectos fijos" width="672"><p class="caption">
-Figura 4.4: Distribución posterior de los efectos fijos
+Figura 4.5: Distribución posterior de los efectos fijos
 </p>
 </div>
-<p>Y si queremos intentar una interpretación en términos de exponenciales de los efectos, tenemos sus distribuciones posteriores representadas en la Figura <a href="glm.html#fig:hilos3">4.5</a>.</p>
+<p>Y si queremos intentar una interpretación en términos de exponenciales de los efectos, tenemos sus distribuciones posteriores representadas en la Figura <a href="glm.html#fig:hilos3">4.6</a>.</p>
 <div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fixed</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">)</span></span>
 <span><span class="va">g</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -579,7 +584,7 @@ Figura 4.4: Distribución posterior de los efectos fijos
 <div class="figure">
 <span style="display:block;" id="fig:hilos3"></span>
 <img src="03-glm_files/figure-html/hilos3-1.png" alt="Distribución posterior de los exponenciales de los efectos fijos" width="672"><p class="caption">
-Figura 4.5: Distribución posterior de los exponenciales de los efectos fijos
+Figura 4.6: Distribución posterior de los exponenciales de los efectos fijos
 </p>
 </div>
 <p>Si quisiéramos reajustar el modelo utilizando como nivel de referencia en la variable <code>tension</code> el nivel H y en <code>wool</code> el nivel B, lo hacemos con la función <code>relevel</code>.</p>
@@ -590,7 +595,7 @@ Figura 4.5: Distribución posterior de los exponenciales de los efectos fijos
 <span><span class="va">formula</span><span class="op">=</span> <span class="va">breaks</span> <span class="op">~</span> <span class="va">wool</span> <span class="op">+</span> <span class="va">tension</span></span>
 <span><span class="va">fit</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/INLA/man/inla.html">inla</a></span><span class="op">(</span><span class="va">formula</span>,family<span class="op">=</span><span class="st">"poisson"</span>,data<span class="op">=</span><span class="va">warp</span>,</span>
 <span>         control.compute<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>return.marginals.predictor<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Y obtenemos entonces las distribuciones posteriores para los exponenciales de los efectos fijos, en la Figura <a href="glm.html#fig:hilos4">4.6</a>.</p>
+<p>Y obtenemos entonces las distribuciones posteriores para los exponenciales de los efectos fijos, en la Figura <a href="glm.html#fig:hilos4">4.7</a>.</p>
 <div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fixed</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">marginals.fixed</span><span class="op">)</span></span>
 <span><span class="va">g</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -610,7 +615,7 @@ Figura 4.5: Distribución posterior de los exponenciales de los efectos fijos
 <div class="figure">
 <span style="display:block;" id="fig:hilos4"></span>
 <img src="03-glm_files/figure-html/hilos4-1.png" alt="Distribución posterior de los exponenciales de los efectos fijos, con niveles de referencia wool=B y tension=H" width="672"><p class="caption">
-Figura 4.6: Distribución posterior de los exponenciales de los efectos fijos, con niveles de referencia wool=B y tension=H
+Figura 4.7: Distribución posterior de los exponenciales de los efectos fijos, con niveles de referencia wool=B y tension=H
 </p>
 </div>
 </div>
@@ -647,7 +652,7 @@ periodo de operación (<em>oper</em>) y el tipo de barco (<em>type</em>).</p>
 <span><span class="co">#&gt; typeC       -0.688 0.329     -1.366   -0.678     -0.075</span></span>
 <span><span class="co">#&gt; typeD       -0.075 0.291     -0.664   -0.069      0.476</span></span>
 <span><span class="co">#&gt; typeE        0.326 0.236     -0.141    0.327      0.785</span></span></code></pre></div>
-<p>Vamos pues a interpretar algunos de los efectos fijos. El parámetro <span class="math inline">\(exp(\theta)\)</span> representa el ratio medio de incidentes por mes navegado para los barcos que fueron construidos entre el 60 y el 64, han operado entre el 60 y el 74 y son de tipo A (las categorías de referencia). El parámetro <span class="math inline">\(exp(\alpha_E^t)\)</span> proporciona el incremento respecto de la categoría base <code>type=A</code> que se produce en el ratio mensual de incidentes en los barcos de <code>type=E</code>. Las distribuciones posteriores de dichos efectos se muestra en la Figura <a href="glm.html#fig:incidents1">4.7</a>.</p>
+<p>Vamos pues a interpretar algunos de los efectos fijos. El parámetro <span class="math inline">\(exp(\theta)\)</span> representa el ratio medio de incidentes por mes navegado para los barcos que fueron construidos entre el 60 y el 64, han operado entre el 60 y el 74 y son de tipo A (las categorías de referencia). El parámetro <span class="math inline">\(exp(\alpha_E^t)\)</span> proporciona el incremento respecto de la categoría base <code>type=A</code> que se produce en el ratio mensual de incidentes en los barcos de <code>type=E</code>. Las distribuciones posteriores de dichos efectos se muestra en la Figura <a href="glm.html#fig:incidents1">4.8</a>.</p>
 <div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#names(fit$marginals.fixed)</span></span>
 <span><span class="co"># ratio medio de incidentes por mes en las categorías base</span></span>
@@ -663,7 +668,7 @@ periodo de operación (<em>oper</em>) y el tipo de barco (<em>type</em>).</p>
 <div class="figure">
 <span style="display:block;" id="fig:incidents1"></span>
 <img src="03-glm_files/figure-html/incidents1-1.png" alt="Distribuciones posteriores de los coeficientes relativos al riesgo base e incremento relativo por tipo E" width="672"><p class="caption">
-Figura 4.7: Distribuciones posteriores de los coeficientes relativos al riesgo base e incremento relativo por tipo E
+Figura 4.8: Distribuciones posteriores de los coeficientes relativos al riesgo base e incremento relativo por tipo E
 </p>
 </div>
 <p>Para el riesgo base tenemos:</p>
